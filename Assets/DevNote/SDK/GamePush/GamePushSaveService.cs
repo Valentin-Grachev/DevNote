@@ -54,7 +54,7 @@ namespace DevNote.Services.GamePush
             var encodedData = GameState.GetEncodedData();
 
             GP_Player.Set(DATA_KEY, encodedData);
-            GP_Player.Set(LAST_SAVE_TIME_KEY, environment.Value.ServerTime.ToString());
+            GP_Player.Set(LAST_SAVE_TIME_KEY, environment.Item.ServerTime.ToString());
             GP_Player.Sync();
 
             onSuccess?.Invoke();
@@ -65,7 +65,7 @@ namespace DevNote.Services.GamePush
             var encodedData = GameState.GetEncodedData();
 
             PlayerPrefs.SetString(DATA_KEY, encodedData);
-            PlayerPrefs.SetString(LAST_SAVE_TIME_KEY, environment.Value.ServerTime.ToString());
+            PlayerPrefs.SetString(LAST_SAVE_TIME_KEY, environment.Item.ServerTime.ToString());
             PlayerPrefs.Save();
 
             onSuccess?.Invoke();
@@ -74,10 +74,10 @@ namespace DevNote.Services.GamePush
         void ISave.DeleteSaves(Action onSuccess, Action onError)
         {
             PlayerPrefs.SetString(DATA_KEY, string.Empty);
-            PlayerPrefs.SetString(LAST_SAVE_TIME_KEY, environment.Value.ServerTime.ToString());
+            PlayerPrefs.SetString(LAST_SAVE_TIME_KEY, environment.Item.ServerTime.ToString());
 
             GP_Player.Set(DATA_KEY, string.Empty);
-            GP_Player.Set(LAST_SAVE_TIME_KEY, environment.Value.ServerTime.ToString());
+            GP_Player.Set(LAST_SAVE_TIME_KEY, environment.Item.ServerTime.ToString());
 
             PlayerPrefs.Save();
             GP_Player.Sync();

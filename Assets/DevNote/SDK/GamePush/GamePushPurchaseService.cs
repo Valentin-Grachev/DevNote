@@ -39,7 +39,7 @@ namespace DevNote.Services.GamePush
                 },
                 onFetchPlayerPurchases: async (purchases) =>
                 {
-                    await UniTask.WaitUntil(() => save.Value.Initialized);
+                    await UniTask.WaitUntil(() => save.Item.Initialized);
 
                     foreach (var purchase in purchases)
                     {

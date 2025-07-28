@@ -35,12 +35,12 @@ public class CheckServiceInitWindowView : MonoBehaviour
 
     private void Update()
     {
-        if (environment.Value.Initialized) _environmentImage.color = _successColor;
-        if (save.Value.Initialized) _saveImage.color = _successColor;
-        if (ads.Value.Initialized) _adsImage.color = _successColor;
-        if (purchase.Value.Initialized) _purchaseImage.color = _successColor;
-        if (analytics.Value.Initialized) _analyticsImage.color = _successColor;
-        if (review.Value.Initialized) _reviewImage.color = _successColor;
+        if (environment.Item.Initialized) _environmentImage.color = _successColor;
+        if (save.Item.Initialized) _saveImage.color = _successColor;
+        if (ads.Item.Initialized) _adsImage.color = _successColor;
+        if (purchase.Item.Initialized) _purchaseImage.color = _successColor;
+        if (analytics.Item.Initialized) _analyticsImage.color = _successColor;
+        if (review.Item.Initialized) _reviewImage.color = _successColor;
 
         if (Sound.Initialized) _soundImage.color = _successColor;
         if (Localization.Initialized) _localizationImage.color = _successColor;

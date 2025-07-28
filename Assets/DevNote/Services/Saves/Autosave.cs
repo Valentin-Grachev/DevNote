@@ -14,8 +14,8 @@ namespace DevNote
 
         private void Awake()
         {
-            WebHandler.onPageBeforeUnload += () => save.Value.SaveLocal();
-            WebHandler.onPageHidden += () => save.Value.SaveLocal();
+            WebHandler.onPageBeforeUnload += () => save.Item.SaveLocal();
+            WebHandler.onPageHidden += () => save.Item.SaveLocal();
         }
 
         private void Start()
@@ -27,7 +27,7 @@ namespace DevNote
 
         private void Update()
         {
-            if (!save.Value.Initialized) return;
+            if (!save.Item.Initialized) return;
 
             _timeToLocalSave -= Time.unscaledDeltaTime;
             _timeToCloudSave -= Time.unscaledDeltaTime;
@@ -35,36 +35,36 @@ namespace DevNote
             if (_timeToLocalSave < 0f)
             {
                 _timeToLocalSave = _localSaveCooldown;
-                save.Value.SaveLocal();
+                save.Item.SaveLocal();
             }
 
             if (_timeToCloudSave < 0f)
             {
                 _timeToCloudSave = _cloudSaveCooldown;
-                save.Value.SaveCloud();
+                save.Item.SaveCloud();
             }
         }
 
 
         private void OnApplicationFocus(bool focus)
         {
-            if (!save.Resolved || !save.Value.Initialized) return;
+            if (!save.Resolved || !save.Item.Initialized) return;
 
-            if (!focus) save.Value.SaveLocal();
+            if (!focus) save.Item.SaveLocal();
         }
 
         private void OnApplicationPause(bool pause)
         {
-            if (!save.Resolved || !save.Value.Initialized) return;
+            if (!save.Resolved || !save.Item.Initialized) return;
 
-            if (pause) save.Value.SaveLocal();
+            if (pause) save.Item.SaveLocal();
         }
 
         private void OnApplicationQuit()
         {
-            if (!save.Resolved || !save.Value.Initialized) return;
+            if (!save.Resolved || !save.Item.Initialized) return;
 
-            save.Value.SaveCloud();
+            save.Item.SaveCloud();
         }
 
 

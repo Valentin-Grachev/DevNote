@@ -11,16 +11,16 @@ namespace DevNote
 
     public class Holder<T> : IHolder where T : class
     {
-        public T Value { get; private set; }
+        public T Item { get; private set; }
 
-        public bool Resolved => Value != null;
+        public bool Resolved => Item != null;
 
         public Holder()
         {
             Context.RegisterHolder(this);
         }
 
-        public void Resolve(T value) => Value = value;
+        public void Resolve(T value) => Item = value;
 
         bool IHolder.RequireType(Type type) => type == typeof(T);
     }

@@ -77,12 +77,12 @@ namespace DevNote
         {
             _versionText.text = Const.VERSION;
 
-            _environmentSelectedServiceText.text = environment.Value.GetType().Name.Replace("EnvironmentService", string.Empty);
-            _adsSelectedServiceText.text = ads.Value.GetType().Name.Replace("AdsService", string.Empty);
-            _savesSelectedServiceText.text = save.Value.GetType().Name.Replace("SaveService", string.Empty);
-            _purchasesSelectedServiceText.text = purchase.Value.GetType().Name.Replace("PurchaseService", string.Empty);
-            _analyticsSelectedServiceText.text = analytics.Value.GetType().Name.Replace("AnalyticsService", string.Empty);
-            _reviewSelectedServiceText.text = review.Value.GetType().Name.Replace("ReviewService", string.Empty);
+            _environmentSelectedServiceText.text = environment.Item.GetType().Name.Replace("EnvironmentService", string.Empty);
+            _adsSelectedServiceText.text = ads.Item.GetType().Name.Replace("AdsService", string.Empty);
+            _savesSelectedServiceText.text = save.Item.GetType().Name.Replace("SaveService", string.Empty);
+            _purchasesSelectedServiceText.text = purchase.Item.GetType().Name.Replace("PurchaseService", string.Empty);
+            _analyticsSelectedServiceText.text = analytics.Item.GetType().Name.Replace("AnalyticsService", string.Empty);
+            _reviewSelectedServiceText.text = review.Item.GetType().Name.Replace("ReviewService", string.Empty);
 
             string testValue = IEnvironment.IsTest ? "Active" : "Disabled";
             _environmentTestEnabledText.text = _environmentTestEnabledText.text.Replace("<test>", testValue);
@@ -90,35 +90,35 @@ namespace DevNote
             string environmentTypeValue = IEnvironment.EnvironmentType.ToString();
             _environmentSelectedTypeText.text = _environmentSelectedTypeText.text.Replace("<type>", environmentTypeValue);
 
-            string languageValue = environment.Value.CurrentLanguage.ToString();
+            string languageValue = environment.Item.CurrentLanguage.ToString();
             _environmentLanguageText.text = _environmentLanguageText.text.Replace("<language>", languageValue);
 
-            string controlValue = environment.Value.DeviceType.ToString();
+            string controlValue = environment.Item.DeviceType.ToString();
             _environmentDeviceTypeText.text = _environmentDeviceTypeText.text.Replace("<device>", controlValue);
 
-            string priceValue = purchase.Value.GetPriceString(_testProductKey);
+            string priceValue = purchase.Item.GetPriceString(_testProductKey);
             _purchasesProductPriceText.text = _purchasesProductPriceText.text.Replace("<price>", priceValue);
             _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", _testProductKey.ToString());
 
         }
 
 
-        private void OnDisableBannerButtonClick() => ads.Value.SetBanner(false);
-        private void OnEnableBannerButtonClick() => ads.Value.SetBanner(true);
+        private void OnDisableBannerButtonClick() => ads.Item.SetBanner(false);
+        private void OnEnableBannerButtonClick() => ads.Item.SetBanner(true);
 
-        private void OnReviewButtonClick() => review.Value.Request();
+        private void OnReviewButtonClick() => review.Item.Request();
 
-        private void OnSendTestEventButtonClick() => analytics.Value.SendEvent("test_event", new Dictionary<string, object>()
+        private void OnSendTestEventButtonClick() => analytics.Item.SendEvent("test_event", new Dictionary<string, object>()
         {
             { "random_int" , Random.Range(0, 3) },
-            { "device_type" , environment.Value.DeviceType.ToString() },
+            { "device_type" , environment.Item.DeviceType.ToString() },
         });
 
         private void OnPurchaseButtonClick()
         {
             _purchasesPurchaseButton.image.color = pendingColor;
 
-            purchase.Value.Purchase(_testProductKey,
+            purchase.Item.Purchase(_testProductKey,
                 onSuccess: () => _purchasesPurchaseButton.image.color = successColor,
                 onError: () => _purchasesPurchaseButton.image.color = errorColor);
         }
@@ -127,7 +127,7 @@ namespace DevNote
         {
             _savesSaveCloudButton.image.color = pendingColor;
 
-            save.Value.SaveCloud(
+            save.Item.SaveCloud(
                 onSuccess: () => _savesSaveCloudButton.image.color = successColor,
                 onError: () => _savesSaveCloudButton.image.color = errorColor);
         }
@@ -136,7 +136,7 @@ namespace DevNote
         {
             _savesSaveLocalButton.image.color = pendingColor;
 
-            save.Value.SaveLocal(
+            save.Item.SaveLocal(
                 onSuccess: () => _savesSaveLocalButton.image.color = successColor,
                 onError: () => _savesSaveLocalButton.image.color = errorColor);
         }
@@ -147,7 +147,7 @@ namespace DevNote
         {
             _adsShowInterstitialButton.image.color = pendingColor;
 
-            ads.Value.ShowInterstitial(AdKey.None,
+            ads.Item.ShowInterstitial(AdKey.None,
                 onShown: () => _adsShowInterstitialButton.image.color = successColor,
                 onError: () => _adsShowInterstitialButton.image.color = errorColor);
         }
@@ -156,7 +156,7 @@ namespace DevNote
         {
             _adsShowRewardedButton.image.color = pendingColor;
 
-            ads.Value.ShowRewarded(AdKey.None,
+            ads.Item.ShowRewarded(AdKey.None,
                 onRewarded: () => _adsShowRewardedButton.image.color = successColor,
                 onError: () => _adsShowRewardedButton.image.color = errorColor);
         }
