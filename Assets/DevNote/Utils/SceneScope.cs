@@ -23,7 +23,7 @@ namespace DevNote
         private void CreateProjectScope()
         {
             var projectScopePrefab = Resources.Load<ProjectScope>("[ProjectScope]");
-            Instantiate(projectScopePrefab);
+            Instantiate(projectScopePrefab.gameObject);
             DontDestroyOnLoad(projectScopePrefab);
         }
 

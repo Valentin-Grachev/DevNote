@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 
 
 namespace DevNote
@@ -38,12 +39,16 @@ namespace DevNote
 
         public T Show()
         {
+            // TODO: ิ่๊๑
+            /*
             if (_viewInstance == null)
-                _viewInstance = SceneInjector.InstantiateFromPrefabComponent(_prefab, _container);
+                _viewInstance = Injector.Resolver.Instantiate(_prefab, _container);
+            
 
             else _viewInstance.gameObject.SetActive(true);
 
             OnShown?.Invoke();
+            */
             return _viewInstance;
         }
 

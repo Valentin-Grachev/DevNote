@@ -1,5 +1,4 @@
 using UnityEngine;
-using Zenject;
 
 namespace DevNote
 {
@@ -8,7 +7,7 @@ namespace DevNote
         [SerializeField] private float _localSaveCooldown = 1f;
         [SerializeField] private float _cloudSaveCooldown = 60f;
 
-        [Inject] private readonly ISave save;
+        private ISave save => Context.Get<ISave>();
 
         private float _timeToLocalSave;
         private float _timeToCloudSave;

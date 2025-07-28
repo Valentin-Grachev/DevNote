@@ -2,7 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using GamePush;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 
 namespace DevNote.Services.GamePush

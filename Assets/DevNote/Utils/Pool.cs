@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace DevNote
 {
@@ -24,7 +25,8 @@ namespace DevNote
 
             else
             {
-                poolObject = SceneInjector.InstantiateFromPrefabComponent(_prefab);
+                // TODO: фикс
+                //poolObject = Injector.Resolver.Instantiate(_prefab);
                 _poolObjects.Add(poolObject);
             }
 

@@ -2,7 +2,7 @@ using DevNote;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class CheckServiceInitWindowView : MonoBehaviour
 {

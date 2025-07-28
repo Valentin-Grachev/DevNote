@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DevNote.YandexGamesSDK;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace DevNote.Services.YandexGames
 {

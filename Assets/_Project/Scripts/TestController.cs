@@ -1,8 +1,8 @@
-using System;
+using DevNote;
 using UnityEngine;
-using VContainer.Unity;
 
-public class TestController : ITickable, IStartable, IDisposable
+
+public class TestController : IStartable, IUpdatable, IContextDisposable
 {
     private int _testNumber = 0;
 
@@ -13,22 +13,9 @@ public class TestController : ITickable, IStartable, IDisposable
         Debug.Log("constructor");
     }
 
-
-
-    public void Dispose()
-    {
-        Debug.Log("dispose");
-    }
-
     void IStartable.Start()
     {
         Debug.Log("Start");
-    }
-
-    void ITickable.Tick()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-            Debug.Log($"Tick: {_testNumber}");
     }
 
     public void Call()
@@ -36,5 +23,14 @@ public class TestController : ITickable, IStartable, IDisposable
         Debug.Log($"Call");
     }
 
+    void IUpdatable.Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+            Debug.Log($"Tick: {_testNumber}");
+    }
 
+    void IContextDisposable.Dispose()
+    {
+        Debug.Log("dispose");
+    }
 }
