@@ -573,10 +573,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6534107350484591515}
-  - component: {fileID: 8403687735819367722}
-  - component: {fileID: 7086710550227634476}
+  - component: {fileID: 619033312199480862}
   m_Layer: 0
-  m_Name: ProjectContext
+  m_Name: '[ProjectScope]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -602,7 +601,7 @@ Transform:
   - {fileID: 3179104237937021401}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8403687735819367722
+--- !u!114 &619033312199480862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -611,47 +610,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 7989988792536570814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e2be682b2911d74fa5e29993dd3415a, type: 3}
+  m_Script: {fileID: 11500000, guid: df66f292c090f0a45a3d7b60fc938a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testVersion: 1
-  _environmentType: 2
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []
+  _testVersion: 0
+  _environmentType: 0
   _serviceSelector: {fileID: 2552094838235886111}
   _sound: {fileID: 6339179368250386191}
   _googleTables: {fileID: 6121122829171417047}
   _localization: {fileID: 3849975882774783400}
   _onlyBootstrapGameObject:
   - {fileID: 697222470521716677}
-  - {fileID: 2311195760061610755}
---- !u!114 &7086710550227634476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989988792536570814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e6589720da476459dc6dd71624b071, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 8403687735819367722}
-  _installerPrefabs: []
-  _parentNewObjectsUnderContext: 1
-  _editorReflectionBakingCoverageMode: 0
-  _buildsReflectionBakingCoverageMode: 0
-  _settings:
-    _ensureDeterministicDestructionOrderOnApplicationQuit: 0
-    _displayWarningWhenResolvingDuringInstall: 1
-    _validationRootResolveMethod: 0
-    _validationErrorResponse: 0
-    _signalSettings:
-      _defaultSyncMode: 0
-      _missingHandlerDefaultResponse: 2
-      _requireStrictUnsubscribe: 0
-      _defaultAsyncTickPriority: 1
 --- !u!1 &8095102371805940163
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,7 +1112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentLanguage: 1
-  _controlType: 0
+  _deviceType: 0
 --- !u!114 &6608646393400013635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,11 +1415,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
---- !u!1 &2311195760061610755 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2218622869680427737, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
-  m_PrefabInstance: {fileID: 4528692624445434330}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5438536452378785493 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8475974489955147535, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}

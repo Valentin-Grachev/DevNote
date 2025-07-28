@@ -33,7 +33,7 @@ namespace DevNote.Tutorial.MVP
         // Она правильно прокидывает все глобальные зависимости из ProjectContext.
         private T Bind<T>(T controller) where T : class
         {
-            ProjectInstaller.ProjectContainer.Inject(controller);
+            //ProjectInstaller.Builder.Register(controller);
             Container.BindInterfacesAndSelfTo<T>().FromInstance(controller).AsSingle();
             return controller;
         }
