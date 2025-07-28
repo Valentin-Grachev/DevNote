@@ -2,10 +2,12 @@ using DevNote;
 
 public class MainSceneContext : SceneContext
 {
-    protected override void RegisterContext()
+
+    public override void RegisterContext()
     {
 
-        var test = Register(new TestController(3));
+        
+
 
 
     }

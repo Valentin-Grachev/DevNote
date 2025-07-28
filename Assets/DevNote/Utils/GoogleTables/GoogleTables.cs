@@ -12,7 +12,7 @@ namespace DevNote
 {
     public class GoogleTables : MonoBehaviour, IProjectInitializable
     {
-        public static bool Initialized => _instance._initialized;
+        public static bool Initialized => _instance != null && _instance._initialized;
 
         private enum RequestDataMode { None, Editor, EditorAndBuild }
 

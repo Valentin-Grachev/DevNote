@@ -1,18 +1,26 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
 namespace DevNote.Services.Starter
 {
-    public class ManualEnvironmentService : MonoBehaviour, IEnvironment
+    public class TestEnvironmentService : MonoBehaviour, IEnvironment
     {
+        [SerializeField] private float _delayBeforeInitialization;
         [SerializeField] private Language _currentLanguage = Language.EN;
         [SerializeField] private DeviceType _deviceType = DeviceType.Desktop;
 
 
-        bool IProjectInitializable.Initialized => true;
+        private bool _initialized = false;
 
-        void IProjectInitializable.Initialize() { }
+        bool IProjectInitializable.Initialized => _initialized;
+
+        async void IProjectInitializable.Initialize() 
+        { 
+            await UniTask.WaitForSeconds(_delayBeforeInitialization);
+            _initialized = true;
+        }
 
         bool ISelectableService.Available => true;
 

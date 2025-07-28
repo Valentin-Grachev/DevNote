@@ -8,15 +8,9 @@ namespace DevNote
 {
     public class ProjectContext : MonoBehaviour
     {
-        public static bool Exists { get; private set; } = false;
-
-        public static bool Initialized { get; private set; } = false;
-
-
         [SerializeField] private bool _testVersion;
         [SerializeField] private EnvironmentType _environmentType;
         [Space(10)]
-        [SerializeField] private Context _context;
         [SerializeField] private ServiceSelector _serviceSelector;
         [SerializeField] private Sound _sound;
         [SerializeField] private GoogleTables _googleTables;
@@ -25,11 +19,8 @@ namespace DevNote
 
         private List<IProjectInitializable> _initializables = new();
 
-        private async void Awake()
+        public async void RegisterContext()
         {
-            _context.Initialize();
-            Exists = true;
-
             SetActiveRootGameObjects(false);
 
             IEnvironment.IsTest = _testVersion;
@@ -54,13 +45,12 @@ namespace DevNote
 
             await WaitFullInitialization();
 
-            Initialized = true;
-
             SetActiveRootGameObjects(true);
             _onlyBootstrapGameObject.ForEach(gameObject => gameObject.SetActive(false));
 
             environment.GameReady();
         }
+
 
         private T SelectAndRegisterService<T>() where T : class
         {
@@ -100,8 +90,6 @@ namespace DevNote
 
         private void SetActiveRootGameObjects(bool active)
         {
-            _context.gameObject.SetActive(active);
-
             foreach (var rootObject in SceneManager.GetActiveScene().GetRootGameObjects())
             {
                 if (rootObject != gameObject)

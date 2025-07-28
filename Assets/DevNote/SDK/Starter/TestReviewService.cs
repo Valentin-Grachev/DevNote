@@ -10,7 +10,7 @@ namespace DevNote.Services.Starter
 
         void IProjectInitializable.Initialize() { }
 
-        void IReview.Request() => Debug.Log($"{Const.LOG_PREFIX} Test review shown");
+        void IReview.Request() => Debug.Log($"{Const.LOG_PREFIX} Review is requested");
     }
 }
 

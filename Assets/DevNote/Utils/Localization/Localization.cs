@@ -11,7 +11,7 @@ namespace DevNote
     {
         public static event Action OnLanguageChanged;
         public static Language CurrentLanguage { get; private set; }
-        public static bool Initialized => _instance._initialized;
+        public static bool Initialized => _instance != null && _instance._initialized;
 
         private static Localization _instance;
 

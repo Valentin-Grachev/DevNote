@@ -2,7 +2,6 @@ using DevNote;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using VContainer;
 
 public class CheckServiceInitWindowView : MonoBehaviour
 {
@@ -19,12 +18,12 @@ public class CheckServiceInitWindowView : MonoBehaviour
     [SerializeField] private Image _googleTablesImage;
     [SerializeField] private TextMeshProUGUI _versionText;
 
-    [Inject] private readonly ISave environment;
-    [Inject] private readonly ISave save;
-    [Inject] private readonly IAds ads;
-    [Inject] private readonly IPurchase purchase;
-    [Inject] private readonly IAnalytics analytics;
-    [Inject] private readonly IReview review;
+    private readonly Holder<IEnvironment> environment = new();
+    private readonly Holder<ISave> save = new();
+    private readonly Holder<IAds> ads = new();
+    private readonly Holder<IPurchase> purchase = new();
+    private readonly Holder<IAnalytics> analytics = new();
+    private readonly Holder<IReview> review = new();
 
 
     private void Start()
@@ -36,12 +35,12 @@ public class CheckServiceInitWindowView : MonoBehaviour
 
     private void Update()
     {
-        if (environment.Initialized) _environmentImage.color = _successColor;
-        if (save.Initialized) _saveImage.color = _successColor;
-        if (ads.Initialized) _adsImage.color = _successColor;
-        if (purchase.Initialized) _purchaseImage.color = _successColor;
-        if (analytics.Initialized) _analyticsImage.color = _successColor;
-        if (review.Initialized) _reviewImage.color = _successColor;
+        if (environment.Value.Initialized) _environmentImage.color = _successColor;
+        if (save.Value.Initialized) _saveImage.color = _successColor;
+        if (ads.Value.Initialized) _adsImage.color = _successColor;
+        if (purchase.Value.Initialized) _purchaseImage.color = _successColor;
+        if (analytics.Value.Initialized) _analyticsImage.color = _successColor;
+        if (review.Value.Initialized) _reviewImage.color = _successColor;
 
         if (Sound.Initialized) _soundImage.color = _successColor;
         if (Localization.Initialized) _localizationImage.color = _successColor;

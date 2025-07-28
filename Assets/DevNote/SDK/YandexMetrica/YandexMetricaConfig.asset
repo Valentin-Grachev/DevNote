@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ebbb3da5d10aef40aae1b4e340632d0, type: 3}
   m_Name: YandexMetricaConfig
   m_EditorClassIdentifier: 
-  <IncludeInBuild>k__BackingField: 1
+  <IncludeInBuild>k__BackingField: 0
   <YandexMetricaCounterId>k__BackingField: 102067635

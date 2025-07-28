@@ -6,54 +6,70 @@ namespace DevNote
 {
     public class Context : MonoBehaviour
     {
-        private static Context _instance;
+        private static List<IHolder> _holders = new();
 
-        private Dictionary<Type, object> _registers = new();
+        private static Dictionary<Type, object> _registers = new();
 
-        private List<IStartable> _startables = new();
-        private List<IUpdatable> _updatables = new();
-        private List<IFixedUpdatable> _fixedUpdatables = new();
-        private List<IContextDisposable> _disposables = new();
+        private static List<IStartable> _startables = new();
+        private static List<IUpdatable> _updatables = new();
+        private static List<IFixedUpdatable> _fixedUpdatables = new();
+        private static List<IContextDisposable> _disposables = new();
 
-
-        public void Initialize() => _instance = this;
 
         public static void Register<T>(T instance) where T : class
         {
-            print($"Register {typeof(T)}");
-            var type = typeof(T);
+            var instanceType = typeof(T);
 
-            if (_instance._registers.ContainsKey(type))
-                throw new Exception($"{Const.LOG_PREFIX} Context: type {type.Name} is already registered");
+            if (_registers.ContainsKey(instanceType))
+                throw new Exception($"{Const.LOG_PREFIX} Context: type {instanceType.Name} is already registered");
 
-            _instance._registers[type] = instance;
+            _registers.Add(instanceType, instance);
 
-            if (instance is IStartable) _instance._startables.Add(instance as IStartable);
-            if (instance is IUpdatable) _instance._updatables.Add(instance as IUpdatable);
-            if (instance is IFixedUpdatable) _instance._fixedUpdatables.Add(instance as IFixedUpdatable);
-            if (instance is IContextDisposable) _instance._disposables.Add(instance as IContextDisposable);
+            if (instance is IStartable) _startables.Add(instance as IStartable);
+            if (instance is IUpdatable) _updatables.Add(instance as IUpdatable);
+            if (instance is IFixedUpdatable) _fixedUpdatables.Add(instance as IFixedUpdatable);
+            if (instance is IContextDisposable) _disposables.Add(instance as IContextDisposable);
+
+            foreach (var holder in _holders)
+            {
+                if (holder.RequireType(instanceType))
+                    (holder as Holder<T>).Resolve(instance);
+            }
         }
 
         public static T Get<T>() where T : class
         {
-            var type = typeof(T);
-
-            if (_instance._registers.TryGetValue(type, out var instance))
+            if (_registers.TryGetValue(typeof(T), out var instance))
                 return (T)instance;
 
-            throw new Exception($"{Const.LOG_PREFIX} Context: type {type.Name} is not registered");
+            return null;
+        }
+
+        public static void RegisterHolder<T>(Holder<T> holder) where T : class
+        {
+            var instance = Get<T>();
+
+            if (instance == null)
+                _holders.Add(holder);
+
+            else holder.Resolve(instance);
         }
 
         public static void Unregister(Type type)
         {
-            var instance = _instance._registers[type];
+            var instance = _registers[type];
 
-            if (instance is IStartable) _instance._startables.Remove(instance as IStartable);
-            if (instance is IUpdatable) _instance._updatables.Remove(instance as IUpdatable);
-            if (instance is IFixedUpdatable) _instance._fixedUpdatables.Remove(instance as IFixedUpdatable);
-            if (instance is IContextDisposable) _instance._disposables.Remove(instance as IContextDisposable);
+            if (instance is IStartable) _startables.Remove(instance as IStartable);
+            if (instance is IUpdatable) _updatables.Remove(instance as IUpdatable);
+            if (instance is IFixedUpdatable) _fixedUpdatables.Remove(instance as IFixedUpdatable);
+            if (instance is IContextDisposable)
+            {
+                var disposable = instance as IContextDisposable;
+                disposable.Dispose();
+                _disposables.Remove(disposable);
+            }
 
-            _instance._registers.Remove(type);
+            _registers.Remove(type);
         }
 
 
@@ -73,12 +89,6 @@ namespace DevNote
         {
             for (int i = 0; i < _fixedUpdatables.Count; i++)
                 _fixedUpdatables[i].FixedUpdate();
-        }
-
-        private void OnDestroy()
-        {
-            for (int i = 0; i < _disposables.Count; i++)
-                _disposables[i].Dispose();
         }
 
 
