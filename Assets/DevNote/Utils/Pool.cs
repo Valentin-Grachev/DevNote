@@ -24,7 +24,7 @@ namespace DevNote
 
             else
             {
-                poolObject = SceneInjector.InstantiateFromPrefabComponent(_prefab);
+                poolObject = Object.Instantiate(_prefab);
                 _poolObjects.Add(poolObject);
             }
 

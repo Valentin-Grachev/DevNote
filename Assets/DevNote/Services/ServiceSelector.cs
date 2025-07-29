@@ -40,7 +40,7 @@ namespace DevNote
             foreach (var service in services)
                 if ((service as ISelectableService).Available) return service as T;
 
-            throw new Exception($"{Const.LOG_PREFIX} Available service does'nt exist: {nameof(T)}");
+            throw new Exception($"{Const.LOG_PREFIX} Available service does'nt exist: {typeof(T)}");
         }
 
 

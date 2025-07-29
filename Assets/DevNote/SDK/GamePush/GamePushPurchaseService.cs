@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePush;
 using UnityEngine;
-using Zenject;
 
 namespace DevNote.Services.GamePush
 {
@@ -13,7 +12,7 @@ namespace DevNote.Services.GamePush
 
         [SerializeField] private ProductIdConvertor _productConvertor;
 
-        [Inject] private readonly ISave save;
+        private readonly Holder<ISave> save = new();
 
         private bool _initialized = false;
         private Dictionary<ProductType, string> _productPrices = new();
@@ -40,7 +39,7 @@ namespace DevNote.Services.GamePush
                 },
                 onFetchPlayerPurchases: async (purchases) =>
                 {
-                    await UniTask.WaitUntil(() => save.Initialized);
+                    await UniTask.WaitUntil(() => save.Item.Initialized);
 
                     foreach (var purchase in purchases)
                     {
