@@ -11,7 +11,7 @@ namespace DevNote
     public static class GameStateEncoder
     {
         private const char CELL_SEPARATOR = '|';
-        private const char KEY_VALUE_PAIR_SEPARATOR = ';';
+        private const char KEY_VALUE_PAIR_SEPARATOR = '+';
 
 
         public static Dictionary<string, string> Decode(string compressedData, bool showLogs = false)
