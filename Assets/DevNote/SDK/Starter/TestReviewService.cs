@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DevNote.Services.Starter
+namespace DevNote.Services.Test
 {
     public class TestReviewService : MonoBehaviour, IReview
     {
@@ -10,7 +10,7 @@ namespace DevNote.Services.Starter
 
         void IProjectInitializable.Initialize() { }
 
-        void IReview.Request() => Debug.Log($"{Const.LOG_PREFIX} Review is requested");
+        void IReview.Request() => Debug.Log($"{Info.Prefix} Review is requested");
     }
 }
 

@@ -56,12 +56,12 @@ namespace DevNote
                     _cells = CsvParcer.Parce(csvData);
 
                     Status = LoadingStatus.Success;
-                    Debug.Log($"{Const.LOG_PREFIX} Table {Key} Success");
+                    Debug.Log($"{Info.Prefix} Table {Key} Success");
                 }
                 else
                 {
                     Status = LoadingStatus.Error;
-                    Debug.LogError($"{Const.LOG_PREFIX} Table {Key} Error: " + request.error);
+                    Debug.LogError($"{Info.Prefix} Table {Key} Error: " + request.error);
                 }
             }
 

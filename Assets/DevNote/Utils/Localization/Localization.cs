@@ -54,7 +54,7 @@ namespace DevNote
         {
             if (_instance._tranlationDictionary.ContainsKey(key) == false)
             {
-                Debug.LogWarning($"{Const.LOG_PREFIX} Translation key \"{key}\" does'nt exist!");
+                Debug.LogWarning($"{Info.Prefix} Translation key \"{key}\" does'nt exist!");
                 return key;
             }
 

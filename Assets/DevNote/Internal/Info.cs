@@ -1,11 +1,11 @@
 
 namespace DevNote
 {
-    public static class Const
+    public static class Info
     {
-        public const string VERSION = "v.2.0.0";
+        public const string VERSION = "v.2.1.0";
 
-        public static string LOG_PREFIX
+        public static string Prefix
         {
             get => IEnvironment.IsEditor ? "<color=#DEA3FF>[DevNote]</color>" : "[DevNote]";
         }

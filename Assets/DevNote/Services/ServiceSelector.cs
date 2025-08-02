@@ -29,7 +29,7 @@ namespace DevNote
             };
 
             if (service == null)
-                throw new Exception($"{Const.LOG_PREFIX} Wrong service type : {nameof(T)}");
+                throw new Exception($"{Info.Prefix} Wrong service type : {nameof(T)}");
 
 
             return service;
@@ -40,7 +40,7 @@ namespace DevNote
             foreach (var service in services)
                 if ((service as ISelectableService).Available) return service as T;
 
-            throw new Exception($"{Const.LOG_PREFIX} Available service does'nt exist: {typeof(T)}");
+            throw new Exception($"{Info.Prefix} Available service does'nt exist: {typeof(T)}");
         }
 
 

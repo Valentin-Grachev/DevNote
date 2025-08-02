@@ -8,7 +8,7 @@ namespace DevNote.Services.GamePush
 {
     public class GamePushSaveService : MonoBehaviour, ISave
     {
-        public event Action onSavesDeleted;
+        public event Action OnSavesDeleted;
 
         private bool _initialized = false;
 
@@ -82,7 +82,7 @@ namespace DevNote.Services.GamePush
             PlayerPrefs.Save();
             GP_Player.Sync();
 
-            onSavesDeleted?.Invoke();
+            OnSavesDeleted?.Invoke();
         }
     }
 }

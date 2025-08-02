@@ -7,7 +7,7 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesSaveService : MonoBehaviour, ISave
     {
-        public event Action onSavesDeleted;
+        public event Action OnSavesDeleted;
 
 
         private bool _initialized = false;
@@ -57,7 +57,7 @@ namespace DevNote.Services.YandexGames
                 if (success)
                 {
                     onSuccess?.Invoke();
-                    onSavesDeleted?.Invoke();
+                    OnSavesDeleted?.Invoke();
                 }
                 else onError?.Invoke();
             });

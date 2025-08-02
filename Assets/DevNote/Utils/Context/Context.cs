@@ -10,10 +10,10 @@ namespace DevNote
 
         private static Dictionary<Type, object> _registers = new();
 
-        private static List<IStartable> _startables = new();
-        private static List<IUpdatable> _updatables = new();
-        private static List<IFixedUpdatable> _fixedUpdatables = new();
-        private static List<IContextDisposable> _disposables = new();
+        private static List<IStartHandler> _startables = new();
+        private static List<IUpdateHandler> _updatables = new();
+        private static List<IFixedUpdateHandler> _fixedUpdatables = new();
+        private static List<IDisposeHandler> _disposables = new();
 
 
         public static void Register<T>(T instance) where T : class
@@ -21,14 +21,14 @@ namespace DevNote
             var instanceType = typeof(T);
 
             if (_registers.ContainsKey(instanceType))
-                throw new Exception($"{Const.LOG_PREFIX} Context: type {instanceType.Name} is already registered");
+                throw new Exception($"{Info.Prefix} Context: type {instanceType.Name} is already registered");
 
             _registers.Add(instanceType, instance);
 
-            if (instance is IStartable) _startables.Add(instance as IStartable);
-            if (instance is IUpdatable) _updatables.Add(instance as IUpdatable);
-            if (instance is IFixedUpdatable) _fixedUpdatables.Add(instance as IFixedUpdatable);
-            if (instance is IContextDisposable) _disposables.Add(instance as IContextDisposable);
+            if (instance is IStartHandler) _startables.Add(instance as IStartHandler);
+            if (instance is IUpdateHandler) _updatables.Add(instance as IUpdateHandler);
+            if (instance is IFixedUpdateHandler) _fixedUpdatables.Add(instance as IFixedUpdateHandler);
+            if (instance is IDisposeHandler) _disposables.Add(instance as IDisposeHandler);
 
             foreach (var holder in _holders)
             {
@@ -59,12 +59,12 @@ namespace DevNote
         {
             var instance = _registers[type];
 
-            if (instance is IStartable) _startables.Remove(instance as IStartable);
-            if (instance is IUpdatable) _updatables.Remove(instance as IUpdatable);
-            if (instance is IFixedUpdatable) _fixedUpdatables.Remove(instance as IFixedUpdatable);
-            if (instance is IContextDisposable)
+            if (instance is IStartHandler) _startables.Remove(instance as IStartHandler);
+            if (instance is IUpdateHandler) _updatables.Remove(instance as IUpdateHandler);
+            if (instance is IFixedUpdateHandler) _fixedUpdatables.Remove(instance as IFixedUpdateHandler);
+            if (instance is IDisposeHandler)
             {
-                var disposable = instance as IContextDisposable;
+                var disposable = instance as IDisposeHandler;
                 disposable.Dispose();
                 _disposables.Remove(disposable);
             }

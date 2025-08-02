@@ -1,22 +1,22 @@
 
 namespace DevNote
 {
-    public interface IStartable
+    public interface IStartHandler
     {
         public void Start();
     }
 
-    public interface IUpdatable
+    public interface IUpdateHandler
     {
         public void Update();
     }
 
-    public interface IFixedUpdatable
+    public interface IFixedUpdateHandler
     {
         public void FixedUpdate();
     }
 
-    public interface IContextDisposable
+    public interface IDisposeHandler
     {
         public void Dispose();
     }
