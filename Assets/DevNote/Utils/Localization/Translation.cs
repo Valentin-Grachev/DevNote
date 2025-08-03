@@ -17,7 +17,7 @@ namespace DevNote
             Language.EN => en,
             Language.TR => tr,
 
-            _ => throw new System.Exception($"{Const.LOG_PREFIX} Wrong language: {language}. Please add this language to Translation struct")
+            _ => throw new System.Exception($"{Info.Prefix} Wrong language: {language}. Please add this language to Translation struct")
         };
 
 

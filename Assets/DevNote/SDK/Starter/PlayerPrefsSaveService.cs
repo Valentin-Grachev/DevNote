@@ -3,17 +3,18 @@ using NaughtyAttributes;
 using UnityEngine;
 
 
-namespace DevNote.Services.Starter
+namespace DevNote.Services.Test
 {
     public class PlayerPrefsSaveService : MonoBehaviour, ISave
     {
-        public event Action onSavesDeleted;
+        public event Action OnSavesDeleted;
 
         private bool _initialized = false;
+        private bool _savesWasDeleted = false;
 
         private const string DATA_KEY = "data";
 
-        
+
 
         bool ISelectableService.Available => true;
 
@@ -34,15 +35,23 @@ namespace DevNote.Services.Starter
             PlayerPrefs.Save();
 
             onSuccess?.Invoke();
-            onSavesDeleted?.Invoke();
+            OnSavesDeleted?.Invoke();
+
+            _savesWasDeleted = true;
         }
 
-        void ISave.SaveCloud(Action onSuccess, Action onError) => Save(onSuccess);
+        void ISave.SaveCloud(Action onSuccess, Action onError) => Save(onSuccess, onError);
 
-        void ISave.SaveLocal(Action onSuccess, Action onError) => Save(onSuccess);
+        void ISave.SaveLocal(Action onSuccess, Action onError) => Save(onSuccess, onError);
 
-        private void Save(Action onSuccess)
+        private void Save(Action onSuccess, Action onError)
         {
+            if (_savesWasDeleted)
+            {
+                onError?.Invoke();
+                return;
+            }
+
             PlayerPrefs.SetString(DATA_KEY, GameState.GetEncodedData());
             PlayerPrefs.Save();
 

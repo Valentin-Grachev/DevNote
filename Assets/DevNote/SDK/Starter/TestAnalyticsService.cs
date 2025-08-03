@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DevNote.Services.Starter
+namespace DevNote.Services.Test
 {
     public class TestAnalyticsService : MonoBehaviour, IAnalytics
     {
@@ -21,7 +21,7 @@ namespace DevNote.Services.Starter
                     parametersDataString += $"({parameter.Key}: {parameter.Value}) ";
             }
 
-            Debug.Log($"{Const.LOG_PREFIX} Send event \"{eventKey}\"; {parametersDataString}");
+            Debug.Log($"{Info.Prefix} Send event \"{eventKey}\"; {parametersDataString}");
         }
     }
 }

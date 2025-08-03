@@ -29,7 +29,7 @@ public class CheckServiceInitWindowView : MonoBehaviour
     private void Start()
     {
         if (!IEnvironment.IsTest) gameObject.SetActive(false);
-        _versionText.text = Const.VERSION;
+        _versionText.text = Info.VERSION;
     }
 
 

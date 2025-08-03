@@ -75,7 +75,7 @@ namespace DevNote
 
         private void Display()
         {
-            _versionText.text = Const.VERSION;
+            _versionText.text = Info.VERSION;
 
             _environmentSelectedServiceText.text = environment.Item.GetType().Name.Replace("EnvironmentService", string.Empty);
             _adsSelectedServiceText.text = ads.Item.GetType().Name.Replace("AdsService", string.Empty);

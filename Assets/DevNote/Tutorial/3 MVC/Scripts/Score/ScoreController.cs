@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DevNote.Tutorial.MVC
 {
-    public class ScoreController : IStartable
+    public class ScoreController : IStartHandler
     {
         public ReactiveValue<int> CurrentScore { get; private set; } = new(0);
 
@@ -18,7 +18,7 @@ namespace DevNote.Tutorial.MVC
                 mode: ViewerMode.InstantiateDestroy);
         }
 
-        void IStartable.Start()
+        void IStartHandler.Start()
         {
             CurrentScore.Value = 0;
         }

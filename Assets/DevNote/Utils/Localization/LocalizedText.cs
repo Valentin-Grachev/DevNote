@@ -27,7 +27,7 @@ namespace DevNote
         {
             if (_key == string.Empty)
             {
-                Debug.LogWarning($"{Const.LOG_PREFIX} Localized text: ID is empty!");
+                Debug.LogWarning($"{Info.Prefix} Localized text: ID is empty!");
                 return;
             }
 

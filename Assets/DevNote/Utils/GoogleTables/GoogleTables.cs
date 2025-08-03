@@ -93,7 +93,7 @@ namespace DevNote
                             break;
 
                         case Table.LoadingStatus.Error:
-                            throw new Exception($"{Const.LOG_PREFIX} Table loading error: {table.Key}");
+                            throw new Exception($"{Info.Prefix} Table loading error: {table.Key}");
                     }
                 }
 

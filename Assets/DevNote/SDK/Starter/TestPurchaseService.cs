@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DevNote.Services.Starter
+namespace DevNote.Services.Test
 {
     public class TestPurchaseService : MonoBehaviour, IPurchase
     {

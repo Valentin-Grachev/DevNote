@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
-namespace DevNote.Services.Starter
+namespace DevNote.Services.Test
 {
     public class TestEnvironmentService : MonoBehaviour, IEnvironment
     {
@@ -30,7 +30,7 @@ namespace DevNote.Services.Starter
 
         DateTime IEnvironment.ServerTime => DateTime.Now;
 
-        void IEnvironment.GameReady() => Debug.Log($"{Const.LOG_PREFIX} Game ready");
+        void IEnvironment.GameReady() => Debug.Log($"{Info.Prefix} Game ready");
 
         
     }
