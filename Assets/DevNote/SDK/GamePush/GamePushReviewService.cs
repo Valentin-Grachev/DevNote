@@ -8,9 +8,9 @@ namespace DevNote.Services.GamePush
     {
         bool ISelectableService.Available => GamePushEnvironmentService.ServicesIsAvailable;
 
-        bool IProjectInitializable.Initialized => GP_Init.isReady;
+        bool IInitializable.Initialized => GP_Init.isReady;
 
-        void IProjectInitializable.Initialize() { }
+        void IInitializable.Initialize() { }
 
         void IReview.Request() => GP_App.ReviewRequest();
 

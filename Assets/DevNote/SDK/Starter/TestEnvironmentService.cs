@@ -14,9 +14,9 @@ namespace DevNote.Services.Test
 
         private bool _initialized = false;
 
-        bool IProjectInitializable.Initialized => _initialized;
+        bool IInitializable.Initialized => _initialized;
 
-        async void IProjectInitializable.Initialize() 
+        async void IInitializable.Initialize() 
         { 
             await UniTask.WaitForSeconds(_delayBeforeInitialization);
             _initialized = true;

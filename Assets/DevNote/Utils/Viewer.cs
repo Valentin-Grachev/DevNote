@@ -14,13 +14,11 @@ namespace DevNote
         private ViewerMode _mode;
         private T _prefab;
         private T _viewInstance; public T View => _viewInstance;
-        private RectTransform _container;
 
-        public Viewer(T prefab, RectTransform container, ViewerMode mode)
+        public Viewer(T prefab, ViewerMode mode)
         {
             _mode = mode;
             _prefab = prefab;
-            _container = container;
             _viewInstance = null;
         }
 
@@ -28,18 +26,26 @@ namespace DevNote
         {
             _mode = ViewerMode.EnableDisable;
             _prefab = null;
-            _container = null;
             _viewInstance = instance;
         }
 
 
 
-        public T Show()
+        public T Show(RectTransform container)
         {
             if (_viewInstance == null)
-                _viewInstance = UnityEngine.Object.Instantiate(_prefab, _container);
+                _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
             
             else _viewInstance.gameObject.SetActive(true);
+
+            var rectTransform = _viewInstance.transform as RectTransform;
+            rectTransform.SetParent(container, false);
+
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+            rectTransform.SetAsLastSibling();
 
             OnShown?.Invoke();
             return _viewInstance;

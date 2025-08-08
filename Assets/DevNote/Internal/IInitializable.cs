@@ -1,6 +1,6 @@
 namespace DevNote
 {
-    public interface IProjectInitializable
+    public interface IInitializable
     {
         public bool Initialized { get; }
 

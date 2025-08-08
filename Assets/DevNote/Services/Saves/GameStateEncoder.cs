@@ -14,14 +14,18 @@ namespace DevNote
         private const char KEY_VALUE_PAIR_SEPARATOR = '+';
 
 
-        public static Dictionary<string, string> Decode(string compressedData, bool showLogs = false)
+        public static bool DataIsSupported(string data)
+        {
+            return true;
+        }
+
+
+        public static Dictionary<string, string> Decode(string compressedData)
         {
             if (compressedData == string.Empty) 
                 return new Dictionary<string, string>();
 
             string originData = Decompress(compressedData);
-
-            if (showLogs) Debug.Log($"[{nameof(GameStateEncoder)}] {originData}");
 
             if (originData == string.Empty) 
                 return new Dictionary<string, string>();

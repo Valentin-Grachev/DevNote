@@ -23,8 +23,8 @@ namespace DevNote.Services.GamePush
         bool ISelectableService.Available => GamePushEnvironmentService.ServicesIsAvailable;
 
 
-        bool IProjectInitializable.Initialized => _initialized;
-        async void IProjectInitializable.Initialize()
+        bool IInitializable.Initialized => _initialized;
+        async void IInitializable.Initialize()
         {
             await UniTask.WaitUntil(() => GP_Init.isReady);
 

@@ -7,7 +7,7 @@ namespace DevNote
         public static void RestoreFromEncodedData(string data) => GameStateParcer.Parse(GameStateEncoder.Decode(data));
 
 
-        public static ReactiveValue<bool> AdsEnabled;
+        public static ReactiveValue<bool> NoAdsPurchased;
 
     }
 }

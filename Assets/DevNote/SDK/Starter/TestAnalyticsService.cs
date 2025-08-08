@@ -5,7 +5,7 @@ namespace DevNote.Services.Test
 {
     public class TestAnalyticsService : MonoBehaviour, IAnalytics
     {
-        bool IProjectInitializable.Initialized => true;
+        bool IInitializable.Initialized => true;
 
         bool ISelectableService.Available => true;
 

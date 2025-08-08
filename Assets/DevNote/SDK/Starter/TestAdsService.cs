@@ -5,31 +5,39 @@ namespace DevNote.Services.Test
 {
     public class TestAdsService : MonoBehaviour, IAds
     {
-        public event IAds.AdShownEvent onInterstitialShown;
-        public event IAds.AdShownEvent onRewardedShown;
-
-
         bool ISelectableService.Available => true;
+        bool IInitializable.Initialized => true;
 
-        bool IProjectInitializable.Initialized => true;
+        bool IAds.RewardedAvailable => true;
+        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed;
+        bool IAds.AdBlockEnabled => false;
 
-        
 
-        void IProjectInitializable.Initialize() { }
+        void IInitializable.Initialize() { }
 
-        void IAds.SetBanner(bool active) {}
 
-        void IAds.ShowInterstitial(AdKey adKey, Action onShown, Action onError)
+        void IAds.SetBanner(bool active)
         {
-            onShown?.Invoke();
-            onInterstitialShown?.Invoke(adKey, true);
+            Debug.Log($"{Info.Prefix} Set banner {active}");
         }
 
-        void IAds.ShowRewarded(AdKey adKey, Action onRewarded, Action onError)
+        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
-            onRewarded?.Invoke();
-            onRewardedShown?.Invoke(adKey, true);
+            var status = IAds.InterstitialCooldownPassed ? AdShowStatus.Success : AdShowStatus.CooldownNotFinished;
+
+            Debug.Log($"{Info.Prefix} Show intertstitial. Key: \"{key}\", Status: {status}");
+            IAds.InvokeInterstitialCallback(callback, key, status);
         }
+
+        void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
+        {
+            var status = IAds.InterstitialCooldownPassed ? AdShowStatus.Success : AdShowStatus.CooldownNotFinished;
+
+            Debug.Log($"{Info.Prefix} Show rewarded. Key: \"{key}\", Status: {status}");
+            IAds.InvokeRewardedCallback(onRewarded, callback, key, status);
+        }
+
+
     }
 }
 

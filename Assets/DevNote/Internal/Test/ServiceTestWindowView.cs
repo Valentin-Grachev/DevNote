@@ -147,18 +147,24 @@ namespace DevNote
         {
             _adsShowInterstitialButton.image.color = pendingColor;
 
-            ads.Item.ShowInterstitial(AdKey.None,
-                onShown: () => _adsShowInterstitialButton.image.color = successColor,
-                onError: () => _adsShowInterstitialButton.image.color = errorColor);
+            ads.Item.ShowInterstitial(AdKey.None, callback: (status) =>
+            {
+                bool success = status == AdShowStatus.Success;
+                _adsShowInterstitialButton.image.color = success ? successColor : errorColor;
+            });
+                
         }
 
         private void OnShowRewardedButtonClick()
         {
             _adsShowRewardedButton.image.color = pendingColor;
 
-            ads.Item.ShowRewarded(AdKey.None,
-                onRewarded: () => _adsShowRewardedButton.image.color = successColor,
-                onError: () => _adsShowRewardedButton.image.color = errorColor);
+            ads.Item.ShowRewarded(AdKey.None, callback: (status) =>
+            {
+                bool success = status == AdShowStatus.Success;
+                _adsShowRewardedButton.image.color = success ? successColor : errorColor;
+            });
+
         }
 
 

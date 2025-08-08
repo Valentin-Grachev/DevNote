@@ -1,6 +1,6 @@
 using System;
-using Cysharp.Threading.Tasks;
 using DevNote.YandexGamesSDK;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 
@@ -8,23 +8,23 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesAdsService : MonoBehaviour, IAds
     {
-        private bool _initialized = false;
-
-        public event IAds.AdShownEvent onInterstitialShown;
-        public event IAds.AdShownEvent onRewardedShown;
-
         bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
+        bool IInitializable.Initialized => YG_Sdk.available;
 
-        bool IProjectInitializable.Initialized => _initialized;
+        bool IAds.RewardedAvailable => true;
+        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed;
+        bool IAds.AdBlockEnabled => false;
 
-        async void IProjectInitializable.Initialize()
+
+        void IInitializable.Initialize() { }
+
+        void IAds.SetBanner(bool active)
         {
-            await UniTask.WaitUntil(() => YG_Sdk.available);
-            _initialized = true;
+            if (active) YG_Ads.ShowBanner();
+            else YG_Ads.HideBanner();
         }
 
-
-        void IAds.ShowRewarded(AdKey adKey, Action onRewarded, Action onError)
+        void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
             bool rewarded = false;
             bool error = false;
@@ -48,16 +48,8 @@ namespace DevNote.Services.YandexGames
                     case YG_Ads.RewardedAction.Closed:
                         TimeMode.SetActive(TimeMode.Mode.Stop, false);
 
-                        if (!error && rewarded)
-                        {
-                            onRewarded?.Invoke();
-                            onRewardedShown?.Invoke(adKey, true);
-                        }
-                        else
-                        {
-                            onError?.Invoke();
-                            onRewardedShown?.Invoke(adKey, false);
-                        }
+                        var status = !error && rewarded ? AdShowStatus.Success : AdShowStatus.Error;
+                        IAds.InvokeRewardedCallback(onRewarded, callback, key, status);
 
                         break;
                 }
@@ -65,7 +57,7 @@ namespace DevNote.Services.YandexGames
             });
         }
 
-        void IAds.ShowInterstitial(AdKey adKey, Action onShown, Action onError)
+        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             bool interstitialWasShown = false;
             TimeMode.SetActive(TimeMode.Mode.Stop, true);
@@ -81,23 +73,14 @@ namespace DevNote.Services.YandexGames
                     case YG_Ads.InterstitialAction.Closed:
                         TimeMode.SetActive(TimeMode.Mode.Stop, false);
 
-                        if (interstitialWasShown) onShown?.Invoke();
-                        else onError?.Invoke();
+                        var status = interstitialWasShown ? AdShowStatus.Success : AdShowStatus.Error;
+                        IAds.InvokeInterstitialCallback(callback, key, status);
 
-                        onInterstitialShown?.Invoke(adKey, interstitialWasShown);
                         break;
                 }
 
             });
         }
-
-        void IAds.SetBanner(bool active)
-        {
-            if (active) YG_Ads.ShowBanner();
-            else YG_Ads.HideBanner();
-        }
-
-        
     }
 }
 

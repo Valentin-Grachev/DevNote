@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 namespace DevNote
 {
 
-    public class Sound : MonoBehaviour, IProjectInitializable
+    public class Sound : MonoBehaviour, IInitializable
     {
         public enum Channel { Music, SFX }
 
@@ -57,9 +57,9 @@ namespace DevNote
         private AudioMixerGroup _sfxGroup;
         private AudioSource _musicAudioSource;
 
-        bool IProjectInitializable.Initialized => _initialized;
+        bool IInitializable.Initialized => _initialized;
 
-        async void IProjectInitializable.Initialize()
+        async void IInitializable.Initialize()
         {
             _instance = this;
 
@@ -72,7 +72,7 @@ namespace DevNote
 
             if (UseWebAudio)
             {
-                IProjectInitializable initializable = _audioWebCash;
+                IInitializable initializable = _audioWebCash;
                 initializable.Initialize();
                 await UniTask.WaitUntil(() => initializable.Initialized);
             }
