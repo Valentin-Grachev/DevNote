@@ -7,12 +7,12 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesReviewService : MonoBehaviour, IReview
     {
-        bool IProjectInitializable.Initialized => true;
+        bool IInitializable.Initialized => true;
 
         bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
 
 
-        void IProjectInitializable.Initialize() { }
+        void IInitializable.Initialize() { }
 
         void IReview.Request()
         {

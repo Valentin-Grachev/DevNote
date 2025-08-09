@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using UnityEngine;
 
 
 namespace DevNote
 {
     public static class GameStateEncoder
     {
+        public const string VERSION = "DN1";
+        private const char VERSION_DATA_SEPARATOR = ':';
+
         private const char CELL_SEPARATOR = '|';
         private const char KEY_VALUE_PAIR_SEPARATOR = '+';
 
 
-        public static Dictionary<string, string> Decode(string compressedData, bool showLogs = false)
+        public static bool DataIsSupported(string data) 
+            => data.StartsWith($"{VERSION}{VERSION_DATA_SEPARATOR}") || data == string.Empty;
+
+
+        public static Dictionary<string, string> Decode(string encodedData)
         {
-            if (compressedData == string.Empty) 
+            if (encodedData == string.Empty) 
                 return new Dictionary<string, string>();
 
-            string originData = Decompress(compressedData);
-
-            if (showLogs) Debug.Log($"[{nameof(GameStateEncoder)}] {originData}");
+            encodedData = encodedData.Replace($"{VERSION}{VERSION_DATA_SEPARATOR}", string.Empty);
+            string originData = Decompress(encodedData);
 
             if (originData == string.Empty) 
                 return new Dictionary<string, string>();
@@ -32,7 +37,7 @@ namespace DevNote
         public static string Encode(Dictionary<string, string> originDataDictionary)
         {
             string originData = ToDataString(originDataDictionary);
-            return Compress(originData);
+            return $"{VERSION}{VERSION_DATA_SEPARATOR}" + Compress(originData);
         }
 
 
@@ -76,8 +81,7 @@ namespace DevNote
             {
                 using (var compressedStream = new MemoryStream())
                 {
-                    using (var compressorStream = new DeflateStream(compressedStream, 
-                        System.IO.Compression.CompressionLevel.Fastest, true))
+                    using (var compressorStream = new DeflateStream(compressedStream, CompressionLevel.Fastest, true))
                     {
                         uncompressedStream.CopyTo(compressorStream);
                     }

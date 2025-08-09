@@ -19,9 +19,9 @@ namespace DevNote.Services.YandexGames
         private readonly Holder<ISave> save = new();
 
         bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
-        bool IProjectInitializable.Initialized => _initialized;
+        bool IInitializable.Initialized => _initialized;
 
-        async void IProjectInitializable.Initialize()
+        async void IInitializable.Initialize()
         {
             await UniTask.WaitUntil(() => YG_Purchases.available && save.Item.Initialized);
 

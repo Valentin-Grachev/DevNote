@@ -27,11 +27,11 @@ namespace DevNote.Services.GamePush
         DeviceType IEnvironment.DeviceType => GP_Device.IsMobile() ? DeviceType.Mobile : DeviceType.Desktop;
 
 
-        bool IProjectInitializable.Initialized => GP_Init.isReady;
+        bool IInitializable.Initialized => GP_Init.isReady;
 
         DateTime IEnvironment.ServerTime => GP_Server.Time();
 
-        void IProjectInitializable.Initialize() {}
+        void IInitializable.Initialize() {}
 
 
         void IEnvironment.GameReady() => GP_Game.GameReady();

@@ -8,6 +8,7 @@ namespace DevNote
 {
     public class ProjectContext : MonoBehaviour
     {
+        [Header("--- DevNote " + Info.VERSION + " ---"), Space]
         [SerializeField] private bool _testVersion;
         [SerializeField] private EnvironmentType _environmentType;
         [Space(10)]
@@ -17,7 +18,7 @@ namespace DevNote
         [SerializeField] private Localization _localization;
         [SerializeField] private List<GameObject> _onlyBootstrapGameObject;
 
-        private List<IProjectInitializable> _initializables = new();
+        private List<IInitializable> _initializables = new();
 
         public async void RegisterContext()
         {
@@ -75,13 +76,13 @@ namespace DevNote
         private T RunServiceInitialization<T>() where T : class
         {
             var service = _serviceSelector.GetServiceInterface<T>();
-            var initializable = service as DevNote.IProjectInitializable;
+            var initializable = service as DevNote.IInitializable;
             _initializables.Add(initializable);
             initializable.Initialize();
             return service;
         }
 
-        private void RunInitialization(DevNote.IProjectInitializable initializable)
+        private void RunInitialization(DevNote.IInitializable initializable)
         {
             initializable.Initialize();
             _initializables.Add(initializable);

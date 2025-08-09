@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using DevNote.YandexGamesSDK;
 using UnityEngine;
 
@@ -8,88 +7,15 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesAdsService : MonoBehaviour, IAds
     {
-        private bool _initialized = false;
-
-        public event IAds.AdShownEvent onInterstitialShown;
-        public event IAds.AdShownEvent onRewardedShown;
-
         bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
+        bool IInitializable.Initialized => YG_Sdk.available;
 
-        bool IProjectInitializable.Initialized => _initialized;
-
-        async void IProjectInitializable.Initialize()
-        {
-            await UniTask.WaitUntil(() => YG_Sdk.available);
-            _initialized = true;
-        }
+        bool IAds.RewardedAvailable => true;
+        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed;
+        bool IAds.AdBlockEnabled => false;
 
 
-        void IAds.ShowRewarded(AdKey adKey, Action onRewarded, Action onError)
-        {
-            bool rewarded = false;
-            bool error = false;
-
-            YG_Ads.ShowRewarded((action) =>
-            {
-                switch (action)
-                {
-                    case YG_Ads.RewardedAction.Opened:
-                        TimeMode.SetActive(TimeMode.Mode.Stop, true);
-                        break;
-
-                    case YG_Ads.RewardedAction.Failed:
-                        error = true;
-                        break;
-
-                    case YG_Ads.RewardedAction.Rewarded:
-                        rewarded = true;
-                        break;
-
-                    case YG_Ads.RewardedAction.Closed:
-                        TimeMode.SetActive(TimeMode.Mode.Stop, false);
-
-                        if (!error && rewarded)
-                        {
-                            onRewarded?.Invoke();
-                            onRewardedShown?.Invoke(adKey, true);
-                        }
-                        else
-                        {
-                            onError?.Invoke();
-                            onRewardedShown?.Invoke(adKey, false);
-                        }
-
-                        break;
-                }
-
-            });
-        }
-
-        void IAds.ShowInterstitial(AdKey adKey, Action onShown, Action onError)
-        {
-            bool interstitialWasShown = false;
-            TimeMode.SetActive(TimeMode.Mode.Stop, true);
-
-            YG_Ads.ShowInterstitial((action) =>
-            {
-                switch (action)
-                {
-                    case YG_Ads.InterstitialAction.Opened:
-                        interstitialWasShown = true;
-                        break;
-
-                    case YG_Ads.InterstitialAction.Closed:
-                        TimeMode.SetActive(TimeMode.Mode.Stop, false);
-
-                        if (interstitialWasShown) onShown?.Invoke();
-                        else onError?.Invoke();
-
-                        onInterstitialShown?.Invoke(adKey, interstitialWasShown);
-                        break;
-                }
-
-            });
-        }
+        void IInitializable.Initialize() { }
 
         void IAds.SetBanner(bool active)
         {
@@ -97,7 +23,81 @@ namespace DevNote.Services.YandexGames
             else YG_Ads.HideBanner();
         }
 
-        
+        void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
+        {
+            if (IAds.SkipAds)
+                IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Success);
+
+            else
+            {
+                bool rewarded = false;
+                bool error = false;
+
+                YG_Ads.ShowRewarded((action) =>
+                {
+                    switch (action)
+                    {
+                        case YG_Ads.RewardedAction.Opened:
+                            TimeMode.SetActive(TimeMode.Mode.Stop, true);
+                            break;
+
+                        case YG_Ads.RewardedAction.Failed:
+                            error = true;
+                            break;
+
+                        case YG_Ads.RewardedAction.Rewarded:
+                            rewarded = true;
+                            break;
+
+                        case YG_Ads.RewardedAction.Closed:
+                            TimeMode.SetActive(TimeMode.Mode.Stop, false);
+
+                            var status = !error && rewarded ? AdShowStatus.Success : AdShowStatus.Error;
+                            IAds.InvokeRewardedCallback(onRewarded, callback, key, status);
+
+                            break;
+                    }
+
+                });
+            }
+        }
+
+        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
+        {
+            if (IAds.SkipAds)
+                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.Success);
+
+            else if (GameState.NoAdsPurchased.Value)
+                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.NoAdsPurchased);
+
+            else if (!IAds.InterstitialCooldownPassed)
+                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.CooldownNotFinished);
+
+            else
+            {
+                bool interstitialWasShown = false;
+                TimeMode.SetActive(TimeMode.Mode.Stop, true);
+
+                YG_Ads.ShowInterstitial((action) =>
+                {
+                    switch (action)
+                    {
+                        case YG_Ads.InterstitialAction.Opened:
+                            interstitialWasShown = true;
+                            break;
+
+                        case YG_Ads.InterstitialAction.Closed:
+                            TimeMode.SetActive(TimeMode.Mode.Stop, false);
+
+                            var status = interstitialWasShown ? AdShowStatus.Success : AdShowStatus.Error;
+                            IAds.InvokeInterstitialCallback(callback, key, status);
+
+                            break;
+                    }
+
+                });
+            }
+        }
     }
 }
 

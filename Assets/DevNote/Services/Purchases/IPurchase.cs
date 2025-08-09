@@ -2,7 +2,7 @@ using System;
 
 namespace DevNote
 {
-    public interface IPurchase : IProjectInitializable, ISelectableService
+    public interface IPurchase : IInitializable, ISelectableService
     {
         public delegate void OnPurchaseHandled(ProductType productType, bool success);
         public event OnPurchaseHandled onPurchaseHandled;

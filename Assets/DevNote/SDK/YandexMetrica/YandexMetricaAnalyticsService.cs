@@ -17,8 +17,8 @@ namespace DevNote.Services.YandexMetrica
         bool ISelectableService.Available => !IEnvironment.IsEditor && IEnvironment.PlatformType == PlatformType.WebGL;
 
 
-        bool IProjectInitializable.Initialized => true;
-        void IProjectInitializable.Initialize() { }
+        bool IInitializable.Initialized => true;
+        void IInitializable.Initialize() { }
 
 
         void IAnalytics.SendEvent(string eventName, Dictionary<string, object> parameters)
