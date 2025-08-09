@@ -54,6 +54,9 @@ namespace DevNote
 
         public void Hide()
         {
+            if (_viewInstance == null || _viewInstance.gameObject.activeSelf == false)
+                return;
+
             switch (_mode)
             {
                 case ViewerMode.InstantiateDestroy:

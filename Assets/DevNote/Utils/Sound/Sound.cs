@@ -84,7 +84,7 @@ namespace DevNote
 
         public static AudioSource Play(string soundKey)
         {
-            var soundUnit = Resources.Load<SoundUnit>($"Sounds/{soundKey}");
+            var soundUnit = Resources.Load<SoundUnit>($"{soundKey}");
 
             AudioSource audioSource = soundUnit.channel == Channel.Music ? 
                 _instance._musicAudioSource : _instance._sfxAudioPool.GetAudioSource();
