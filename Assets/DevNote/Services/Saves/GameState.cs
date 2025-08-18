@@ -13,14 +13,14 @@ namespace DevNote
 
             else if (GameStateTransferParser.Available)
             {
-                Debug.Log($"{Info.Prefix} Encoder \"{GameStateEncoder.VERSION}\": " +
+                Debug.Log($"{Info.Prefix} Encoder \"{Info.ENCODER_VERSION}\": " +
                     $"Using {nameof(GameStateTransferParser)} for transfer old saves to current version of the encoder.");
 
                 GameStateParcer.Parse(GameStateTransferParser.Parse(data));
             }
             else
             {
-                Debug.Log($"{Info.Prefix} Encoder \"{GameStateEncoder.VERSION}\": Current data format is not supported.\n" +
+                Debug.Log($"{Info.Prefix} Encoder \"{Info.ENCODER_VERSION}\": Current data format is not supported.\n" +
                $"Please write realisation for {nameof(GameStateTransferParser)} to transfer old saves to current version of the encoder. " +
                $"Now all player saves are deleted.\nData: {data}" );
 

@@ -3,7 +3,9 @@ namespace DevNote
 {
     public static class Info
     {
-        public const string VERSION = "v.2.2.1";
+
+        public const string ENCODER_VERSION = "DN1";
+        public const string VERSION = "v.2.2.2";
 
         public static string Prefix
         {

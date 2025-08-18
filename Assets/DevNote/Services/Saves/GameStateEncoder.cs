@@ -9,7 +9,6 @@ namespace DevNote
 {
     public static class GameStateEncoder
     {
-        public const string VERSION = "DN1";
         private const char VERSION_DATA_SEPARATOR = ':';
 
         private const char CELL_SEPARATOR = '|';
@@ -17,7 +16,7 @@ namespace DevNote
 
 
         public static bool DataIsSupported(string data) 
-            => data.StartsWith($"{VERSION}{VERSION_DATA_SEPARATOR}") || data == string.Empty;
+            => data.StartsWith($"{Info.ENCODER_VERSION}{VERSION_DATA_SEPARATOR}") || data == string.Empty;
 
 
         public static Dictionary<string, string> Decode(string encodedData)
@@ -25,7 +24,7 @@ namespace DevNote
             if (encodedData == string.Empty) 
                 return new Dictionary<string, string>();
 
-            encodedData = encodedData.Replace($"{VERSION}{VERSION_DATA_SEPARATOR}", string.Empty);
+            encodedData = encodedData.Replace($"{Info.ENCODER_VERSION}{VERSION_DATA_SEPARATOR}", string.Empty);
             string originData = Decompress(encodedData);
 
             if (originData == string.Empty) 
@@ -37,7 +36,7 @@ namespace DevNote
         public static string Encode(Dictionary<string, string> originDataDictionary)
         {
             string originData = ToDataString(originDataDictionary);
-            return $"{VERSION}{VERSION_DATA_SEPARATOR}" + Compress(originData);
+            return $"{Info.ENCODER_VERSION}{VERSION_DATA_SEPARATOR}" + Compress(originData);
         }
 
 
