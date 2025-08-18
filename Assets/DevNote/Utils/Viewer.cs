@@ -4,32 +4,34 @@ using UnityEngine;
 
 namespace DevNote
 {
-    public enum ViewerMode { InstantiateDestroy, EnableDisable }
 
     public class Viewer<T> where T : Component
     {
         public event Action OnShown;
         public event Action OnHidden;
 
-        private ViewerMode _mode;
         private T _prefab;
         private T _viewInstance; public T View => _viewInstance;
 
-        public Viewer(T prefab, ViewerMode mode)
+        public bool ViewExists => _viewInstance != null;
+
+        public Viewer(T view)
         {
-            _mode = mode;
-            _prefab = prefab;
-            _viewInstance = null;
+            _prefab = view;
+
+            bool isPrefab = view.gameObject.scene == null || view.gameObject.scene.IsValid() == false;
+            _viewInstance = isPrefab ? null : view;
         }
 
-        public Viewer(T instance)
+        public T Show()
         {
-            _mode = ViewerMode.EnableDisable;
-            _prefab = null;
-            _viewInstance = instance;
+            if (_viewInstance == null)
+                _viewInstance = UnityEngine.Object.Instantiate(_prefab, null);
+
+            else _viewInstance.gameObject.SetActive(true);
+
+            return _viewInstance;
         }
-
-
 
         public T Show(RectTransform container)
         {
@@ -54,22 +56,11 @@ namespace DevNote
 
         public void Hide()
         {
-            if (_viewInstance == null || _viewInstance.gameObject.activeSelf == false)
-                return;
-
-            switch (_mode)
+            if (_viewInstance != null && _viewInstance.gameObject.activeSelf)
             {
-                case ViewerMode.InstantiateDestroy:
-                    UnityEngine.Object.Destroy(_viewInstance.gameObject);
-                    _viewInstance = null;
-                    break;
-
-                case ViewerMode.EnableDisable:
-                    _viewInstance.gameObject.SetActive(false);
-                    break;
+                _viewInstance.gameObject.SetActive(false);
+                OnHidden?.Invoke();
             }
-
-            OnHidden?.Invoke();
         }
 
 
