@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using UnityEngine;
 
 
 namespace DevNote
@@ -15,31 +15,20 @@ namespace DevNote
         [SerializeField] private PlayType _playType; public PlayType playType => _playType;
 
 
-        [HideIf(nameof(UseRandomAudioClip))]
-        [SerializeField] private AudioClip _audioClip;
-        [ShowIf(nameof(UseRandomAudioClip))]
-        [SerializeField] private List<AudioClip> _randomAudioClips;
+        
+        [SerializeField, HideIf(nameof(_useRandomAudioClip))] private AudioClip _audioClip;
+        [SerializeField, ShowIf(nameof(_useRandomAudioClip))] private List<AudioClip> _randomAudioClips;
+        
+        [SerializeField, HideIf(nameof(_useRandomVolume))] [Range(0f, 1f)] private float _volume = 1f;
+        [SerializeField, MinMaxSlider(0f, 1f), ShowIf(nameof(_useRandomVolume))] private Vector2 _randomVolume;
 
-        [HideIf(nameof(UseRandomVolume))]
-        [SerializeField] [Range(0f, 1f)] private float _volume = 1f;
-        [ShowIf(nameof(UseRandomVolume))]
-        [MinMaxSlider(0f, 1f)] [SerializeField] private Vector2 _randomVolume;
-
-
-        [HideIf(nameof(UseRandomPitch))]
-        [SerializeField] [Range(-3f, 3f)] private float _pitch = 1f;
-        [ShowIf(nameof(UseRandomPitch))]
-        [MinMaxSlider(-3f, 3f)] [SerializeField] private Vector2 _randomPitch;
+        [SerializeField, Range(-3f, 3f), HideIf(nameof(_useRandomPitch))] private float _pitch = 1f;
+        [SerializeField, MinMaxSlider(-3f, 3f), ShowIf(nameof(_useRandomPitch))] private Vector2 _randomPitch;
 
         [Space(10)]
         [SerializeField] private bool _useRandomAudioClip;
         [SerializeField] private bool _useRandomVolume;
         [SerializeField] private bool _useRandomPitch;
-
-
-        private bool UseRandomAudioClip() => _useRandomAudioClip;
-        private bool UseRandomVolume() => _useRandomVolume;
-        private bool UseRandomPitch() => _useRandomPitch;
 
 
 
@@ -53,7 +42,16 @@ namespace DevNote
             Random.Range(_randomPitch.x, _randomPitch.y) : _pitch;
 
 
-        public void Play() => Sound.Play(name);
+        public void Play() => Sound.Play(this);
+
+        /*
+        private void OnValidate()
+        {
+            if (_audioClip != null) _audioClipName = _audioClip.name;
+            _audioClipNames = new List<string>() { "Readf", "sfaf" };
+        }
+        */
+
 
     }
 

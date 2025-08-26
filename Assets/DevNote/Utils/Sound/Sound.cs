@@ -9,11 +9,7 @@ namespace DevNote
     public class Sound : MonoBehaviour, IInitializable
     {
         public enum Channel { Music, SFX }
-
-        private bool _initialized = false; public static bool Initialized => _instance != null && _instance._initialized;
-
-        private static bool UseWebAudio => false;// IEnvironment.PlatformType == PlatformType.WebGL;
-
+        public static bool Initialized => _instance != null;
 
 
         public class Settings
@@ -52,17 +48,14 @@ namespace DevNote
 
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private AudioPool _sfxAudioPool;
-        [SerializeField] private AudioWebCash _audioWebCash;
 
         private AudioMixerGroup _sfxGroup;
         private AudioSource _musicAudioSource;
 
-        bool IInitializable.Initialized => _initialized;
+        bool IInitializable.Initialized => Initialized;
 
-        async void IInitializable.Initialize()
+        void IInitializable.Initialize()
         {
-            _instance = this;
-
             _sfxGroup = _audioMixer.FindMatchingGroups("SFX")[0];
 
             _musicAudioSource = _sfxAudioPool.GetAudioSource();
@@ -70,27 +63,17 @@ namespace DevNote
 
             Settings.Apply();
 
-            if (UseWebAudio)
-            {
-                IInitializable initializable = _audioWebCash;
-                initializable.Initialize();
-                await UniTask.WaitUntil(() => initializable.Initialized);
-            }
-
-            _initialized = true;
+            _instance = this;
         }
 
 
 
-        public static AudioSource Play(string soundKey)
+        public static AudioSource Play(SoundUnit soundUnit)
         {
-            var soundUnit = Resources.Load<SoundUnit>($"{soundKey}");
-
             AudioSource audioSource = soundUnit.channel == Channel.Music ? 
                 _instance._musicAudioSource : _instance._sfxAudioPool.GetAudioSource();
 
-            audioSource.clip = UseWebAudio ?
-                _instance._audioWebCash.GetClip(soundUnit.audioClip.name) : soundUnit.audioClip;
+            audioSource.clip = soundUnit.audioClip;
 
             if (soundUnit.channel == Channel.SFX)
             audioSource.outputAudioMixerGroup = _instance._sfxGroup;
