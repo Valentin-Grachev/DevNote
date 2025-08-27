@@ -23,21 +23,23 @@ namespace DevNote
             _viewInstance = isPrefab ? null : view;
         }
 
-        public T Show()
+        public T Show(Transform container = null)
         {
             if (_viewInstance == null)
-                _viewInstance = UnityEngine.Object.Instantiate(_prefab, null);
+                _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
 
             else _viewInstance.gameObject.SetActive(true);
+
+            _viewInstance.transform.SetAsLastSibling();
 
             return _viewInstance;
         }
 
-        public T Show(RectTransform container)
+        public T ShowExpand(RectTransform container)
         {
             if (_viewInstance == null)
                 _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
-            
+
             else _viewInstance.gameObject.SetActive(true);
 
             var rectTransform = _viewInstance.transform as RectTransform;
@@ -56,17 +58,17 @@ namespace DevNote
 
         public void Hide()
         {
-            if (_viewInstance != null && _viewInstance.gameObject.activeSelf)
-            {
-                _viewInstance.gameObject.SetActive(false);
-                OnHidden?.Invoke();
-            }
+            if (_viewInstance == null || _viewInstance.gameObject.activeSelf == false)
+                return;
+
+            _viewInstance.gameObject.SetActive(false);
+
+            OnHidden?.Invoke();
         }
 
 
 
     }
 }
-
 
 
