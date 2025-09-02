@@ -1,2 +1,2 @@
 # Плагин для создания игр
-## [Документация](https://docs.google.com/document/d/1ZvAXkh7m6u-Nsbw3vaTezsHXkiMNGBmHzVTE-nBs86w/edit?usp=sharing)
+## [DevNote Guide](https://buildin.ai/share/7195b8a1-50a6-45a9-8378-e56eac754372?code=M50M76)
