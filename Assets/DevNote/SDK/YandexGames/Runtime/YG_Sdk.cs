@@ -15,6 +15,12 @@ namespace DevNote.YandexGamesSDK
             IEnvironment.EnvironmentType == EnvironmentType.YandexGames;
 
 
+        private void Awake()
+        {
+            transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+        }
+
 
 
         private static bool _sdkInitialized = false;

@@ -19,6 +19,7 @@ namespace DevNote.Services.Test
         async void IInitializable.Initialize() 
         { 
             await UniTask.WaitForSeconds(_delayBeforeInitialization);
+            IEnvironment.StartGameTime = DateTime.Now;
             _initialized = true;
         }
 
@@ -28,11 +29,8 @@ namespace DevNote.Services.Test
 
         DeviceType IEnvironment.DeviceType => _deviceType;
 
-        DateTime IEnvironment.ServerTime => DateTime.Now;
-
         void IEnvironment.GameReady() => Debug.Log($"{Info.Prefix} Game ready");
 
-        
     }
 }
 

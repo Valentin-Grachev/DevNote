@@ -56,14 +56,14 @@ namespace DevNote
 
         void IInitializable.Initialize()
         {
+            _instance = this;
+
             _sfxGroup = _audioMixer.FindMatchingGroups("SFX")[0];
 
             _musicAudioSource = _sfxAudioPool.GetAudioSource();
             _musicAudioSource.outputAudioMixerGroup = _audioMixer.FindMatchingGroups("Music")[0];
 
             Settings.Apply();
-
-            _instance = this;
         }
 
 

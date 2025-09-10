@@ -14,7 +14,7 @@ namespace DevNote.Services.YandexGames
 
         void IInitializable.Initialize() { }
 
-        void IReview.Request()
+        void IReview.Rate()
         {
             YG_Review.Request(
                 onOpened: () => TimeMode.SetActive(TimeMode.Mode.Stop, true),

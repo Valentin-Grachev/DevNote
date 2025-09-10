@@ -14,7 +14,7 @@ namespace DevNote
                     break;
 
                 default: 
-                    Debug.LogWarning($"Handle for product {productType} does'nt exist!");
+                    Debug.LogWarning($"Handle for product {productType} does not exist!");
                     break;
             }
             

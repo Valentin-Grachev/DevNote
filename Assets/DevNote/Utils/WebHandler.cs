@@ -5,13 +5,19 @@ namespace DevNote
 {
     public class WebHandler : MonoBehaviour
     {
-        public static Action onPageBeforeUnload;
-        public static Action onPageHidden;
+        public static Action OnPageBeforeUnload;
+        public static Action OnPageHidden;
 
 
-        public void JS_OnPageBeforeUnload() => onPageBeforeUnload?.Invoke();
+        private void Awake()
+        {
+            transform.SetParent(null);
+            DontDestroyOnLoad(gameObject);
+        }
 
-        public void JS_OnPageHidden() => onPageHidden?.Invoke();
+        public void JS_OnPageBeforeUnload() => OnPageBeforeUnload?.Invoke();
+
+        public void JS_OnPageHidden() => OnPageHidden?.Invoke();
 
 
 

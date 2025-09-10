@@ -8,7 +8,7 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesPurchaseService : MonoBehaviour, IPurchase
     {
-        public event IPurchase.OnPurchaseHandled onPurchaseHandled;
+        public event IPurchase.OnPurchaseHandle OnPurchaseHandled;
 
         [SerializeField] private ProductIdConvertor _productConvertor;
 
@@ -25,7 +25,7 @@ namespace DevNote.Services.YandexGames
         {
             await UniTask.WaitUntil(() => YG_Purchases.available && save.Item.Initialized);
 
-            save.Item.OnSavesDeleted += OnSavesDeleted;
+            ISave.OnSavesDeleted += OnSavesDeleted;
 
             YG_Purchases.InitializePayments();
 
@@ -76,12 +76,12 @@ namespace DevNote.Services.YandexGames
                         YG_Purchases.Consume(productId);
 
                     onSuccess?.Invoke();
-                    onPurchaseHandled?.Invoke(productType, success: true);
+                    OnPurchaseHandled?.Invoke(productType, success: true);
                 }
                 else
                 {
                     onError?.Invoke();
-                    onPurchaseHandled?.Invoke(productType, success: false);
+                    OnPurchaseHandled?.Invoke(productType, success: false);
                 }
             });
             

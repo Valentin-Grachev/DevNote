@@ -18,6 +18,7 @@ namespace DevNote
 
         [Header("Ads:")]
         [SerializeField] private TextMeshProUGUI _adsSelectedServiceText;
+        [SerializeField] protected TextMeshProUGUI _usedSaveTimeText;
         [SerializeField] private Button _adsShowRewardedButton;
         [SerializeField] private Button _adsShowInterstitialButton;
         [SerializeField] private Button _adsEnableBannerButton;
@@ -43,6 +44,10 @@ namespace DevNote
         [SerializeField] private TextMeshProUGUI _reviewSelectedServiceText;
         [SerializeField] private Button _reviewRequestButton;
 
+        [Header("Materials:")]
+        [SerializeField] private Material _successMaterial;
+        [SerializeField] private Material _errorMaterial;
+        [SerializeField] private Material _pendingMaterial;
 
         private readonly Holder<IEnvironment> environment = new();
         private readonly Holder<IAds> ads = new();
@@ -50,11 +55,6 @@ namespace DevNote
         private readonly Holder<IPurchase> purchase = new();
         private readonly Holder<IAnalytics> analytics = new();
         private readonly Holder<IReview> review = new();
-
-
-        private readonly Color successColor = new Color(0.43f, 1f, 0.45f, 1f);
-        private readonly Color errorColor = new Color(1f, 0.43f, 0.48f, 1f);
-        private readonly Color pendingColor = new Color(1f, 1f, 0.7f, 1f);
 
 
 
@@ -75,7 +75,7 @@ namespace DevNote
 
         private void Display()
         {
-            _versionText.text = Info.VERSION;
+            _versionText.text = $"DevNote  {Info.VERSION}";
 
             _environmentSelectedServiceText.text = environment.Item.GetType().Name.Replace("EnvironmentService", string.Empty);
             _adsSelectedServiceText.text = ads.Item.GetType().Name.Replace("AdsService", string.Empty);
@@ -83,6 +83,9 @@ namespace DevNote
             _purchasesSelectedServiceText.text = purchase.Item.GetType().Name.Replace("PurchaseService", string.Empty);
             _analyticsSelectedServiceText.text = analytics.Item.GetType().Name.Replace("AnalyticsService", string.Empty);
             _reviewSelectedServiceText.text = review.Item.GetType().Name.Replace("ReviewService", string.Empty);
+
+            var usedSaveTime = ISave.UsedSaveTime;
+            _usedSaveTimeText.text = usedSaveTime.ToString();
 
             string testValue = IEnvironment.IsTest ? "Active" : "Disabled";
             _environmentTestEnabledText.text = _environmentTestEnabledText.text.Replace("<test>", testValue);
@@ -106,7 +109,7 @@ namespace DevNote
         private void OnDisableBannerButtonClick() => ads.Item.SetBanner(false);
         private void OnEnableBannerButtonClick() => ads.Item.SetBanner(true);
 
-        private void OnReviewButtonClick() => review.Item.Request();
+        private void OnReviewButtonClick() => review.Item.Rate();
 
         private void OnSendTestEventButtonClick() => analytics.Item.SendEvent("test_event", new Dictionary<string, object>()
         {
@@ -116,53 +119,53 @@ namespace DevNote
 
         private void OnPurchaseButtonClick()
         {
-            _purchasesPurchaseButton.image.color = pendingColor;
+            _purchasesPurchaseButton.image.material = _pendingMaterial;
 
             purchase.Item.Purchase(_testProductKey,
-                onSuccess: () => _purchasesPurchaseButton.image.color = successColor,
-                onError: () => _purchasesPurchaseButton.image.color = errorColor);
+                onSuccess: () => _purchasesPurchaseButton.image.material = _successMaterial,
+                onError: () => _purchasesPurchaseButton.image.material = _errorMaterial);
         }
 
         private void OnSaveCloudButtonClick()
         {
-            _savesSaveCloudButton.image.color = pendingColor;
+            _savesSaveCloudButton.image.material = _pendingMaterial;
 
             save.Item.SaveCloud(
-                onSuccess: () => _savesSaveCloudButton.image.color = successColor,
-                onError: () => _savesSaveCloudButton.image.color = errorColor);
+                onSuccess: () => _savesSaveCloudButton.image.material = _successMaterial,
+                onError: () => _savesSaveCloudButton.image.material = _errorMaterial);
         }
 
         private void OnSaveLocalButtonClick()
         {
-            _savesSaveLocalButton.image.color = pendingColor;
+            _savesSaveLocalButton.image.material = _pendingMaterial;
 
             save.Item.SaveLocal(
-                onSuccess: () => _savesSaveLocalButton.image.color = successColor,
-                onError: () => _savesSaveLocalButton.image.color = errorColor);
+                onSuccess: () => _savesSaveLocalButton.image.material = _successMaterial,
+                onError: () => _savesSaveLocalButton.image.material = _errorMaterial);
         }
 
 
 
         private void OnShowInterstitialButtonClick()
         {
-            _adsShowInterstitialButton.image.color = pendingColor;
+            _adsShowInterstitialButton.image.material = _pendingMaterial;
 
             ads.Item.ShowInterstitial(AdKey.None, callback: (status) =>
             {
                 bool success = status == AdShowStatus.Success;
-                _adsShowInterstitialButton.image.color = success ? successColor : errorColor;
+                _adsShowInterstitialButton.image.material = success ? _successMaterial : _errorMaterial;
             });
                 
         }
 
         private void OnShowRewardedButtonClick()
         {
-            _adsShowRewardedButton.image.color = pendingColor;
+            _adsShowRewardedButton.image.material = _pendingMaterial;
 
             ads.Item.ShowRewarded(AdKey.None, callback: (status) =>
             {
                 bool success = status == AdShowStatus.Success;
-                _adsShowRewardedButton.image.color = success ? successColor : errorColor;
+                _adsShowRewardedButton.image.material = success ? _successMaterial : _errorMaterial;
             });
 
         }

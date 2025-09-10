@@ -7,7 +7,7 @@ namespace DevNote
     public static class Extensions
     {
         
-        public static Color GetColorAlpha(this Color color, float alpha) 
+        public static Color SetAlpha(this Color color, float alpha) 
             => new Color(color.r, color.g, color.b, alpha);
 
 

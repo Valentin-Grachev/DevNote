@@ -7,10 +7,7 @@ namespace DevNote.Services.Test
 {
     public class PlayerPrefsSaveService : MonoBehaviour, ISave
     {
-        public event Action OnSavesDeleted;
-
         private bool _initialized = false;
-        private bool _savesWasDeleted = false;
 
         private const string DATA_KEY = "data";
 
@@ -23,6 +20,8 @@ namespace DevNote.Services.Test
         void IInitializable.Initialize()
         {
             var encodedData = PlayerPrefs.GetString(DATA_KEY, string.Empty);
+            ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(encodedData);
+
             GameState.RestoreFromEncodedData(encodedData);
 
             _initialized = true;
@@ -35,9 +34,7 @@ namespace DevNote.Services.Test
             PlayerPrefs.Save();
 
             onSuccess?.Invoke();
-            OnSavesDeleted?.Invoke();
-
-            _savesWasDeleted = true;
+            ISave.SetSavesAsDeleted();
         }
 
         void ISave.SaveCloud(Action onSuccess, Action onError) => Save(onSuccess, onError);
@@ -46,11 +43,7 @@ namespace DevNote.Services.Test
 
         private void Save(Action onSuccess, Action onError)
         {
-            if (_savesWasDeleted)
-            {
-                onError?.Invoke();
-                return;
-            }
+            if (ISave.SavesDeleted) { onError?.Invoke(); return; }
 
             PlayerPrefs.SetString(DATA_KEY, GameState.GetEncodedData());
             PlayerPrefs.Save();

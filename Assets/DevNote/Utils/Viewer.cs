@@ -25,6 +25,8 @@ namespace DevNote
 
         public T Show(Transform container = null)
         {
+            bool wasShownBefore = _viewInstance != null && _viewInstance.gameObject.activeSelf;
+
             if (_viewInstance == null)
                 _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
 
@@ -32,11 +34,15 @@ namespace DevNote
 
             _viewInstance.transform.SetAsLastSibling();
 
+            if (!wasShownBefore) OnShown?.Invoke();
+
             return _viewInstance;
         }
 
         public T ShowExpand(RectTransform container)
         {
+            bool wasShown = _viewInstance != null && _viewInstance.gameObject.activeSelf;
+
             if (_viewInstance == null)
                 _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
 
@@ -51,7 +57,8 @@ namespace DevNote
             rectTransform.offsetMax = Vector2.zero;
             rectTransform.SetAsLastSibling();
 
-            OnShown?.Invoke();
+            if (!wasShown) OnShown?.Invoke();
+
             return _viewInstance;
         }
 

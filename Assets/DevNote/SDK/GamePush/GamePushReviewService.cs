@@ -12,7 +12,7 @@ namespace DevNote.Services.GamePush
 
         void IInitializable.Initialize() { }
 
-        void IReview.Request() => GP_App.ReviewRequest();
+        void IReview.Rate() => GP_App.ReviewRequest();
 
     }
 }
