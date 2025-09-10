@@ -9,34 +9,39 @@ namespace DevNote
 {
     public static class GameStateEncoder
     {
-        private const char VERSION_DATA_SEPARATOR = ':';
-
+        private const char SERVICE_SEPARATOR = '/';
         private const char CELL_SEPARATOR = '|';
-        private const char KEY_VALUE_PAIR_SEPARATOR = '+';
+        private const char KEY_VALUE_SEPARATOR = '+';
 
 
-        public static bool DataIsSupported(string data) 
-            => data.StartsWith($"{Info.ENCODER_VERSION}{VERSION_DATA_SEPARATOR}") || data == string.Empty;
+        public static bool DataIsSupported(string encodedData) 
+            => encodedData.StartsWith($"{Info.ENCODER_VERSION}") || string.IsNullOrEmpty(encodedData);
+
+        public static DateTime GetSaveTime(string encodedData)
+        {
+            string[] splitData = encodedData.Split(SERVICE_SEPARATOR);
+
+            if (splitData.Length != 3) return DateTime.MinValue;
+            return DateTime.Parse(encodedData.Split(SERVICE_SEPARATOR)[1]);
+        }
 
 
         public static Dictionary<string, string> Decode(string encodedData)
         {
-            if (encodedData == string.Empty) 
-                return new Dictionary<string, string>();
+            string[] splitData = encodedData.Split(SERVICE_SEPARATOR);
+            bool decodeAvailable = splitData.Length == 3 && splitData[2] != string.Empty;
 
-            encodedData = encodedData.Replace($"{Info.ENCODER_VERSION}{VERSION_DATA_SEPARATOR}", string.Empty);
-            string originData = Decompress(encodedData);
+            if (decodeAvailable)
+                return ToDataDictionary(Decompress(splitData[2]));
 
-            if (originData == string.Empty) 
-                return new Dictionary<string, string>();
-
-            return ToDataDictionary(originData);
+            return new Dictionary<string, string>();
         }
 
         public static string Encode(Dictionary<string, string> originDataDictionary)
         {
+            var time = IEnvironment.Time;
             string originData = ToDataString(originDataDictionary);
-            return $"{Info.ENCODER_VERSION}{VERSION_DATA_SEPARATOR}" + Compress(originData);
+            return $"{Info.ENCODER_VERSION}{SERVICE_SEPARATOR}{time}{SERVICE_SEPARATOR}" + Compress(originData);
         }
 
 
@@ -49,7 +54,7 @@ namespace DevNote
 
             for (int i = 0; i < splitByCellData.Length; i++)
             {
-                var splitCell = splitByCellData[i].Split(KEY_VALUE_PAIR_SEPARATOR);
+                var splitCell = splitByCellData[i].Split(KEY_VALUE_SEPARATOR);
                 result.Add(splitCell[0], splitCell[1]);
             }
 
@@ -63,7 +68,7 @@ namespace DevNote
             int i = 0;
             foreach (var keyValue in dataDictionary)
             {
-                result += $"{keyValue.Key}{KEY_VALUE_PAIR_SEPARATOR}{keyValue.Value}";
+                result += $"{keyValue.Key}{KEY_VALUE_SEPARATOR}{keyValue.Value}";
                 if (i != dataDictionary.Count - 1) result += CELL_SEPARATOR;
                 i++;
             }

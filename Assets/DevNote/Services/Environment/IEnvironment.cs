@@ -6,10 +6,10 @@ namespace DevNote
     {
         public static bool IsTest { get; set; }
         public static EnvironmentType EnvironmentType { get; set; }
-        public static bool ShowAds { get; set; } = true;
 
-        
+        protected static DateTime StartGameTime { get; set; }
 
+        public static DateTime Time => StartGameTime.AddSeconds(UnityEngine.Time.realtimeSinceStartup);
 
         public static PlatformType PlatformType
         {
@@ -45,10 +45,12 @@ namespace DevNote
             }
         }
 
-        public DateTime ServerTime { get; }
+
         public Language CurrentLanguage { get; }
         public DeviceType DeviceType { get; }
         public void GameReady();
+
+        
 
     }
 

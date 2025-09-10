@@ -10,7 +10,7 @@ namespace DevNote.Services.Test
 
         void IInitializable.Initialize() { }
 
-        void IReview.Request() => Debug.Log($"{Info.Prefix} Review is requested");
+        void IReview.Rate() => Debug.Log($"{Info.Prefix} Review is requested");
     }
 }
 

@@ -17,11 +17,13 @@ namespace DevNote.Services.YandexGames
         bool IInitializable.Initialized => _initialized;
         async void IInitializable.Initialize()
         {
+            IEnvironment.StartGameTime = DateTime.Now;
+
             var sdkObject = Instantiate(_yandexGamesSdkPrefab, parent: null);
             sdkObject.name = sdkObject.name.Replace("(Clone)", string.Empty);
 
             await UniTask.WaitUntil(() => YG_Sdk.available);
-
+            
             _definedLanguage = YG_Sdk.GetLanguage() switch
             {
                 "ru" => Language.RU,
@@ -37,8 +39,6 @@ namespace DevNote.Services.YandexGames
         Language IEnvironment.CurrentLanguage => _definedLanguage;
 
         DeviceType IEnvironment.DeviceType => YG_Sdk.GetDeviceType();
-
-        DateTime IEnvironment.ServerTime => DateTime.Now;
 
         void IEnvironment.GameReady() => YG_GameReady.GameReady();
 

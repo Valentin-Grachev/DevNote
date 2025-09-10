@@ -14,8 +14,8 @@ namespace DevNote
 
         private void Awake()
         {
-            WebHandler.onPageBeforeUnload += () => save.Item.SaveLocal();
-            WebHandler.onPageHidden += () => save.Item.SaveLocal();
+            WebHandler.OnPageBeforeUnload += () => save.Item.SaveLocal();
+            WebHandler.OnPageHidden += () => save.Item.SaveLocal();
         }
 
         private void Start()

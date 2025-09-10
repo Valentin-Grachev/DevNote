@@ -5,18 +5,18 @@ namespace DevNote
 {
     public static partial class GameState // Handlers
     {
-        public static string GetEncodedData() => GameStateEncoder.Encode(GameStateParcer.ToDataString());
+        public static string GetEncodedData() => GameStateEncoder.Encode(GameStateParser.ToDataString());
         public static void RestoreFromEncodedData(string data)
         {
             if (GameStateEncoder.DataIsSupported(data))
-                GameStateParcer.Parse(GameStateEncoder.Decode(data));
+                GameStateParser.Parse(GameStateEncoder.Decode(data));
 
             else if (GameStateTransferParser.Available)
             {
                 Debug.Log($"{Info.Prefix} Encoder \"{Info.ENCODER_VERSION}\": " +
                     $"Using {nameof(GameStateTransferParser)} for transfer old saves to current version of the encoder.");
 
-                GameStateParcer.Parse(GameStateTransferParser.Parse(data));
+                GameStateParser.Parse(GameStateTransferParser.Parse(data));
             }
             else
             {
@@ -25,7 +25,7 @@ namespace DevNote
                $"Now all player saves are deleted.\nData: {data}" );
 
                 var emptyDictionary = new Dictionary<string, string>();
-                GameStateParcer.Parse(emptyDictionary);
+                GameStateParser.Parse(emptyDictionary);
             }
 
         }

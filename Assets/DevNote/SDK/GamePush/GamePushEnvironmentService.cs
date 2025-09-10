@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using GamePush;
 using UnityEngine;
 
@@ -26,17 +27,16 @@ namespace DevNote.Services.GamePush
 
         DeviceType IEnvironment.DeviceType => GP_Device.IsMobile() ? DeviceType.Mobile : DeviceType.Desktop;
 
-
         bool IInitializable.Initialized => GP_Init.isReady;
 
-        DateTime IEnvironment.ServerTime => GP_Server.Time();
-
-        void IInitializable.Initialize() {}
-
+        async void IInitializable.Initialize()
+        {
+            await UniTask.WaitUntil(() => GP_Init.isReady);
+            IEnvironment.StartGameTime = GP_Server.Time();
+        }
 
         void IEnvironment.GameReady() => GP_Game.GameReady();
 
-        
     }
 }
 

@@ -5,7 +5,7 @@ namespace DevNote.Services.Test
 {
     public class TestPurchaseService : MonoBehaviour, IPurchase
     {
-        public event IPurchase.OnPurchaseHandled onPurchaseHandled;
+        public event IPurchase.OnPurchaseHandle OnPurchaseHandled;
 
 
         bool IInitializable.Initialized => true;
@@ -21,7 +21,7 @@ namespace DevNote.Services.Test
         void IPurchase.Purchase(ProductType productType, Action onSuccess, Action onError)
         {
             PurchaseHandler.HandlePurchase(productType);
-            onPurchaseHandled?.Invoke(productType, true);
+            OnPurchaseHandled?.Invoke(productType, true);
             onSuccess?.Invoke();
         }
     }

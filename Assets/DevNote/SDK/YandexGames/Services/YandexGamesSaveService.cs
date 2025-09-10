@@ -7,26 +7,41 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesSaveService : MonoBehaviour, ISave
     {
-        public event Action OnSavesDeleted;
-
-
         private bool _initialized = false;
-
-        private const string LOCAL_DATA_KEY = "data";
 
         
         bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
 
         bool IInitializable.Initialized => _initialized;
 
+
+        private readonly Holder<IEnvironment> environment = new();
+
+
         async void IInitializable.Initialize()
         {
             await UniTask.WaitUntil(() => YG_Saves.available);
             YG_Saves.InitializePlayer();
 
-            YG_Saves.RequestSaves((savedData) =>
+            YG_Saves.RequestSaves((cloudData) =>
             {
-                GameState.RestoreFromEncodedData(savedData);
+                var localData = PlayerPrefs.GetString(ISave.DATA_KEY);
+
+                Debug.Log($"[{nameof(YandexGamesSaveService)}] Cloud data: {cloudData}");
+                Debug.Log($"[{nameof(YandexGamesSaveService)}] Local data: {localData}");
+
+                var cloudTime = GameStateEncoder.GetSaveTime(cloudData);
+                var localTime = GameStateEncoder.GetSaveTime(localData);
+                
+
+                bool useCloud = cloudTime > localTime;
+                string data = useCloud ? cloudData : localData;
+
+                ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(data);
+                GameState.RestoreFromEncodedData(data);
+
+                Debug.Log($"[{nameof(YandexGamesSaveService)}] Using cloud: {useCloud}");
+
                 _initialized = true;
             });
 
@@ -35,7 +50,9 @@ namespace DevNote.Services.YandexGames
 
         void ISave.SaveLocal(Action onSuccess, Action onError)
         {
-            PlayerPrefs.SetString(LOCAL_DATA_KEY, GameState.GetEncodedData());
+            if (ISave.SavesDeleted) { onError?.Invoke(); return; }
+
+            PlayerPrefs.SetString(ISave.DATA_KEY, GameState.GetEncodedData());
             PlayerPrefs.Save();
 
             onSuccess?.Invoke();
@@ -43,6 +60,8 @@ namespace DevNote.Services.YandexGames
 
         void ISave.SaveCloud(Action onSuccess, Action onError)
         {
+            if (ISave.SavesDeleted) { onError?.Invoke(); return; }
+
             YG_Saves.SendSaves(GameState.GetEncodedData(), onSavesSent: (success) =>
             {
                 if (success) onSuccess?.Invoke();
@@ -56,8 +75,11 @@ namespace DevNote.Services.YandexGames
             {
                 if (success)
                 {
+                    PlayerPrefs.SetString(ISave.DATA_KEY, string.Empty);
+                    PlayerPrefs.Save();
+
                     onSuccess?.Invoke();
-                    OnSavesDeleted?.Invoke();
+                    ISave.SetSavesAsDeleted();
                 }
                 else onError?.Invoke();
             });

@@ -8,7 +8,7 @@ namespace DevNote.Services.GamePush
 {
     public class GamePushPurchaseService : MonoBehaviour, IPurchase
     {
-        public event IPurchase.OnPurchaseHandled onPurchaseHandled;
+        public event IPurchase.OnPurchaseHandle OnPurchaseHandled;
 
         [SerializeField] private ProductIdConvertor _productConvertor;
 
@@ -88,12 +88,12 @@ namespace DevNote.Services.GamePush
                 GP_Payments.Consume(productId.ToString());
 
                 onSuccess?.Invoke();
-                onPurchaseHandled?.Invoke(productType, true);
+                OnPurchaseHandled?.Invoke(productType, true);
             },
             onPurchaseError: () =>
             {
                 onError?.Invoke();
-                onPurchaseHandled?.Invoke(productType, false);
+                OnPurchaseHandled?.Invoke(productType, false);
             });
         }
     }

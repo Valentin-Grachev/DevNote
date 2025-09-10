@@ -398,7 +398,6 @@ MonoBehaviour:
   - {fileID: 6608646393400013635}
   - {fileID: 4705896374188213943}
   _saveServices:
-  - {fileID: 4115050768753666722}
   - {fileID: 6190986402567423096}
   - {fileID: 1361996982363198919}
   _adsServices:
@@ -566,7 +565,6 @@ GameObject:
   - component: {fileID: 5286099154547160224}
   - component: {fileID: 1361996982363198919}
   - component: {fileID: 6190986402567423096}
-  - component: {fileID: 4115050768753666722}
   m_Layer: 0
   m_Name: Saves
   m_TagString: Untagged
@@ -625,18 +623,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8144b0f7363bf7b43a2e6b3503844e83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4115050768753666722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8095102371805940163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f34868640d612904cae4f64cab22a9c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8104478146421446695
@@ -888,7 +874,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8333729914485433295}
-  - component: {fileID: 2505120337188289376}
   - component: {fileID: 5332662222916851176}
   m_Layer: 0
   m_Name: WebHandler
@@ -912,18 +897,6 @@ Transform:
   m_Father: {fileID: 4233561882707987518}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2505120337188289376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8644511230278201680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df3fcd5efffa2743b6641072e6bafc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5332662222916851176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,7 +1166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2255636945229565197, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4291913346
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2972607074257456400, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
       propertyPath: m_AnchorMax.y

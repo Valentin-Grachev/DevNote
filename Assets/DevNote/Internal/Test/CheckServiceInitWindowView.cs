@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CheckServiceInitWindowView : MonoBehaviour
 {
-    [SerializeField] private Color _successColor;
+    [SerializeField] private Material _successMaterial;
     [Space(10)]
     [SerializeField] private Image _environmentImage;
     [SerializeField] private Image _saveImage;
@@ -29,22 +29,22 @@ public class CheckServiceInitWindowView : MonoBehaviour
     private void Start()
     {
         if (!IEnvironment.IsTest) gameObject.SetActive(false);
-        _versionText.text = Info.VERSION;
+        _versionText.text = $"DevNote  {Info.VERSION}";
     }
 
 
     private void Update()
     {
-        if (environment.Item.Initialized) _environmentImage.color = _successColor;
-        if (save.Item.Initialized) _saveImage.color = _successColor;
-        if (ads.Item.Initialized) _adsImage.color = _successColor;
-        if (purchase.Item.Initialized) _purchaseImage.color = _successColor;
-        if (analytics.Item.Initialized) _analyticsImage.color = _successColor;
-        if (review.Item.Initialized) _reviewImage.color = _successColor;
+        if (environment.Item.Initialized) _environmentImage.material = _successMaterial;
+        if (save.Item.Initialized) _saveImage.material = _successMaterial;
+        if (ads.Item.Initialized) _adsImage.material = _successMaterial;
+        if (purchase.Item.Initialized) _purchaseImage.material = _successMaterial;
+        if (analytics.Item.Initialized) _analyticsImage.material = _successMaterial;
+        if (review.Item.Initialized) _reviewImage.material = _successMaterial;
 
-        if (Sound.Initialized) _soundImage.color = _successColor;
-        if (Localization.Initialized) _localizationImage.color = _successColor;
-        if (GoogleTables.Initialized) _googleTablesImage.color = _successColor;
+        if (Sound.Initialized) _soundImage.material = _successMaterial;
+        if (Localization.Initialized) _localizationImage.material = _successMaterial;
+        if (GoogleTables.Initialized) _googleTablesImage.material = _successMaterial;
 
     }
 

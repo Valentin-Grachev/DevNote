@@ -10,7 +10,7 @@ namespace DevNote
         public bool AdBlockEnabled { get; }
 
 
-        public void ShowRewarded(AdKey key, Action onRewarded = null, Action<AdShowStatus> callback = null);
+        public void ShowRewarded(AdKey key = AdKey.None, Action onRewarded = null, Action<AdShowStatus> callback = null);
         public void ShowInterstitial(AdKey key, Action<AdShowStatus> callback = null);
         public void SetBanner(bool active);
 
@@ -19,8 +19,7 @@ namespace DevNote
     public partial interface IAds // Handlers
     {
         public delegate void OnAdShow(AdKey key, AdShowStatus status);
-        public static event OnAdShow OnInterstitialShown;
-        public static event OnAdShow OnRewardedShown;
+        public static event OnAdShow OnInterstitialShown, OnRewardedShown;
 
         public static bool SkipAds { get; set; } = false;
         public static float InterstitialCooldown { get; set; } = 0f;
