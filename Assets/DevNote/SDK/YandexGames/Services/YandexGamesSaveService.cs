@@ -30,14 +30,14 @@ namespace DevNote.Services.YandexGames
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Cloud data: {cloudData}");
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Local data: {localData}");
 
-                var cloudTime = GameStateEncoder.GetSaveTime(cloudData);
-                var localTime = GameStateEncoder.GetSaveTime(localData);
+                var cloudTime = GameState.GetSaveTime(cloudData);
+                var localTime = GameState.GetSaveTime(localData);
                 
 
                 bool useCloud = cloudTime > localTime;
                 string data = useCloud ? cloudData : localData;
 
-                ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(data);
+                ISave.UsedSaveTime = GameState.GetSaveTime(data);
                 GameState.RestoreFromEncodedData(data);
 
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Using cloud: {useCloud}");
