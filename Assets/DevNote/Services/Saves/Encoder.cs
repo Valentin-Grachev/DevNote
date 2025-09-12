@@ -9,6 +9,8 @@ namespace DevNote
 {
     public static class S // Separators
     {
+        public const char ENCODER = '|';
+
         public const char S1 = '_';
         public const char S2 = ',';
         public const char S3 = ':';
@@ -18,6 +20,9 @@ namespace DevNote
         public const char L1 = '(', R1 = ')';
         public const char L2 = '[', R2 = ']';
         public const char L3 = '{', R3 = '}';
+        
+        public const char DICTIONARY1 = '~';
+        public const char DICTIONARY2 = '|';
     }
 
 
@@ -27,26 +32,20 @@ namespace DevNote
 
         private static class Encoder
         {
-            private const char SERVICE_SEPARATOR = '&';
-            private const char CELL_SEPARATOR = '|';
-            private const char KEY_VALUE_SEPARATOR = '+';
-
 
             public static bool DataIsSupported(string encodedData)
                 => encodedData.StartsWith($"{Info.ENCODER_VERSION}") || string.IsNullOrEmpty(encodedData);
 
             public static DateTime GetSaveTime(string encodedData)
             {
-                string[] splitData = encodedData.Split(SERVICE_SEPARATOR);
-
-                if (splitData.Length != 3) return DateTime.MinValue;
-                return DateTime.Parse(encodedData.Split(SERVICE_SEPARATOR)[1]);
+                string[] splitData = encodedData.Split(S.ENCODER);
+                return splitData.Length == 3 ? DateTime.Parse(splitData[1]) : DateTime.MinValue;
             }
 
 
             public static Dictionary<string, string> Decode(string encodedData)
             {
-                string[] splitData = encodedData.Split(SERVICE_SEPARATOR);
+                string[] splitData = encodedData.Split(S.ENCODER);
                 bool decodeAvailable = splitData.Length == 3 && splitData[2] != string.Empty;
 
                 if (decodeAvailable)
@@ -59,20 +58,17 @@ namespace DevNote
             {
                 var time = IEnvironment.Time;
                 string originData = ToDataString(originDataDictionary);
-                return $"{Info.ENCODER_VERSION}{SERVICE_SEPARATOR}{time}{SERVICE_SEPARATOR}" + Compress(originData);
+                return $"{Info.ENCODER_VERSION}{S.ENCODER}{time}{S.ENCODER}" + Compress(originData);
             }
-
-
-
 
             private static Dictionary<string, string> ToDataDictionary(string data)
             {
                 var result = new Dictionary<string, string>();
-                var splitByCellData = data.Split(CELL_SEPARATOR);
+                var splitByCellData = data.Split(S.DICTIONARY2);
 
                 for (int i = 0; i < splitByCellData.Length; i++)
                 {
-                    var splitCell = splitByCellData[i].Split(KEY_VALUE_SEPARATOR);
+                    var splitCell = splitByCellData[i].Split(S.DICTIONARY1);
                     result.Add(splitCell[0], splitCell[1]);
                 }
 
@@ -81,17 +77,18 @@ namespace DevNote
 
             private static string ToDataString(Dictionary<string, string> dataDictionary)
             {
-                var result = string.Empty;
+                var builder = new StringBuilder();
+                bool isFirst = true;
 
-                int i = 0;
                 foreach (var keyValue in dataDictionary)
                 {
-                    result += $"{keyValue.Key}{KEY_VALUE_SEPARATOR}{keyValue.Value}";
-                    if (i != dataDictionary.Count - 1) result += CELL_SEPARATOR;
-                    i++;
-                }
+                    if (!isFirst) builder.Append(S.DICTIONARY2);
+                    builder.Append($"{keyValue.Key}{S.DICTIONARY1}{keyValue.Value}");
 
-                return result;
+                    isFirst = false;
+                }
+ 
+                return builder.ToString();
             }
 
 
