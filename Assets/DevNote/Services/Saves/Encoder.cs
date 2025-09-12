@@ -27,7 +27,7 @@ namespace DevNote
 
         private static class Encoder
         {
-            private const char SERVICE_SEPARATOR = '/';
+            private const char SERVICE_SEPARATOR = '&';
             private const char CELL_SEPARATOR = '|';
             private const char KEY_VALUE_SEPARATOR = '+';
 
