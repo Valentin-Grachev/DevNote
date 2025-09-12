@@ -5,27 +5,27 @@ namespace DevNote
 {
     public static partial class GameState // Handlers
     {
-        public static string GetEncodedData() => GameStateEncoder.Encode(GameStateParser.ToDataString());
+        public static string GetEncodedData() => Encoder.Encode(DataParser.ToDataString());
         public static void RestoreFromEncodedData(string data)
         {
-            if (GameStateEncoder.DataIsSupported(data))
-                GameStateParser.Parse(GameStateEncoder.Decode(data));
+            if (Encoder.DataIsSupported(data))
+                DataParser.Parse(Encoder.Decode(data));
 
-            else if (GameStateTransferParser.Available)
+            else if (TransferParser.Available)
             {
                 Debug.Log($"{Info.Prefix} Encoder \"{Info.ENCODER_VERSION}\": " +
-                    $"Using {nameof(GameStateTransferParser)} for transfer old saves to current version of the encoder.");
+                    $"Using {nameof(TransferParser)} for transfer old saves to current version of the encoder.");
 
-                GameStateParser.Parse(GameStateTransferParser.Parse(data));
+                DataParser.Parse(TransferParser.Parse(data));
             }
             else
             {
                 Debug.Log($"{Info.Prefix} Encoder \"{Info.ENCODER_VERSION}\": Current data format is not supported.\n" +
-               $"Please write realisation for {nameof(GameStateTransferParser)} to transfer old saves to current version of the encoder. " +
+               $"Please write realisation for {nameof(TransferParser)} to transfer old saves to current version of the encoder. " +
                $"Now all player saves are deleted.\nData: {data}" );
 
                 var emptyDictionary = new Dictionary<string, string>();
-                GameStateParser.Parse(emptyDictionary);
+                DataParser.Parse(emptyDictionary);
             }
 
         }

@@ -20,7 +20,7 @@ namespace DevNote.Services.Test
         void IInitializable.Initialize()
         {
             var encodedData = PlayerPrefs.GetString(DATA_KEY, string.Empty);
-            ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(encodedData);
+            ISave.UsedSaveTime = GameState.GetSaveTime(encodedData);
 
             GameState.RestoreFromEncodedData(encodedData);
 
