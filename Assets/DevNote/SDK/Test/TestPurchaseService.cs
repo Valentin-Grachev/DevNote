@@ -10,7 +10,7 @@ namespace DevNote.Services.Test
 
         bool IInitializable.Initialized => true;
 
-        bool ISelectableService.Available => true;
+        bool ISelectableService.IsAvailableForSelection => true;
 
         
 

@@ -13,10 +13,10 @@ namespace DevNote.Services.GamePush
             IEnvironment.EnvironmentType == EnvironmentType.GamePush;
 
 
-        bool ISelectableService.Available => ServicesIsAvailable;
+        bool ISelectableService.IsAvailableForSelection => ServicesIsAvailable;
 
 
-        Language IEnvironment.CurrentLanguage => GP_Language.CurrentISO() switch
+        Language IEnvironment.DeviceLanguage => GP_Language.CurrentISO() switch
         {
             "ru" => Language.RU,
             "en" => Language.EN,

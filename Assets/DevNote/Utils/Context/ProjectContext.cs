@@ -8,7 +8,7 @@ namespace DevNote
 {
     public class ProjectContext : MonoBehaviour
     {
-        [Header("--- DevNote " + Info.VERSION + " ---"), Space]
+        [Header("DevNote " + Info.VERSION), Space]
         [SerializeField] private bool _testVersion;
         [SerializeField] private EnvironmentType _environmentType;
         [Space(10)]
@@ -33,6 +33,7 @@ namespace DevNote
             var ads = SelectAndRegisterService<IAds>();
             var analytics = SelectAndRegisterService<IAnalytics>();
             var review = SelectAndRegisterService<IReview>();
+            var leaderboards = SelectAndRegisterService<ILeaderboards>();
 
             RunInitialization(environment);
             RunInitialization(save);
@@ -40,9 +41,12 @@ namespace DevNote
             RunInitialization(purchase);
             RunInitialization(analytics);
             RunInitialization(review);
+            RunInitialization(leaderboards);
             RunInitialization(_sound);
             RunInitialization(_googleTables);
             RunInitialization(_localization);
+
+            Context.Register(new ScreenState());
 
             await WaitFullInitialization();
 
@@ -76,13 +80,13 @@ namespace DevNote
         private T RunServiceInitialization<T>() where T : class
         {
             var service = _serviceSelector.GetServiceInterface<T>();
-            var initializable = service as DevNote.IInitializable;
+            var initializable = service as IInitializable;
             _initializables.Add(initializable);
             initializable.Initialize();
             return service;
         }
 
-        private void RunInitialization(DevNote.IInitializable initializable)
+        private void RunInitialization(IInitializable initializable)
         {
             initializable.Initialize();
             _initializables.Add(initializable);

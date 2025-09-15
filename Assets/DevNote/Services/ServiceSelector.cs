@@ -12,7 +12,7 @@ namespace DevNote
         [SerializeField] private List<MonoBehaviour> _purchaseServices;
         [SerializeField] private List<MonoBehaviour> _analyticsServices;
         [SerializeField] private List<MonoBehaviour> _reviewServices;
-        
+        [SerializeField] private List<MonoBehaviour> _leaderboardsServices;
 
 
         public T GetServiceInterface<T>() where T : class
@@ -25,6 +25,7 @@ namespace DevNote
                 Type t when t == typeof(IEnvironment) => GetAvailableService<IEnvironment>(_environmentServices) as T,
                 Type t when t == typeof(IAnalytics) => GetAvailableService<IAnalytics>(_analyticsServices) as T,
                 Type t when t == typeof(IPurchase) => GetAvailableService<IPurchase>(_purchaseServices) as T,
+                Type t when t == typeof(ILeaderboards) => GetAvailableService<ILeaderboards>(_leaderboardsServices) as T,
                 _ => null
             };
 
@@ -38,7 +39,7 @@ namespace DevNote
         private T GetAvailableService<T>(List<MonoBehaviour> services) where T : class
         {
             foreach (var service in services)
-                if ((service as ISelectableService).Available) return service as T;
+                if ((service as ISelectableService).IsAvailableForSelection) return service as T;
 
             throw new Exception($"{Info.Prefix} Available service does'nt exist: {typeof(T)}");
         }

@@ -3,7 +3,7 @@ namespace DevNote
 {
     public interface ISelectableService
     {
-        public bool Available { get; }
+        public bool IsAvailableForSelection { get; }
     }
 
 }

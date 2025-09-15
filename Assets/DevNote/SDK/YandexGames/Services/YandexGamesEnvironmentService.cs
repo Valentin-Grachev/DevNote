@@ -12,7 +12,7 @@ namespace DevNote.Services.YandexGames
         private bool _initialized = false;
         private Language _definedLanguage;
 
-        bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
 
         bool IInitializable.Initialized => _initialized;
         async void IInitializable.Initialize()
@@ -36,7 +36,7 @@ namespace DevNote.Services.YandexGames
         }
 
 
-        Language IEnvironment.CurrentLanguage => _definedLanguage;
+        Language IEnvironment.DeviceLanguage => _definedLanguage;
 
         DeviceType IEnvironment.DeviceType => YG_Sdk.GetDeviceType();
 

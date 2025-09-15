@@ -7,7 +7,7 @@ namespace DevNote.Services.YandexGames
 {
     public class YandexGamesAdsService : MonoBehaviour, IAds
     {
-        bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
         bool IInitializable.Initialized => YG_Sdk.available;
 
         bool IAds.RewardedAvailable => true;

@@ -18,7 +18,7 @@ namespace DevNote.Services.YandexGames
 
         private readonly Holder<ISave> save = new();
 
-        bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
         bool IInitializable.Initialized => _initialized;
 
         async void IInitializable.Initialize()
@@ -40,7 +40,7 @@ namespace DevNote.Services.YandexGames
                     var productType = _productConvertor.GetProductType(purchasedProductId);
                     PurchaseHandler.HandlePurchase(productType);
 
-                    if (ProductCatalog.IsConsumable(productType))
+                    if (productType.IsConsumable())
                         YG_Purchases.Consume(purchasedProductId);
                 }
             });
@@ -72,7 +72,7 @@ namespace DevNote.Services.YandexGames
                 {
                     PurchaseHandler.HandlePurchase(productType);
 
-                    if (ProductCatalog.IsConsumable(productType))
+                    if (productType.IsConsumable())
                         YG_Purchases.Consume(productId);
 
                     onSuccess?.Invoke();

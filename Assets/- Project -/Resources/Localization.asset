@@ -13,17 +13,27 @@ MonoBehaviour:
   m_Name: Localization
   m_EditorClassIdentifier: 
   <DefaultLanguage>k__BackingField: 1
-  <AvailableLanguages>k__BackingField: 000000000100000002000000
+  _availableLanguages:
+  - language: 0
+    column: 1
+  - language: 1
+    column: 2
   <Translations>k__BackingField:
   - key: level
-    ru: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C"
-    en: Level
-    tr: "Seviye\r"
+    _values:
+    - language: 0
+      value: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C"
+    - language: 1
+      value: Level
   - key: coins
-    ru: "\u041C\u043E\u043D\u0435\u0442\u044B"
-    en: Coins
-    tr: "Paralar\r"
+    _values:
+    - language: 0
+      value: "\u041C\u043E\u043D\u0435\u0442\u044B"
+    - language: 1
+      value: Coins
   - key: bonus
-    ru: "\u041F\u043E\u043B\u0443\u0447\u0438 \u0431\u043E\u043D\u0443\u0441!"
-    en: Get bonus!
-    tr: "Bonus kazan\u0131n!"
+    _values:
+    - language: 0
+      value: "\u041F\u043E\u043B\u0443\u0447\u0438 \u0431\u043E\u043D\u0443\u0441!"
+    - language: 1
+      value: Get bonus!

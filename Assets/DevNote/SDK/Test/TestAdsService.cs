@@ -5,7 +5,7 @@ namespace DevNote.Services.Test
 {
     public class TestAdsService : MonoBehaviour, IAds
     {
-        bool ISelectableService.Available => true;
+        bool ISelectableService.IsAvailableForSelection => true;
         bool IInitializable.Initialized => true;
 
         bool IAds.RewardedAvailable => true;

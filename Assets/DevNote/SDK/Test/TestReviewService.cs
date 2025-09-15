@@ -4,7 +4,7 @@ namespace DevNote.Services.Test
 {
     public class TestReviewService : MonoBehaviour, IReview
     {
-        bool ISelectableService.Available => true;
+        bool ISelectableService.IsAvailableForSelection => true;
 
         bool IInitializable.Initialized => true;
 

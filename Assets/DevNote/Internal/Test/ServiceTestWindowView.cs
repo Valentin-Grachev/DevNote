@@ -44,6 +44,13 @@ namespace DevNote
         [SerializeField] private TextMeshProUGUI _reviewSelectedServiceText;
         [SerializeField] private Button _reviewRequestButton;
 
+        [Header("Leaderboards:")]
+        [SerializeField] private TextMeshProUGUI _leaderboardSelectedServiceText;
+        [SerializeField] private Button _leaderboardScore1Button;
+        [SerializeField] private Button _leaderboardScore2Button;
+        [SerializeField] private Button _leaderboardScore3Button;
+        [SerializeField] private Button _leaderboardScore4Button;
+
         [Header("Materials:")]
         [SerializeField] private Material _successMaterial;
         [SerializeField] private Material _errorMaterial;
@@ -55,6 +62,7 @@ namespace DevNote
         private readonly Holder<IPurchase> purchase = new();
         private readonly Holder<IAnalytics> analytics = new();
         private readonly Holder<IReview> review = new();
+        private readonly Holder<ILeaderboards> leaderboards = new();
 
 
 
@@ -70,6 +78,11 @@ namespace DevNote
             _analyticsSendTestEventButton.onClick.AddListener(OnSendTestEventButtonClick);
             _reviewRequestButton.onClick.AddListener(OnReviewButtonClick);
 
+            _leaderboardScore1Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 1));
+            _leaderboardScore2Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 3));
+            _leaderboardScore3Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 15));
+            _leaderboardScore4Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 99));
+
             Display();
         }
 
@@ -83,6 +96,7 @@ namespace DevNote
             _purchasesSelectedServiceText.text = purchase.Item.GetType().Name.Replace("PurchaseService", string.Empty);
             _analyticsSelectedServiceText.text = analytics.Item.GetType().Name.Replace("AnalyticsService", string.Empty);
             _reviewSelectedServiceText.text = review.Item.GetType().Name.Replace("ReviewService", string.Empty);
+            _leaderboardSelectedServiceText.text = leaderboards.Item.GetType().Name.Replace("LeaderboardsService", string.Empty);
 
             var usedSaveTime = ISave.UsedSaveTime;
             _usedSaveTimeText.text = usedSaveTime.ToString();
@@ -93,7 +107,7 @@ namespace DevNote
             string environmentTypeValue = IEnvironment.EnvironmentType.ToString();
             _environmentSelectedTypeText.text = _environmentSelectedTypeText.text.Replace("<type>", environmentTypeValue);
 
-            string languageValue = environment.Item.CurrentLanguage.ToString();
+            string languageValue = environment.Item.DeviceLanguage.ToString();
             _environmentLanguageText.text = _environmentLanguageText.text.Replace("<language>", languageValue);
 
             string controlValue = environment.Item.DeviceType.ToString();
@@ -102,6 +116,8 @@ namespace DevNote
             string priceValue = purchase.Item.GetPriceString(_testProductKey);
             _purchasesProductPriceText.text = _purchasesProductPriceText.text.Replace("<price>", priceValue);
             _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", _testProductKey.ToString());
+
+            
 
         }
 

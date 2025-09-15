@@ -46,7 +46,7 @@ namespace DevNote
         }
 
 
-        public Language CurrentLanguage { get; }
+        public Language DeviceLanguage { get; }
         public DeviceType DeviceType { get; }
         public void GameReady();
 

@@ -7,7 +7,7 @@ namespace DevNote.Services.GamePush
 {
     public class GamePushAnalyticsService : MonoBehaviour, IAnalytics
     {
-        public bool Available => GamePushEnvironmentService.ServicesIsAvailable;
+        public bool IsAvailableForSelection => GamePushEnvironmentService.ServicesIsAvailable;
 
 
         public bool Initialized => GP_Init.isReady;
