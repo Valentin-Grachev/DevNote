@@ -16,15 +16,16 @@ namespace DevNote
         private static Localization _instance;
 
 
-
         [SerializeField] private GoogleTables _googleTables;
 
         private Dictionary<string, Translation> _tranlationDictionary = new();
         private LocalizationConfig _config;
-
         private bool _initialized = false;
 
-        
+        private readonly Holder<IEnvironment> environment = new();
+
+        private const string LANGUAGE_SAVE_KEY = "language";
+
 
         bool IInitializable.Initialized => _initialized;
 
@@ -38,14 +39,34 @@ namespace DevNote
             foreach (var translation in _config.Translations)
                 _tranlationDictionary.Add(translation.key, translation);
 
+            Language language = Language.EN;
+
+            if (PlayerPrefs.HasKey(LANGUAGE_SAVE_KEY))
+                language = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString(LANGUAGE_SAVE_KEY));
+
+            else
+            {
+                await UniTask.WaitUntil(() => environment.Item.Initialized);
+                language = environment.Item.DeviceLanguage;
+            }
+
+            InitializeLanguage(language);
+
             _initialized = true;
         }
 
+        private static void InitializeLanguage(Language language)
+        {
+            CurrentLanguage = _instance._config.LanguageIsAvailable(language) ?
+                language : _instance._config.DefaultLanguage;
+        }
 
         public static void SetLanguage(Language language)
         {
-            CurrentLanguage = _instance._config.AvailableLanguages.Contains(language) ?
+            CurrentLanguage = _instance._config.LanguageIsAvailable(language) ?
                 language : _instance._config.DefaultLanguage;
+
+            PlayerPrefs.SetString(LANGUAGE_SAVE_KEY, language.ToString());
 
             OnLanguageChanged?.Invoke();
         }
@@ -58,8 +79,7 @@ namespace DevNote
                 return key;
             }
 
-            string localizedString = _instance._tranlationDictionary[key].GetTranslation(CurrentLanguage);
-            return localizedString.Replace("\r", "");
+            return _instance._tranlationDictionary[key].GetTranslation(CurrentLanguage);
         }
 
 

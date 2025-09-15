@@ -9,7 +9,7 @@ namespace DevNote.Services.YandexGames
     {
         bool IInitializable.Initialized => true;
 
-        bool ISelectableService.Available => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
 
 
         void IInitializable.Initialize() { }

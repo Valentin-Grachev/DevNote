@@ -23,9 +23,9 @@ namespace DevNote.Services.Test
             _initialized = true;
         }
 
-        bool ISelectableService.Available => true;
+        bool ISelectableService.IsAvailableForSelection => true;
 
-        Language IEnvironment.CurrentLanguage => _currentLanguage;
+        Language IEnvironment.DeviceLanguage => _currentLanguage;
 
         DeviceType IEnvironment.DeviceType => _deviceType;
 

@@ -14,7 +14,7 @@ namespace DevNote.Services.YandexMetrica
         [Expandable] [SerializeField] private YandexMetricaConfig _config;
 
 
-        bool ISelectableService.Available => !IEnvironment.IsEditor && IEnvironment.PlatformType == PlatformType.WebGL;
+        bool ISelectableService.IsAvailableForSelection => !IEnvironment.IsEditor && IEnvironment.PlatformType == PlatformType.WebGL;
 
 
         bool IInitializable.Initialized => true;

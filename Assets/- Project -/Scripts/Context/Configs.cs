@@ -1,7 +1,7 @@
 
 namespace DevNote
 {
-    public static class Configs
+    public static partial class Configs
     {
 
 

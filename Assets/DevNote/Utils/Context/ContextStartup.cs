@@ -20,10 +20,10 @@ namespace DevNote
 
         private void RegisterProjectContext()
         {
-            var projectContext = Instantiate(Resources.Load<ProjectContext>("[ProjectContext]"));
+            var projectContext = Instantiate(Resources.Load<ProjectContext>("- ProjectContext -"));
             DontDestroyOnLoad(projectContext.gameObject);
             projectContext.RegisterContext();
-            projectContext.name = "[ProjectContext]";
+            projectContext.name = "ProjectContext";
         }
 
     }

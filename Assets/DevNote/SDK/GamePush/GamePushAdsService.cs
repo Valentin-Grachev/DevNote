@@ -7,7 +7,7 @@ namespace DevNote.Services.GamePush
 {
     public class GamePushAdsService : MonoBehaviour, IAds
     {
-        bool ISelectableService.Available => GamePushEnvironmentService.ServicesIsAvailable;
+        bool ISelectableService.IsAvailableForSelection => GamePushEnvironmentService.ServicesIsAvailable;
         bool IInitializable.Initialized => GP_Init.isReady;
 
         bool IAds.InterstitialAvailable => GP_Ads.IsFullscreenAvailable() && IAds.InterstitialCooldownPassed;

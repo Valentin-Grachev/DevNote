@@ -6,7 +6,7 @@ namespace DevNote.Services.GamePush
 {
     public class GamePushReviewService : MonoBehaviour, IReview
     {
-        bool ISelectableService.Available => GamePushEnvironmentService.ServicesIsAvailable;
+        bool ISelectableService.IsAvailableForSelection => GamePushEnvironmentService.ServicesIsAvailable;
 
         bool IInitializable.Initialized => GP_Init.isReady;
 

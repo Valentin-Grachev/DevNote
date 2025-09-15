@@ -135,7 +135,7 @@ mergeInto(LibraryManager.library, {
     
   },
 
-  SendSaves: function (savesData) {
+  SendSaves: function (data, timeData) {
     
     // === SDK недоступен ===
     if (!player.setData) {
@@ -146,7 +146,7 @@ mergeInto(LibraryManager.library, {
 
     // === Обработка ===
     player.setData({
-      data: UTF8ToString(savesData), flush: false,
+      data: UTF8ToString(data), time: UTF8ToString(timeData), flush: false,
     }).then(() => {
       unity.SendMessage('YandexGames', 'HTML_OnSavesSent', 1);
       console.log('Player saves sent');
@@ -165,7 +165,7 @@ mergeInto(LibraryManager.library, {
       
       if (data.data) 
       {
-        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', data.data.toString());
+        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', JSON.stringify({ data: data.data, time: data.time }));
         console.log('Player saves received');
       }
       else 
@@ -345,6 +345,9 @@ mergeInto(LibraryManager.library, {
     unity.SendMessage('YandexGames', 'HTML_OnDeviceTypeReceived', sdk.deviceInfo.type);
   },
 
+  _SetLeaderboardScore: function (leaderboardName, score) {
+    ysdk.leaderboards.setScore(UTF8ToString(leaderboardName), score);
+  },
 
 
 
