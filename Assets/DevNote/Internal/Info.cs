@@ -5,7 +5,7 @@ namespace DevNote
     {
 
         public const string ENCODER_VERSION = "DN1";
-        public const string VERSION = "v.2.4.0";
+        public const string VERSION = "v.2.4.1";
 
         public static string Prefix
         {

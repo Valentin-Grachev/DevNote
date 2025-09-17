@@ -37,7 +37,10 @@ namespace DevNote
             await UniTask.WaitUntil(() => (_googleTables as IInitializable).Initialized);
 
             foreach (var translation in _config.Translations)
-                _tranlationDictionary.Add(translation.key, translation);
+            {
+                if (translation.key != string.Empty)
+                    _tranlationDictionary.Add(translation.key, translation);
+            }
 
             Language language = Language.EN;
 
