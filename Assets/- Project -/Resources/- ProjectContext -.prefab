@@ -530,6 +530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6534107350484591515}
   - component: {fileID: 7485654210964807093}
+  - component: {fileID: 3227981603861389673}
   m_Layer: 0
   m_Name: '- ProjectContext -'
   m_TagString: Untagged
@@ -571,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _testVersion: 1
   _environmentKey: YandexGames
+  _gameStateParser: {fileID: 3227981603861389673}
   _serviceSelector: {fileID: 2552094838235886111}
   _sound: {fileID: 6339179368250386191}
   _googleTables: {fileID: 6121122829171417047}
@@ -578,6 +580,18 @@ MonoBehaviour:
   _onlyBootstrapGameObject:
   - {fileID: 697222470521716677}
   - {fileID: 2311195760061610755}
+--- !u!114 &3227981603861389673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989988792536570814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4df754500ffa68478e39db6100416a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8095102371805940163
 GameObject:
   m_ObjectHideFlags: 0
