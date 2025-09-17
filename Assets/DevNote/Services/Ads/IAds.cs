@@ -10,15 +10,15 @@ namespace DevNote
         public bool AdBlockEnabled { get; }
 
 
-        public void ShowRewarded(AdKey key = AdKey.None, Action onRewarded = null, Action<AdShowStatus> callback = null);
-        public void ShowInterstitial(AdKey key, Action<AdShowStatus> callback = null);
+        public void ShowRewarded(string key = AdsKey.None, Action onRewarded = null, Action<AdShowStatus> callback = null);
+        public void ShowInterstitial(string key = AdsKey.None, Action<AdShowStatus> callback = null);
         public void SetBanner(bool active);
 
     }
 
     public partial interface IAds // Handlers
     {
-        public delegate void OnAdShow(AdKey key, AdShowStatus status);
+        public delegate void OnAdShow(string key, AdShowStatus status);
         public static event OnAdShow OnInterstitialShown, OnRewardedShown;
 
         public static bool SkipAds { get; set; } = false;
@@ -29,7 +29,7 @@ namespace DevNote
         protected static bool InterstitialCooldownPassed => Time.time - _interstitialShowLastTime > InterstitialCooldown;
 
 
-        protected static void InvokeInterstitialCallback(Action<AdShowStatus> callback, AdKey key, AdShowStatus status)
+        protected static void InvokeInterstitialCallback(Action<AdShowStatus> callback, string key, AdShowStatus status)
         {
             if (status == AdShowStatus.Success)
                 _interstitialShowLastTime = Time.time;
@@ -38,7 +38,7 @@ namespace DevNote
             OnInterstitialShown?.Invoke(key, status);
         }
 
-        protected static void InvokeRewardedCallback(Action onRewarded, Action<AdShowStatus> callback, AdKey key, AdShowStatus status)
+        protected static void InvokeRewardedCallback(Action onRewarded, Action<AdShowStatus> callback, string key, AdShowStatus status)
         {
             if (status == AdShowStatus.Success)
                 onRewarded?.Invoke();

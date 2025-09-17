@@ -7379,7 +7379,7 @@ MonoBehaviour:
   _savesSelectedServiceText: {fileID: 6022749101850265579}
   _savesSaveLocalButton: {fileID: 856002142019131624}
   _savesSaveCloudButton: {fileID: 4705049442287016141}
-  _testProductKey: 1
+  _testProductKey: NoAds
   _purchasesSelectedServiceText: {fileID: 8202036700375597907}
   _purchasesProductKeyText: {fileID: 8139902843464078664}
   _purchasesProductPriceText: {fileID: 6604032377344069487}

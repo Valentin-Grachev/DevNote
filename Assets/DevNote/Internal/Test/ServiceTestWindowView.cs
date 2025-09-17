@@ -30,7 +30,7 @@ namespace DevNote
         [SerializeField] private Button _savesSaveCloudButton;
 
         [Header("Purchases:")]
-        [SerializeField] private ProductType _testProductKey;
+        [SerializeField] private string _testProductKey;
         [SerializeField] private TextMeshProUGUI _purchasesSelectedServiceText;
         [SerializeField] private TextMeshProUGUI _purchasesProductKeyText;
         [SerializeField] private TextMeshProUGUI _purchasesProductPriceText;
@@ -78,10 +78,10 @@ namespace DevNote
             _analyticsSendTestEventButton.onClick.AddListener(OnSendTestEventButtonClick);
             _reviewRequestButton.onClick.AddListener(OnReviewButtonClick);
 
-            _leaderboardScore1Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 1));
-            _leaderboardScore2Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 3));
-            _leaderboardScore3Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 15));
-            _leaderboardScore4Button.onClick.AddListener(() => leaderboards.Item.SetScore(LeaderboardType.Main, 99));
+            _leaderboardScore1Button.onClick.AddListener(() => leaderboards.Item.SetScore(1));
+            _leaderboardScore2Button.onClick.AddListener(() => leaderboards.Item.SetScore(3));
+            _leaderboardScore3Button.onClick.AddListener(() => leaderboards.Item.SetScore(15));
+            _leaderboardScore4Button.onClick.AddListener(() => leaderboards.Item.SetScore(99));
 
             Display();
         }
@@ -104,7 +104,7 @@ namespace DevNote
             string testValue = IEnvironment.IsTest ? "Active" : "Disabled";
             _environmentTestEnabledText.text = _environmentTestEnabledText.text.Replace("<test>", testValue);
 
-            string environmentTypeValue = IEnvironment.EnvironmentType.ToString();
+            string environmentTypeValue = IEnvironment.EnvironmentKey.ToString();
             _environmentSelectedTypeText.text = _environmentSelectedTypeText.text.Replace("<type>", environmentTypeValue);
 
             string languageValue = environment.Item.DeviceLanguage.ToString();
@@ -166,7 +166,7 @@ namespace DevNote
         {
             _adsShowInterstitialButton.image.material = _pendingMaterial;
 
-            ads.Item.ShowInterstitial(AdKey.None, callback: (status) =>
+            ads.Item.ShowInterstitial(callback: (status) =>
             {
                 bool success = status == AdShowStatus.Success;
                 _adsShowInterstitialButton.image.material = success ? _successMaterial : _errorMaterial;
@@ -178,7 +178,7 @@ namespace DevNote
         {
             _adsShowRewardedButton.image.material = _pendingMaterial;
 
-            ads.Item.ShowRewarded(AdKey.None, callback: (status) =>
+            ads.Item.ShowRewarded(callback: (status) =>
             {
                 bool success = status == AdShowStatus.Success;
                 _adsShowRewardedButton.image.material = success ? _successMaterial : _errorMaterial;

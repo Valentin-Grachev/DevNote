@@ -23,10 +23,10 @@ namespace DevNote
         [SerializeField] private List<Table> _tables;
         [SerializeField] private List<LoadableFromTable> _loadables;
         [Space(10)]
-        [SerializeField] private TableKey _openTable;
+        [SerializeField] private string _openTable;
 
 
-        private Dictionary<TableKey, Table> _tablesDictionary;
+        private Dictionary<string, Table> _tablesDictionary;
         private bool _initialized = false;
 
 

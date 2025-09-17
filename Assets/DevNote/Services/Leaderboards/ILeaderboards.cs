@@ -6,7 +6,7 @@ namespace DevNote
         
         public bool LeaderboardsIsSupported { get; }
 
-        public void SetScore(LeaderboardType leaderboardType, int value);
+        public void SetScore(int value, string leaderboardKey = LeaderboardKey.Default);
 
 
 

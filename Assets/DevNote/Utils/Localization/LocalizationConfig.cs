@@ -23,7 +23,7 @@ namespace DevNote
             => _availableLanguages.Exists(data => data.language == language);
 
 
-        public override void LoadData(Dictionary<TableKey, Table> tables)
+        public override void LoadData(Dictionary<string, Table> tables)
         {
             Translations = new();
 

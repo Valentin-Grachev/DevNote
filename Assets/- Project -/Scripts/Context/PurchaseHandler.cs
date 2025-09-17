@@ -4,17 +4,17 @@ namespace DevNote
 {
     public static class PurchaseHandler
     {
-        public static void HandlePurchase(ProductType productType)
+        public static void HandlePurchase(string productKey)
         {
             
-            switch (productType)
+            switch (productKey)
             {
-                case ProductType.NoAds:
+                case ProductKey.NoAds:
                     GameState.NoAdsPurchased.Value = true;
                     break;
 
                 default: 
-                    Debug.LogWarning($"Handle for product {productType} does not exist!");
+                    Debug.LogWarning($"Handle for product {productKey} does not exist!");
                     break;
             }
             

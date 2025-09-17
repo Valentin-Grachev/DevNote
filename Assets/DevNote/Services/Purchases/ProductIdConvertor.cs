@@ -9,17 +9,17 @@ namespace DevNote
         [System.Serializable]
         private struct ProductTypeId
         {
-            public ProductType type;
+            public string key;
             public string id;
         }
 
-        [SerializeField] private List<ProductTypeId> _productIds;
+        [SerializeField] private List<ProductTypeId> _productConvertors;
 
-        public string GetProductId(ProductType productType)
-            => _productIds.Find((typeId) => typeId.type == productType).id;
+        public string GetProductId(string productKey)
+            => _productConvertors.Find((typeId) => typeId.key == productKey).id;
 
-        public ProductType GetProductType(string productId)
-            => _productIds.Find((typeId) => typeId.id == productId).type;
+        public string GetProductKey(string productId)
+            => _productConvertors.Find((typeId) => typeId.id == productId).key;
 
 
 

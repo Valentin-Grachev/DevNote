@@ -10,7 +10,7 @@ namespace DevNote
     {
         [Header("DevNote " + Info.VERSION), Space]
         [SerializeField] private bool _testVersion;
-        [SerializeField] private EnvironmentType _environmentType;
+        [SerializeField] private string _environmentKey;
         [Space(10)]
         [SerializeField] private ServiceSelector _serviceSelector;
         [SerializeField] private Sound _sound;
@@ -25,7 +25,7 @@ namespace DevNote
             SetActiveRootGameObjects(false);
 
             IEnvironment.IsTest = _testVersion;
-            IEnvironment.EnvironmentType = _environmentType;
+            IEnvironment.EnvironmentKey = _environmentKey;
 
             var environment = SelectAndRegisterService<IEnvironment>();
             var save = SelectAndRegisterService<ISave>();

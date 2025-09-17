@@ -1,8 +1,10 @@
+
 namespace DevNote
 {
-    public static partial class TableKey
+    public static partial class AdsKey
     {
         
     }
+
 }
 
