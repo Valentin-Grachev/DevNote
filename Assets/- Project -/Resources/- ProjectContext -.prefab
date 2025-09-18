@@ -154,7 +154,6 @@ GameObject:
   - component: {fileID: 1399254245610968488}
   - component: {fileID: 2797842990816059645}
   - component: {fileID: 6583311684848191713}
-  - component: {fileID: 1734846008855763987}
   m_Layer: 0
   m_Name: Review
   m_TagString: Untagged
@@ -199,18 +198,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ecb0bab3609fd54f854d16f1486f243, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1734846008855763987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597557805598450244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62e8beea2f7109479e9182cad8afebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2669770584776908762
@@ -259,12 +246,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startGameRequestMode: 1
   _tables:
-  - <Key>k__BackingField: 0
+  - <Key>k__BackingField: Localization
     _webId: 1Ot9GmV56KXw1yOx8APl6zpO9U1OzBwkHizHbOhJNGtY
     _gid: 0
   _loadables:
   - {fileID: 11400000, guid: 5bad2674938e40a429af1eb1f6c9c42b, type: 2}
-  _openTable: 0
+  _openTable: Localization
 --- !u!1 &5757904575588715954
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,7 +263,6 @@ GameObject:
   - component: {fileID: 5981083138982829853}
   - component: {fileID: 347275801762883020}
   - component: {fileID: 3077939149344613598}
-  - component: {fileID: 8949518800330779268}
   m_Layer: 0
   m_Name: Purchase
   m_TagString: Untagged
@@ -324,25 +310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _productConvertor:
-    _productIds:
-    - type: 1
-      id: no_ads
---- !u!114 &8949518800330779268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5757904575588715954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3e17e36cc9bab841b40523048fd909a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _productConvertor:
-    _productIds:
-    - type: 1
-      id: 10680
+    _productConvertors: []
 --- !u!1 &5813099178547396107
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,25 +363,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _environmentServices:
-  - {fileID: 7163304220066719910}
   - {fileID: 6608646393400013635}
   - {fileID: 4705896374188213943}
   _saveServices:
   - {fileID: 6190986402567423096}
   - {fileID: 1361996982363198919}
   _adsServices:
-  - {fileID: 5625924896534032185}
   - {fileID: 4714008125399385891}
   - {fileID: 2815777104736422023}
   _purchaseServices:
-  - {fileID: 8949518800330779268}
   - {fileID: 3077939149344613598}
   - {fileID: 347275801762883020}
   _analyticsServices:
   - {fileID: 3117871511257792817}
   - {fileID: 4946907644923584467}
   _reviewServices:
-  - {fileID: 1734846008855763987}
   - {fileID: 6583311684848191713}
   - {fileID: 2797842990816059645}
   _leaderboardsServices:
@@ -566,6 +530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6534107350484591515}
   - component: {fileID: 7485654210964807093}
+  - component: {fileID: 3227981603861389673}
   m_Layer: 0
   m_Name: '- ProjectContext -'
   m_TagString: Untagged
@@ -606,7 +571,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testVersion: 1
-  _environmentType: 1
+  _environmentKey: YandexGames
+  _gameStateParser: {fileID: 3227981603861389673}
   _serviceSelector: {fileID: 2552094838235886111}
   _sound: {fileID: 6339179368250386191}
   _googleTables: {fileID: 6121122829171417047}
@@ -614,6 +580,18 @@ MonoBehaviour:
   _onlyBootstrapGameObject:
   - {fileID: 697222470521716677}
   - {fileID: 2311195760061610755}
+--- !u!114 &3227981603861389673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989988792536570814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4df754500ffa68478e39db6100416a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8095102371805940163
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,7 +743,6 @@ GameObject:
   - component: {fileID: 5824940949288247266}
   - component: {fileID: 2815777104736422023}
   - component: {fileID: 4714008125399385891}
-  - component: {fileID: 5625924896534032185}
   m_Layer: 0
   m_Name: Ads
   m_TagString: Untagged
@@ -810,18 +787,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1843a1793f4b7a4aacc75b1cc3a7d0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5625924896534032185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8418440489705498173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd11b2278bfdbd8408566ff5634f593e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8627241340399656994
@@ -1039,7 +1004,6 @@ GameObject:
   - component: {fileID: 5083198421977732407}
   - component: {fileID: 4705896374188213943}
   - component: {fileID: 6608646393400013635}
-  - component: {fileID: 7163304220066719910}
   m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
@@ -1090,18 +1054,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _yandexGamesSdkPrefab: {fileID: 5759449221713199267, guid: 61897319133b1844fba39b3212ece981, type: 3}
---- !u!114 &7163304220066719910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992132696936692313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15ad781438cbf804098f74f31034c597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4528692624445434330
 PrefabInstance:
   m_ObjectHideFlags: 0
