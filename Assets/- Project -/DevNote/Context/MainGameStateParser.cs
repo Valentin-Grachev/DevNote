@@ -1,6 +1,17 @@
 using System.Collections.Generic;
 using DevNote;
 
+
+public static class GameState
+{
+    public static ReactiveValue<bool> NoAdsPurchased { get; set; }
+
+
+
+}
+
+
+
 public class MainGameStateParser : GameStateParser
 {
     private const string NO_ADS_PURCHASED_KEY = "noAds";
