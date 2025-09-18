@@ -19,7 +19,7 @@ public class MainGameStateParser : GameStateParser
 
     public override void Parse(Dictionary<string, string> data)
     {
-        GameState.NoAdsPurchased = new(bool.Parse(data.GetValueOrDefault(data[NO_ADS_PURCHASED_KEY], "false")));
+        GameState.NoAdsPurchased = new(bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED_KEY, "false")));
     }
 
     public override Dictionary<string, string> ToDictionary() => new()
