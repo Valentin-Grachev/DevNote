@@ -27,7 +27,7 @@ namespace DevNote
         {
             Translations = new();
 
-            var table = tables["Localization"];
+            var table = tables[ITableKey.Localization];
 
             for (int i = 2; i <= table.Rows; i++)
             {

@@ -674,7 +674,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -7379,11 +7379,11 @@ MonoBehaviour:
   _savesSelectedServiceText: {fileID: 6022749101850265579}
   _savesSaveLocalButton: {fileID: 856002142019131624}
   _savesSaveCloudButton: {fileID: 4705049442287016141}
-  _testProductKey: NoAds
   _purchasesSelectedServiceText: {fileID: 8202036700375597907}
   _purchasesProductKeyText: {fileID: 8139902843464078664}
   _purchasesProductPriceText: {fileID: 6604032377344069487}
   _purchasesPurchaseButton: {fileID: 8978506179014438985}
+  _purchaseButtonText: {fileID: 663451525010068202}
   _analyticsSelectedServiceText: {fileID: 4009099968092685815}
   _analyticsSendTestEventButton: {fileID: 5593611380026985547}
   _reviewSelectedServiceText: {fileID: 6040619336495546824}
@@ -7393,6 +7393,7 @@ MonoBehaviour:
   _leaderboardScore2Button: {fileID: 7790324033900191666}
   _leaderboardScore3Button: {fileID: 1086262061307444293}
   _leaderboardScore4Button: {fileID: 4350234484776110500}
+  _originMaterial: {fileID: 2100000, guid: 4aea0f6474bb31148ad6a6c3a9d4bea1, type: 2}
   _successMaterial: {fileID: 2100000, guid: 207837af2f38ea54d9674acf735b1c0a, type: 2}
   _errorMaterial: {fileID: 2100000, guid: 74ed7e7d6dfe8574c8b9f939af9e1b31, type: 2}
   _pendingMaterial: {fileID: 2100000, guid: d8a661db02d50c14abe8c528db205cbe, type: 2}

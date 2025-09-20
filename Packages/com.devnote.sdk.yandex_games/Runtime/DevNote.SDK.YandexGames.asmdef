@@ -1,10 +1,9 @@
 {
-    "name": "DevNote",
+    "name": "DevNote.SDK.YandexGames",
     "rootNamespace": "",
     "references": [
-        "NaughtyAttributes.Core",
-        "Unity.TextMeshPro",
-        "UniTask"
+        "UniTask",
+        "DevNote"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

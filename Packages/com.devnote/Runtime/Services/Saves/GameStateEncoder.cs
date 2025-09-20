@@ -27,8 +27,6 @@ namespace DevNote
 
     public static class GameStateEncoder
     {
-        public static bool DataIsSupported(string encodedData)
-            => encodedData.StartsWith($"{Info.ENCODER_VERSION}") || string.IsNullOrEmpty(encodedData);
 
         public static DateTime GetSaveTime(string encodedData)
         {
@@ -51,7 +49,7 @@ namespace DevNote
         {
             var time = IEnvironment.Time;
             string originData = ToDataString(dictionary);
-            return $"{Info.ENCODER_VERSION}{S.ENCODER}{time}{S.ENCODER}" + Compress(originData);
+            return $"{IGameState.VersionPrefix}{S.ENCODER}{time}{S.ENCODER}" + Compress(originData);
         }
 
         private static Dictionary<string, string> ToDataDictionary(string data)

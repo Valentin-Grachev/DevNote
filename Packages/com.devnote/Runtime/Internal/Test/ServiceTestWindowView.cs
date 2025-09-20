@@ -30,11 +30,11 @@ namespace DevNote
         [SerializeField] private Button _savesSaveCloudButton;
 
         [Header("Purchases:")]
-        [SerializeField] private string _testProductKey;
         [SerializeField] private TextMeshProUGUI _purchasesSelectedServiceText;
         [SerializeField] private TextMeshProUGUI _purchasesProductKeyText;
         [SerializeField] private TextMeshProUGUI _purchasesProductPriceText;
         [SerializeField] private Button _purchasesPurchaseButton;
+        [SerializeField] private TextMeshProUGUI _purchaseButtonText;
 
         [Header("Analytics:")]
         [SerializeField] private TextMeshProUGUI _analyticsSelectedServiceText;
@@ -52,9 +52,11 @@ namespace DevNote
         [SerializeField] private Button _leaderboardScore4Button;
 
         [Header("Materials:")]
+        [SerializeField] private Material _originMaterial;
         [SerializeField] private Material _successMaterial;
         [SerializeField] private Material _errorMaterial;
         [SerializeField] private Material _pendingMaterial;
+
 
         private readonly Holder<IEnvironment> environment = new();
         private readonly Holder<IAds> ads = new();
@@ -113,13 +115,22 @@ namespace DevNote
             string controlValue = environment.Item.DeviceType.ToString();
             _environmentDeviceTypeText.text = _environmentDeviceTypeText.text.Replace("<device>", controlValue);
 
-            string priceValue = purchase.Item.GetPriceString(_testProductKey);
+            string priceValue = purchase.Item.GetPriceString(IProductKey.NoAds);
             _purchasesProductPriceText.text = _purchasesProductPriceText.text.Replace("<price>", priceValue);
-            _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", _testProductKey.ToString());
+            _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", IProductKey.NoAds.ToString());
 
-            
+            DisplayPurchaseButton();
 
         }
+
+        private void DisplayPurchaseButton()
+        {
+            bool noAdsPurchased = IGameState.NoAdsPurchased.Value;
+            _purchasesPurchaseButton.image.material = noAdsPurchased ? _successMaterial : _originMaterial;
+            _purchasesPurchaseButton.interactable = !noAdsPurchased;
+            _purchaseButtonText.text = noAdsPurchased ? "Куплено" : "Купить";
+        }
+
 
 
         private void OnDisableBannerButtonClick() => ads.Item.SetBanner(false);
@@ -137,8 +148,8 @@ namespace DevNote
         {
             _purchasesPurchaseButton.image.material = _pendingMaterial;
 
-            purchase.Item.Purchase(_testProductKey,
-                onSuccess: () => _purchasesPurchaseButton.image.material = _successMaterial,
+            purchase.Item.Purchase(IProductKey.NoAds,
+                onSuccess: () => DisplayPurchaseButton(),
                 onError: () => _purchasesPurchaseButton.image.material = _errorMaterial);
         }
 

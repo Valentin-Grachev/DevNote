@@ -12,7 +12,8 @@ namespace DevNote
         [SerializeField] private bool _testVersion;
         [SerializeField] private string _environmentKey;
         [Space(10)]
-        [SerializeField] private GameStateParser _gameStateParser;
+        [SerializeField] private MonoBehaviour _gameState;
+        [SerializeField] private MonoBehaviour _purchaseHandler;
         [SerializeField] private ServiceSelector _serviceSelector;
         [SerializeField] private Sound _sound;
         [SerializeField] private GoogleTables _googleTables;
@@ -25,7 +26,9 @@ namespace DevNote
         {
             SetActiveRootGameObjects(false);
 
-            GameStateParser.SetHandler(_gameStateParser);
+            IGameState.SetHandler(_gameState as IGameState);
+            IPurchaseHandler.SetHandler(_purchaseHandler as IPurchaseHandler);
+
             IEnvironment.IsTest = _testVersion;
             IEnvironment.EnvironmentKey = _environmentKey;
 
