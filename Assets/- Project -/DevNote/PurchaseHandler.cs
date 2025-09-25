@@ -1,10 +1,14 @@
+using System.Collections.Generic;
+using DevNote;
 using UnityEngine;
 
-public static class PurchaseHandler
+public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
 {
-    public static void HandlePurchase(string productKey)
-    {
+    List<string> IPurchaseHandler.ConsumableProductKeys => new();
 
+
+    void IPurchaseHandler.HandlePurchase(string productKey)
+    {
         switch (productKey)
         {
             case ProductKey.NoAds:
