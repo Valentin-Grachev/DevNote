@@ -1,34 +1,33 @@
-using DevNote;
 
 
-public class EnvironmentKey : IEnvironmentKey
+public class EnvironmentKey : DevNote.IEnvironmentKey, DevNote.SDK.YandexGames.IEnvironmentKey
 {
-    public const string Test = IEnvironmentKey.Test;
-    public const string YandexGames = IEnvironmentKey.YandexGames;
+    public const string Test = DevNote.IEnvironmentKey.Test;
+    public const string YandexGames = DevNote.SDK.YandexGames.IEnvironmentKey.YandexGames;
 
 }
 
-public class AdKey : IAdKey
+public class AdKey : DevNote.IAdKey
 {
-    public const string Default = IAdKey.Default;
+    public const string Default = DevNote.IAdKey.Default;
 
 }
 
-public class TableKey : ITableKey
+public class TableKey : DevNote.ITableKey
 {
-    public const string Localization = ITableKey.Localization;
+    public const string Localization = DevNote.ITableKey.Localization;
 
 }
 
-public class LeaderboardKey : ILeaderboardKey
+public class LeaderboardKey : DevNote.ILeaderboardKey
 {
-    public const string Default = ILeaderboardKey.Default;
+    public const string Default = DevNote.ILeaderboardKey.Default;
 
 }
 
-public class ProductKey : IProductKey
+public class ProductKey : DevNote.IProductKey
 {
-    public const string NoAds = IProductKey.NoAds;
+    public const string NoAds = DevNote.IProductKey.NoAds;
 
 }
 
