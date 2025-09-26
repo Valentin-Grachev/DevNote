@@ -5,7 +5,7 @@ namespace DevNote.SDK.YandexGames
 {
     public class YandexGamesLeaderboardsService : MonoBehaviour, ILeaderboards
     {
-        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
         bool ILeaderboards.LeaderboardsIsSupported => true;
 
         bool IInitializable.Initialized => YG_Sdk.available;

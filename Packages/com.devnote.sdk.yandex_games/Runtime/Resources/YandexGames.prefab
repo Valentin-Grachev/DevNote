@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 982794057577624763}
   - component: {fileID: 2944089014401852650}
   - component: {fileID: 2526540537658886478}
+  - component: {fileID: 3529081036123648370}
   m_Layer: 0
   m_Name: YandexGames
   m_TagString: Untagged
@@ -120,5 +121,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c74be1740bdf2b14d845feccbc1f938e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3529081036123648370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374504948920569008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e26d592f640513149a236e77f7c3bd26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

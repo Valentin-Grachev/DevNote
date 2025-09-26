@@ -13,8 +13,8 @@ public class CheckServiceInitWindowView : MonoBehaviour
     [SerializeField] private Image _purchaseImage;
     [SerializeField] private Image _analyticsImage;
     [SerializeField] private Image _reviewImage;
-    [SerializeField] private Image _soundImage;
-    [SerializeField] private Image _localizationImage;
+    [SerializeField] private Image _leaderboardsImage;
+    [SerializeField] private Image _remoteImage;
     [SerializeField] private Image _googleTablesImage;
     [SerializeField] private TextMeshProUGUI _versionText;
 
@@ -24,6 +24,9 @@ public class CheckServiceInitWindowView : MonoBehaviour
     private readonly Holder<IPurchase> purchase = new();
     private readonly Holder<IAnalytics> analytics = new();
     private readonly Holder<IReview> review = new();
+    private readonly Holder<ILeaderboards> leaderboards = new();
+    private readonly Holder<IRemote> remote = new();
+
 
 
     private void Start()
@@ -41,11 +44,11 @@ public class CheckServiceInitWindowView : MonoBehaviour
         if (purchase.Item.Initialized) _purchaseImage.material = _successMaterial;
         if (analytics.Item.Initialized) _analyticsImage.material = _successMaterial;
         if (review.Item.Initialized) _reviewImage.material = _successMaterial;
+        if (leaderboards.Item.Initialized) _leaderboardsImage.material = _successMaterial;
+        if (remote.Item.Initialized) _remoteImage.material = _successMaterial;
 
-        if (Sound.Initialized) _soundImage.material = _successMaterial;
-        if (Localization.Initialized) _localizationImage.material = _successMaterial;
+
         if (GoogleTables.Initialized) _googleTablesImage.material = _successMaterial;
-
     }
 
 }

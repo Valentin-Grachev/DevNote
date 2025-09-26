@@ -9,7 +9,7 @@ namespace DevNote.SDK.YandexGames
     public class YG_Sdk : MonoBehaviour
     {
 
-        public static bool ServicesIsSupported =>
+        public static bool IsAvailableForSelection =>
             IEnvironment.IsEditor == false &&
             IEnvironment.PlatformType == PlatformType.WebGL &&
             IEnvironment.EnvironmentKey == IEnvironmentKey.YandexGames;

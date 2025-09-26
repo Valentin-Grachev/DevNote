@@ -9,7 +9,7 @@ namespace DevNote.SDK.YandexGames
         private bool _initialized = false;
         private Language _definedLanguage;
 
-        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
 
         bool IInitializable.Initialized => _initialized;
         async void IInitializable.Initialize()

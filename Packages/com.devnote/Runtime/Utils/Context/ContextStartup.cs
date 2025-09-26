@@ -12,7 +12,12 @@ namespace DevNote
 
         private void Awake()
         {
-            if (!_projectContextExists) RegisterProjectContext();
+            if (!_projectContextExists)
+            {
+                RegisterProjectContext();
+                _projectContextExists = true;
+            }
+
             _contexts.ForEach(context => context.RegisterContext());
             gameObject.AddComponent<Context>();
         }
@@ -24,6 +29,7 @@ namespace DevNote
             DontDestroyOnLoad(projectContext.gameObject);
             projectContext.RegisterContext();
             projectContext.name = "ProjectContext";
+            
         }
 
     }

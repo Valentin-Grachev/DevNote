@@ -1,5 +1,4 @@
 
-
 public class EnvironmentKey : DevNote.IEnvironmentKey, DevNote.SDK.YandexGames.IEnvironmentKey
 {
     public const string Test = DevNote.IEnvironmentKey.Test;
@@ -28,6 +27,11 @@ public class LeaderboardKey : DevNote.ILeaderboardKey
 public class ProductKey : DevNote.IProductKey
 {
     public const string NoAds = DevNote.IProductKey.NoAds;
+
+}
+
+public class RemoteKey
+{
 
 }
 

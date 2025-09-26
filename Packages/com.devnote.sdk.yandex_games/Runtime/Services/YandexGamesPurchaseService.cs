@@ -13,7 +13,7 @@ namespace DevNote.SDK.YandexGames
 
         private readonly Holder<ISave> save = new();
 
-        bool ISelectableService.IsAvailableForSelection => YG_Sdk.ServicesIsSupported;
+        bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
         bool IInitializable.Initialized => _initialized;
 
         async void IInitializable.Initialize()

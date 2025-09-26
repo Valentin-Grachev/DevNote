@@ -349,6 +349,12 @@ mergeInto(LibraryManager.library, {
     ysdk.leaderboards.setScore(UTF8ToString(leaderboardName), score);
   },
 
+  _RequestFlagsJson: function () {
+    ysdk.getFlags().then(flags => {
+      const json = JSON.stringify(flags);
+      unity.SendMessage('YandexGames', 'JS_OnFlagsJsonReceived', json);
+    });
+  },
 
 
 });

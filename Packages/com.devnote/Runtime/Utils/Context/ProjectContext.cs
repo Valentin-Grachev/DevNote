@@ -39,6 +39,7 @@ namespace DevNote
             var analytics = SelectAndRegisterService<IAnalytics>();
             var review = SelectAndRegisterService<IReview>();
             var leaderboards = SelectAndRegisterService<ILeaderboards>();
+            var remote = SelectAndRegisterService<IRemote>();
 
             RunInitialization(environment);
             RunInitialization(save);
@@ -47,6 +48,7 @@ namespace DevNote
             RunInitialization(analytics);
             RunInitialization(review);
             RunInitialization(leaderboards);
+            RunInitialization(remote);
             RunInitialization(_sound);
             RunInitialization(_googleTables);
             RunInitialization(_localization);
@@ -82,14 +84,7 @@ namespace DevNote
             return true;
         });
 
-        private T RunServiceInitialization<T>() where T : class
-        {
-            var service = _serviceSelector.GetServiceInterface<T>();
-            var initializable = service as IInitializable;
-            _initializables.Add(initializable);
-            initializable.Initialize();
-            return service;
-        }
+
 
         private void RunInitialization(IInitializable initializable)
         {

@@ -51,6 +51,11 @@ namespace DevNote
         [SerializeField] private Button _leaderboardScore3Button;
         [SerializeField] private Button _leaderboardScore4Button;
 
+        [Header("Remote:")]
+        [SerializeField] private TextMeshProUGUI _remoteSelectedServiceText;
+        [SerializeField] private TextMeshProUGUI _remoteTestValueText;
+
+
         [Header("Materials:")]
         [SerializeField] private Material _originMaterial;
         [SerializeField] private Material _successMaterial;
@@ -65,6 +70,7 @@ namespace DevNote
         private readonly Holder<IAnalytics> analytics = new();
         private readonly Holder<IReview> review = new();
         private readonly Holder<ILeaderboards> leaderboards = new();
+        private readonly Holder<IRemote> remote = new();
 
 
 
@@ -99,6 +105,8 @@ namespace DevNote
             _analyticsSelectedServiceText.text = analytics.Item.GetType().Name.Replace("AnalyticsService", string.Empty);
             _reviewSelectedServiceText.text = review.Item.GetType().Name.Replace("ReviewService", string.Empty);
             _leaderboardSelectedServiceText.text = leaderboards.Item.GetType().Name.Replace("LeaderboardsService", string.Empty);
+            _remoteSelectedServiceText.text = remote.Item.GetType().Name.Replace("RemoteService", string.Empty);
+
 
             var usedSaveTime = ISave.UsedSaveTime;
             _usedSaveTimeText.text = usedSaveTime.ToString();
@@ -119,8 +127,10 @@ namespace DevNote
             _purchasesProductPriceText.text = _purchasesProductPriceText.text.Replace("<price>", priceValue);
             _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", IProductKey.NoAds.ToString());
 
-            DisplayPurchaseButton();
+            bool remoteValue = remote.Item.GetBool(IRemoteKey.Test);
+            _remoteTestValueText.text = $"Test: {remoteValue}";
 
+            DisplayPurchaseButton();
         }
 
         private void DisplayPurchaseButton()
