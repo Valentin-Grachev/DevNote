@@ -1,20 +1,30 @@
 using System;
+using System.Collections.Generic;
 
 namespace DevNote
 {
     public interface IRemote : ISelectableService, IInitializable
     {
-        public string GetString(string remoteKey);
 
-
-        public bool GetBool(string remoteKey) => GetString(remoteKey).FromBinaryToBool();
-        public int GetInt(string remoteKey) => int.Parse(GetString(remoteKey));
-        public float GetFloat(string remoteKey) => float.Parse(GetString(remoteKey));
+        protected Dictionary<string, string> Values { get; }
 
 
 
-        protected static Exception UndefinedKeyException(Type serviceType, string remoteKey) 
-            => new Exception($"[{serviceType.Name}] Undefined remote key: {remoteKey}");
+        public string GetString(string remoteKey, string defaultValue = "") 
+            => Values.ContainsKey(remoteKey) ? Values[remoteKey] : defaultValue;
+
+        public bool GetBool(string remoteKey, bool defaultValue = false)
+            => Values.ContainsKey(remoteKey) ? Values[remoteKey].FromBinaryToBool() : defaultValue;
+
+        public int GetInt(string remoteKey, int defaultValue = 0) 
+            => Values.ContainsKey(remoteKey) ? int.Parse(Values[remoteKey]) : defaultValue;
+
+        public float GetFloat(string remoteKey, float defaultValue = 0f) 
+            => Values.ContainsKey(remoteKey) ? float.Parse(Values[remoteKey]) : defaultValue;
+
+
+
+        public bool KeyExists(string remoteKey) => Values[remoteKey].Contains(remoteKey);
 
     }
 }

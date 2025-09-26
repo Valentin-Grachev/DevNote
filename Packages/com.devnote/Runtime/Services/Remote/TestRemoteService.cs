@@ -14,22 +14,19 @@ namespace DevNote
 
         [SerializeField] private List<RemoteData> _remoteData;
 
+        private Dictionary<string, string> _values;
 
         bool ISelectableService.IsAvailableForSelection => true;
         bool IInitializable.Initialized => true;
-        void IInitializable.Initialize() { }
 
+        Dictionary<string, string> IRemote.Values => _values;
 
-        string IRemote.GetString(string remoteKey)
+        void IInitializable.Initialize() 
         {
-            int index = _remoteData.FindIndex((data) => data.key == remoteKey);
-
-            if (index == -1) 
-                throw IRemote.UndefinedKeyException(GetType(), remoteKey);
-
-            return _remoteData[index].value;
+            _values = new();
+            foreach (var remoteData in _remoteData)
+                _values.Add(remoteData.key, remoteData.value);
         }
-
 
         
     }

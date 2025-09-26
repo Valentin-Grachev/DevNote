@@ -13,13 +13,7 @@ namespace DevNote.SDK.YandexGames
 
         bool IInitializable.Initialized => _initialized;
 
-        string IRemote.GetString(string remoteKey)
-        {
-            if (!_values.ContainsKey(remoteKey))
-                throw IRemote.UndefinedKeyException(GetType(), remoteKey);
-
-            return _values[remoteKey];
-        }
+        Dictionary<string, string> IRemote.Values => _values;
 
 
         async void IInitializable.Initialize()
