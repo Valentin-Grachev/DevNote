@@ -31,6 +31,7 @@ namespace DevNote.SDK.Test
 
         void IEnvironment.GameReady() => Debug.Log($"{Info.Prefix} Game ready");
 
+        void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
     }
 }
 

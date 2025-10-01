@@ -23,7 +23,9 @@ namespace DevNote.SDK.Test
 
         void IAds.ShowInterstitial(string key, Action<AdShowStatus> callback)
         {
-            var status = IAds.InterstitialCooldownPassed ? AdShowStatus.Success : AdShowStatus.CooldownNotFinished;
+            var status = AdShowStatus.Success;
+            if (IGameState.NoAdsPurchased.Value) status = AdShowStatus.NoAdsPurchased;
+            else if (!IAds.InterstitialCooldownPassed) status = AdShowStatus.CooldownNotFinished;
 
             Debug.Log($"{Info.Prefix} Show intertstitial. Key: \"{key}\", Status: {status}");
             IAds.InvokeInterstitialCallback(callback, key, status);
@@ -31,7 +33,7 @@ namespace DevNote.SDK.Test
 
         void IAds.ShowRewarded(string key, Action onRewarded, Action<AdShowStatus> callback)
         {
-            var status = IAds.InterstitialCooldownPassed ? AdShowStatus.Success : AdShowStatus.CooldownNotFinished;
+            var status = AdShowStatus.Success;
 
             Debug.Log($"{Info.Prefix} Show rewarded. Key: \"{key}\", Status: {status}");
             IAds.InvokeRewardedCallback(onRewarded, callback, key, status);

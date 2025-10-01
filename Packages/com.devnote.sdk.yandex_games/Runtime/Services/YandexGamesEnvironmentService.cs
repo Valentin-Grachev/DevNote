@@ -43,8 +43,7 @@ namespace DevNote.SDK.YandexGames
 
         void IEnvironment.GameReady() => YG_GameReady.GameReady();
 
-
-        
+        void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
     }
 
 }

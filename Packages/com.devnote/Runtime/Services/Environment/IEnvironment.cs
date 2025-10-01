@@ -49,7 +49,7 @@ namespace DevNote
         public Language DeviceLanguage { get; }
         public DeviceType DeviceType { get; }
         public void GameReady();
-
+        public void OpenURL(string url);
         
 
     }
