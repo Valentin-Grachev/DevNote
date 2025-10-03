@@ -42,13 +42,16 @@ namespace DevNote
             var remote = SelectAndRegisterService<IRemote>();
 
             RunInitialization(environment);
+            RunInitialization(remote);
+
+            await UniTask.WaitUntil(() => remote.Initialized);
+
             RunInitialization(save);
             RunInitialization(ads);
             RunInitialization(purchase);
             RunInitialization(analytics);
             RunInitialization(review);
             RunInitialization(leaderboards);
-            RunInitialization(remote);
             RunInitialization(_sound);
             RunInitialization(_googleTables);
             RunInitialization(_localization);

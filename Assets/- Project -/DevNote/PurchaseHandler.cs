@@ -12,7 +12,7 @@ public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
         switch (productKey)
         {
             case ProductKey.NoAds:
-                GameState.NoAdsPurchased.Value = true;
+                IGameState.NoAdsPurchased.Value = true;
                 break;
 
             default:

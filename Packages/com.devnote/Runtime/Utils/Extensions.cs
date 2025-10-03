@@ -40,6 +40,14 @@ namespace DevNote
             _ => throw new Exception($"Wrong convertion to bool: {value}"),
         };
 
+
+        public static void Add<T1, T2>(this Dictionary<T1, T2> toDictionary, Dictionary<T1, T2> dictionary)
+        {
+            foreach (var item in dictionary)
+                toDictionary.Add(item.Key, item.Value);
+        }
+
+
     }
 }
 

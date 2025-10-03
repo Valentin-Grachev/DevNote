@@ -3,32 +3,25 @@ using DevNote;
 using UnityEngine;
 
 
-public partial class GameState // Data
-{
-    public static ReactiveValue<bool> NoAdsPurchased => IGameState.NoAdsPurchased;
 
-
-
-}
-
-
-public partial class GameState : MonoBehaviour, IGameState // Parsing
+public class GameState : MonoBehaviour, IGameState // Parsing
 {
     int IGameState.Version => 1;
 
-
-
-    private const string NO_ADS_PURCHASED_KEY = "noAds";
-
     void IGameState.Parse(Dictionary<string, string> data)
     {
-        IGameState.NoAdsPurchased = new(bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED_KEY, "False")));
+        IGameState.ParseState(data);
     }
 
-    Dictionary<string, string> IGameState.ToDictionary() => new()
+    Dictionary<string, string> IGameState.ToDictionary()
     {
-        { NO_ADS_PURCHASED_KEY, NoAdsPurchased.ToString() },
-    };
+        var data = new Dictionary<string, string>()
+        {
+            IGameState.GetStateDictionary(),
+        };
+
+        return data;
+    }
 
 
     bool IGameState.TransferParsingAvailable => false;
