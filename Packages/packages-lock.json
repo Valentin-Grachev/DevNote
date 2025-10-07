@@ -19,14 +19,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3f35170ebf038eb7087bbd8777da1e6bd9ea3b5f"
+      "hash": "3ee2599ef938076eb08a2c96db4c1fc2e146b369"
     },
     "com.devnote.sdk.yandex_games": {
       "version": "https://github.com/Valentin-Grachev/DevNote.git?path=com.devnote.sdk.yandex_games",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3f35170ebf038eb7087bbd8777da1e6bd9ea3b5f"
+      "hash": "3ee2599ef938076eb08a2c96db4c1fc2e146b369"
     },
     "com.unity.2d.animation": {
       "version": "7.1.1",

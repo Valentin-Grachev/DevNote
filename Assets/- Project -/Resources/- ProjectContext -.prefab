@@ -246,12 +246,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startGameRequestMode: 1
   _tables:
-  - <Key>k__BackingField: Localization
+  - <Key>k__BackingField: 0
     _webId: 1Ot9GmV56KXw1yOx8APl6zpO9U1OzBwkHizHbOhJNGtY
     _gid: 0
   _loadables:
   - {fileID: 11400000, guid: 6dcce3436f24d66438d0c9220a443235, type: 2}
-  _openTable: Localization
+  _openTable: 0
 --- !u!1 &5757904575588715954
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +345,7 @@ Transform:
   - {fileID: 8785028290862818029}
   - {fileID: 1399254245610968488}
   - {fileID: 8646505135282260693}
+  - {fileID: 6612471203384007442}
   m_Father: {fileID: 6534107350484591515}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -380,6 +381,67 @@ MonoBehaviour:
   _leaderboardsServices:
   - {fileID: 8440678334525776269}
   - {fileID: 1596562408722734094}
+  _remoteServices:
+  - {fileID: 1780383693011175742}
+  - {fileID: 2306489931337580263}
+--- !u!1 &5987668214881813949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6612471203384007442}
+  - component: {fileID: 2306489931337580263}
+  - component: {fileID: 1780383693011175742}
+  m_Layer: 0
+  m_Name: Remote
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6612471203384007442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987668214881813949}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4020861219779086674}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2306489931337580263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987668214881813949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f30bd6d5baf03b41816e800746a72cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _remoteData: []
+--- !u!114 &1780383693011175742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987668214881813949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ff6d903fd404647ab6c6f395c3d23a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6259500352824893252
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testVersion: 1
-  _environmentKey: YandexGames
+  _environmentKey: 1
   _gameState: {fileID: 5144421767994305594}
   _purchaseHandler: {fileID: 5410525825226000994}
   _serviceSelector: {fileID: 2552094838235886111}
@@ -1173,6 +1235,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: CheckServiceInit
       objectReference: {fileID: 0}
+    - target: {fileID: 2359398796574813806, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359398796574813806, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359398796574813806, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2359398796574813806, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2972607074257456400, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1202,6 +1280,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6407802138835569967, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479059786296870490, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479059786296870490, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479059786296870490, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479059786296870490, guid: 23fd7b162b1d0284991bb2bda743d140, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
