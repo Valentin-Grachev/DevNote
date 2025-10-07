@@ -6,7 +6,7 @@ namespace DevNote
 {
     public abstract class LoadableFromTable : ScriptableObject
     {
-        public abstract void LoadData(Dictionary<string, Table> tables);
+        public abstract void LoadData(Dictionary<TableKey, Table> tables);
 
     }
 }

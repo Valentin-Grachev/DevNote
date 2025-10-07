@@ -8,18 +8,18 @@ namespace DevNote
     {
         [Serializable] private struct RemoteData
         {
-            public string key;
+            public RemoteKey key;
             public string value;
         }
 
         [SerializeField] private List<RemoteData> _remoteData;
 
-        private Dictionary<string, string> _values;
+        private Dictionary<RemoteKey, string> _values;
 
         bool ISelectableService.IsAvailableForSelection => true;
         bool IInitializable.Initialized => true;
 
-        Dictionary<string, string> IRemote.Values => _values;
+        Dictionary<RemoteKey, string> IRemote.Values => _values;
 
         void IInitializable.Initialize() 
         {

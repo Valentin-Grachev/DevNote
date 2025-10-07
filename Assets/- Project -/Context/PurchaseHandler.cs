@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
 {
-    List<string> IPurchaseHandler.ConsumableProductKeys => new();
+    List<ProductKey> IPurchaseHandler.ConsumableProductKeys => new();
 
 
-    void IPurchaseHandler.HandlePurchase(string productKey)
+    void IPurchaseHandler.HandlePurchase(ProductKey productKey)
     {
         switch (productKey)
         {

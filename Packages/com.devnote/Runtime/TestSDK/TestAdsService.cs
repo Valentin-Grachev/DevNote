@@ -21,7 +21,7 @@ namespace DevNote.SDK.Test
             Debug.Log($"{Info.Prefix} Set banner {active}");
         }
 
-        void IAds.ShowInterstitial(string key, Action<AdShowStatus> callback)
+        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             var status = AdShowStatus.Success;
             if (IGameState.NoAdsPurchased.Value) status = AdShowStatus.NoAdsPurchased;
@@ -31,7 +31,7 @@ namespace DevNote.SDK.Test
             IAds.InvokeInterstitialCallback(callback, key, status);
         }
 
-        void IAds.ShowRewarded(string key, Action onRewarded, Action<AdShowStatus> callback)
+        void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
             var status = AdShowStatus.Success;
 

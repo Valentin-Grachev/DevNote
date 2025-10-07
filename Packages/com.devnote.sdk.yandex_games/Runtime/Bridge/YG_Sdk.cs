@@ -12,7 +12,7 @@ namespace DevNote.SDK.YandexGames
         public static bool IsAvailableForSelection =>
             IEnvironment.IsEditor == false &&
             IEnvironment.PlatformType == PlatformType.WebGL &&
-            IEnvironment.EnvironmentKey == IEnvironmentKey.YandexGames;
+            IEnvironment.EnvironmentKey == EnvironmentKey.YandexGames;
 
 
         private void Awake()

@@ -7,12 +7,12 @@ namespace DevNote
         private static IPurchaseHandler _handler;
         public static void SetHandler(IPurchaseHandler handler) => _handler = handler;
 
-        public static void HandlePurchaseStatic(string productKey) => _handler.HandlePurchase(productKey);
-        public static bool ProductIsConsumable(string productKey) => _handler.ConsumableProductKeys.Contains(productKey);
+        public static void HandlePurchaseStatic(ProductKey productKey) => _handler.HandlePurchase(productKey);
+        public static bool ProductIsConsumable(ProductKey productKey) => _handler.ConsumableProductKeys.Contains(productKey);
 
 
-        protected abstract void HandlePurchase(string productKey);
-        protected abstract List<string> ConsumableProductKeys { get; }
+        protected abstract void HandlePurchase(ProductKey productKey);
+        protected abstract List<ProductKey> ConsumableProductKeys { get; }
 
     }
 }

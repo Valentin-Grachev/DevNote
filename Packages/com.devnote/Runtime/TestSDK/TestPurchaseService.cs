@@ -11,11 +11,11 @@ namespace DevNote.SDK.Test
 
         
 
-        string IPurchase.GetPriceString(string productKey) => $"${productKey}";
+        string IPurchase.GetPriceString(ProductKey productKey) => $"${productKey}";
 
         void IInitializable.Initialize() { }
 
-        void IPurchase.Purchase(string productKey, Action onSuccess, Action onError)
+        void IPurchase.Purchase(ProductKey productKey, Action onSuccess, Action onError)
         {
             IPurchase.InvokeHandlePurchaseCallback(productKey, success: true, onSuccess, onError);
             onSuccess?.Invoke();

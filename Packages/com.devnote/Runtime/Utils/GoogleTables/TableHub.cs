@@ -10,7 +10,7 @@ namespace DevNote
         [SerializeField] private List<LoadableFromTable> _loadables;
 
 
-        public override void LoadData(Dictionary<string, Table> tables)
+        public override void LoadData(Dictionary<TableKey, Table> tables)
         {
             foreach (var loadable in _loadables)
             {

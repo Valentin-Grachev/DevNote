@@ -10,7 +10,7 @@ namespace DevNote
     {
         [Header("DevNote " + Info.VERSION), Space]
         [SerializeField] private bool _testVersion;
-        [SerializeField] private string _environmentKey;
+        [SerializeField] private EnvironmentKey _environmentKey;
         [Space(10)]
         [SerializeField] private MonoBehaviour _gameState;
         [SerializeField] private MonoBehaviour _purchaseHandler;

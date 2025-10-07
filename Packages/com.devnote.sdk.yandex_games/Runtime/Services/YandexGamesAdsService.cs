@@ -22,7 +22,7 @@ namespace DevNote.SDK.YandexGames
             else YG_Ads.HideBanner();
         }
 
-        void IAds.ShowRewarded(string key, Action onRewarded, Action<AdShowStatus> callback)
+        void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
             if (IAds.SkipAds)
                 IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Success);
@@ -61,7 +61,7 @@ namespace DevNote.SDK.YandexGames
             }
         }
 
-        void IAds.ShowInterstitial(string key, Action<AdShowStatus> callback)
+        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             if (IAds.SkipAds)
                 IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.Success);

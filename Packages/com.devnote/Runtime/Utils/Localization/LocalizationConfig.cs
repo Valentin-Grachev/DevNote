@@ -13,7 +13,10 @@ namespace DevNote
             public Language language;
             public Column column;
         }
+
         [field: SerializeField] public Language DefaultLanguage { get; private set; }
+
+        [SerializeField] private List<TableKey> _loadableTableKeys;
 
         [SerializeField] private List<LanguageData> _availableLanguages;
         [field: SerializeField] public List<Translation> Translations { get; private set; }
@@ -23,32 +26,37 @@ namespace DevNote
             => _availableLanguages.Exists(data => data.language == language);
 
 
-        public override void LoadData(Dictionary<string, Table> tables)
+        public override void LoadData(Dictionary<TableKey, Table> tables)
         {
             Translations = new();
 
-            var table = tables[ITableKey.Localization];
-
-            for (int i = 2; i <= table.Rows; i++)
+            foreach (var tableKey in _loadableTableKeys)
             {
-                string key = table.Get(row: i, column: 0);
-                List<(Language, string)> translations = new();
+                var table = tables[tableKey];
 
-                for (int j = 0; j < table.Columns; j++)
+                for (int i = 2; i <= table.Rows; i++)
                 {
-                    var column = (Column)j;
+                    string key = table.Get(row: i, column: 0);
+                    List<(Language, string)> translations = new();
 
-                    int languageIndex = _availableLanguages.FindIndex(data => data.column == column);
-                    if (languageIndex != -1)
+                    for (int j = 0; j < table.Columns; j++)
                     {
-                        Language language = _availableLanguages[languageIndex].language;
-                        string value = table.Get(row: i, column);
-                        translations.Add((language, value));
-                    }
-                }
+                        var column = (Column)j;
 
-                Translations.Add(new Translation(key, translations));
+                        int languageIndex = _availableLanguages.FindIndex(data => data.column == column);
+                        if (languageIndex != -1)
+                        {
+                            Language language = _availableLanguages[languageIndex].language;
+                            string value = table.Get(row: i, column);
+                            translations.Add((language, value));
+                        }
+                    }
+
+                    Translations.Add(new Translation(key, translations));
+                }
             }
+
+            
         }
     }
 }

@@ -48,6 +48,11 @@ namespace DevNote
         }
 
 
+        public static T ToEnum<T>(this string enumString) where T : Enum 
+            => (T)Enum.Parse(typeof(T), enumString);
+
+
+
     }
 }
 

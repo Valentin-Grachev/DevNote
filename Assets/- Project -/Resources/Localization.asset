@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Localization
   m_EditorClassIdentifier: 
   <DefaultLanguage>k__BackingField: 1
+  _loadableTableKeys: 00000000
   _availableLanguages:
   - language: 0
     column: 1

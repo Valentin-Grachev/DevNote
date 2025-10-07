@@ -7,13 +7,13 @@ namespace DevNote.SDK.YandexGames
     public class YandexGamesRemoteService : MonoBehaviour, IRemote
     {
         private bool _initialized = false;
-        private Dictionary<string, string> _values;
+        private Dictionary<RemoteKey, string> _values;
 
         bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
 
         bool IInitializable.Initialized => _initialized;
 
-        Dictionary<string, string> IRemote.Values => _values;
+        Dictionary<RemoteKey, string> IRemote.Values => _values;
 
 
         async void IInitializable.Initialize()
@@ -29,9 +29,9 @@ namespace DevNote.SDK.YandexGames
             });
         }
 
-        private Dictionary<string, string> ParseJson(string json)
+        private Dictionary<RemoteKey, string> ParseJson(string json)
         {
-            var values = new Dictionary<string, string>();
+            var values = new Dictionary<RemoteKey, string>();
 
             json = json.Trim().TrimStart('{').TrimEnd('}').Trim();
 
@@ -45,7 +45,7 @@ namespace DevNote.SDK.YandexGames
 
                     if (keyValue.Length == 2)
                     {
-                        string key = keyValue[0].Trim().Trim('"');
+                        var key = keyValue[0].Trim().Trim('"').ToEnum<RemoteKey>();
                         string value = keyValue[1].Trim().Trim('"');
 
                         values[key] = value;

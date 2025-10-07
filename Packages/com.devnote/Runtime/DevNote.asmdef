@@ -4,7 +4,8 @@
     "references": [
         "NaughtyAttributes.Core",
         "Unity.TextMeshPro",
-        "UniTask"
+        "UniTask",
+        "Keys"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -12,7 +12,7 @@ namespace DevNote.SDK.Test
 
         void IInitializable.Initialize() { }
 
-        void ILeaderboards.SetScore(int value, string leaderboardKey)
+        void ILeaderboards.SetScore(int value, LeaderboardKey leaderboardKey)
         {
             Debug.Log($"{Info.Prefix} Leaderboard \"{leaderboardKey}\": Set score {value}");
         }

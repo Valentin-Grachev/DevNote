@@ -123,11 +123,11 @@ namespace DevNote
             string controlValue = environment.Item.DeviceType.ToString();
             _environmentDeviceTypeText.text = _environmentDeviceTypeText.text.Replace("<device>", controlValue);
 
-            string priceValue = purchase.Item.GetPriceString(IProductKey.NoAds);
+            string priceValue = purchase.Item.GetPriceString(ProductKey.NoAds);
             _purchasesProductPriceText.text = _purchasesProductPriceText.text.Replace("<price>", priceValue);
-            _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", IProductKey.NoAds.ToString());
+            _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", ProductKey.NoAds.ToString());
 
-            bool remoteValue = remote.Item.GetBool(IRemoteKey.Test);
+            bool remoteValue = remote.Item.GetBool(RemoteKey.Test);
             _remoteTestValueText.text = $"Test: {remoteValue}";
 
             DisplayPurchaseButton();
@@ -158,7 +158,7 @@ namespace DevNote
         {
             _purchasesPurchaseButton.image.material = _pendingMaterial;
 
-            purchase.Item.Purchase(IProductKey.NoAds,
+            purchase.Item.Purchase(ProductKey.NoAds,
                 onSuccess: () => DisplayPurchaseButton(),
                 onError: () => _purchasesPurchaseButton.image.material = _errorMaterial);
         }

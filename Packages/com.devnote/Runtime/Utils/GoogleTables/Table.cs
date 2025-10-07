@@ -17,7 +17,7 @@ namespace DevNote
         public enum LoadingStatus { Loading, Success, Error }
 
 
-        [field: SerializeField] public string Key { get; private set; }
+        [field: SerializeField] public TableKey Key { get; private set; }
         [Space(10)]
         [SerializeField] private string _webId;
         [SerializeField] private string _gid;

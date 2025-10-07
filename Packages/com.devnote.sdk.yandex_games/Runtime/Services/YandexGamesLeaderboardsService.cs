@@ -12,7 +12,7 @@ namespace DevNote.SDK.YandexGames
 
         void IInitializable.Initialize() { }
 
-        void ILeaderboards.SetScore(int value, string leaderboardKey) 
+        void ILeaderboards.SetScore(int value, LeaderboardKey leaderboardKey) 
             => YG_Leaderboards.SetLeaderboardScore(leaderboardKey.ToString(), value);
 
 

@@ -1,11 +1,7 @@
 {
-    "name": "DevNote.SDK.YandexGames",
+    "name": "Keys",
     "rootNamespace": "",
-    "references": [
-        "UniTask",
-        "DevNote",
-        "Keys"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

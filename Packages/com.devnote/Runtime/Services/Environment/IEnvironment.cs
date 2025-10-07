@@ -5,7 +5,7 @@ namespace DevNote
     public interface IEnvironment : IInitializable, ISelectableService
     {
         public static bool IsTest { get; set; }
-        public static string EnvironmentKey { get; set; }
+        public static EnvironmentKey EnvironmentKey { get; set; }
 
         protected static DateTime StartGameTime { get; set; }
 
