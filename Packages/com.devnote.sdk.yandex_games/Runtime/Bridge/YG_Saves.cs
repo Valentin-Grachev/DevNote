@@ -43,9 +43,6 @@ namespace DevNote.SDK.YandexGames
 
 
 
-
-
-
         #region Internal
 
         private static bool _playerInitialized = false;

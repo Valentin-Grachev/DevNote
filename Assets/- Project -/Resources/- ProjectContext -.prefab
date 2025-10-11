@@ -246,12 +246,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startGameRequestMode: 1
   _tables:
-  - <Key>k__BackingField: Localization
+  - <Key>k__BackingField: 0
     _webId: 1Ot9GmV56KXw1yOx8APl6zpO9U1OzBwkHizHbOhJNGtY
     _gid: 0
   _loadables:
   - {fileID: 11400000, guid: 6dcce3436f24d66438d0c9220a443235, type: 2}
-  _openTable: Localization
+  _openTable: 0
 --- !u!1 &4697947235498327650
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,8 +442,8 @@ MonoBehaviour:
   - {fileID: 7003572554124297371}
   - {fileID: 1596562408722734094}
   _remoteServices:
-  - {fileID: 4629814693589485523}
   - {fileID: 7241609361578475195}
+  - {fileID: 4629814693589485523}
 --- !u!1 &6259500352824893252
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testVersion: 1
-  _environmentKey: 0
+  _environmentKey: 1
   _gameState: {fileID: 5144421767994305594}
   _purchaseHandler: {fileID: 5410525825226000994}
   _serviceSelector: {fileID: 2552094838235886111}

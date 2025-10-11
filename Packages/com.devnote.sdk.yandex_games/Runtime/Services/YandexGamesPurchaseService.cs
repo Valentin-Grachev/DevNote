@@ -16,6 +16,8 @@ namespace DevNote.SDK.YandexGames
         bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
         bool IInitializable.Initialized => _initialized;
 
+        bool IPurchase.PlatformIsSupportsPurchases => true;
+
         async void IInitializable.Initialize()
         {
             await UniTask.WaitUntil(() => YG_Purchases.available && save.Item.Initialized);

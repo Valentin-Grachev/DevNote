@@ -65,6 +65,10 @@ mergeInto(LibraryManager.library, {
     
   },
 
+  _GetServerTime: function() {
+    return sdk.serverTime();
+  },
+
 
   ShowRewarded: function () {
     
@@ -135,7 +139,7 @@ mergeInto(LibraryManager.library, {
     
   },
 
-  SendSaves: function (data, timeData) {
+  SendSaves: function (data) {
     
     // === SDK недоступен ===
     if (!player.setData) {
@@ -145,9 +149,8 @@ mergeInto(LibraryManager.library, {
     }
 
     // === Обработка ===
-    player.setData({
-      data: UTF8ToString(data), time: UTF8ToString(timeData), flush: false,
-    }).then(() => {
+    player.setData({ data: UTF8ToString(data) })
+    .then(() => {
       unity.SendMessage('YandexGames', 'HTML_OnSavesSent', 1);
       console.log('Player saves sent');
     });
@@ -165,7 +168,7 @@ mergeInto(LibraryManager.library, {
       
       if (data.data) 
       {
-        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', JSON.stringify({ data: data.data, time: data.time }));
+        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', data.data);
         console.log('Player saves received');
       }
       else 
@@ -183,22 +186,17 @@ mergeInto(LibraryManager.library, {
 
   RequestReview: function () {
 
-    // === SDK недоступен ===
-    if (!sdk.feedback.canReview) {
-      console.log("Yandex review not available!");
-      return;
-    }
-    
     // === Обработка ===
     sdk.feedback.canReview()
       .then(({ value, reason }) => {
         if (value) {
           unity.SendMessage('YandexGames', 'HTML_OnReviewOpened');
-          sdk.feedback.requestReview()
-            .then(({ feedbackSent }) => {
-              console.log(feedbackSent);
-              unity.SendMessage('YandexGames', 'HTML_OnReviewClosed');
-            })
+
+          sdk.feedback.requestReview().then(({ feedbackSent }) => {
+            console.log(feedbackSent);
+            unity.SendMessage('YandexGames', 'HTML_OnReviewClosed');
+          })
+          
         } else {
           console.log(reason)
         }

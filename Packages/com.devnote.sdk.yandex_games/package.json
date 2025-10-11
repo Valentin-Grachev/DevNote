@@ -1,7 +1,7 @@
 {
   "name": "com.devnote.sdk.yandex_games",
   "displayName": "Yandex Games (DevNote SDK)",
-  "version": "1.2.0",
+  "version": "1.2.4",
   "author": {
     "name": "DevNote Studio"
   }

@@ -9,7 +9,7 @@ namespace DevNote.SDK.Test
 
         bool ISelectableService.IsAvailableForSelection => true;
 
-        
+        bool IPurchase.PlatformIsSupportsPurchases => true;
 
         string IPurchase.GetPriceString(ProductKey productKey) => $"${productKey}";
 

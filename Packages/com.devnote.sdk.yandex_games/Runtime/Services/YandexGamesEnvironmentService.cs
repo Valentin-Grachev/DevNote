@@ -14,8 +14,6 @@ namespace DevNote.SDK.YandexGames
         bool IInitializable.Initialized => _initialized;
         async void IInitializable.Initialize()
         {
-            IEnvironment.StartGameTime = DateTime.Now;
-
             var sdkPrefab = Resources.Load<YG_Sdk>("YandexGames");
 
             var sdkObject = Instantiate(sdkPrefab, parent: null);
@@ -32,6 +30,9 @@ namespace DevNote.SDK.YandexGames
                 "tr" => Language.TR,
                 _ => Language.EN
             };
+
+
+            IEnvironment.StartGameUtcTime = YG_Sdk.GetServerTime();
 
             _initialized = true;
         }

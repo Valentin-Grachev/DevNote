@@ -19,7 +19,7 @@ namespace DevNote.SDK.Test
         async void IInitializable.Initialize() 
         { 
             await UniTask.WaitForSeconds(_delayBeforeInitialization);
-            IEnvironment.StartGameTime = DateTime.Now;
+            IEnvironment.StartGameUtcTime = DateTime.Now;
             _initialized = true;
         }
 

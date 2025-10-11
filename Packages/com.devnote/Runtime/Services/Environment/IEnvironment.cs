@@ -7,9 +7,9 @@ namespace DevNote
         public static bool IsTest { get; set; }
         public static EnvironmentKey EnvironmentKey { get; set; }
 
-        protected static DateTime StartGameTime { get; set; }
+        protected static DateTime StartGameUtcTime { get; set; }
 
-        public static DateTime Time => StartGameTime.AddSeconds(UnityEngine.Time.realtimeSinceStartup);
+        public static DateTime UtcTime => StartGameUtcTime.AddSeconds(UnityEngine.Time.realtimeSinceStartup);
 
         public static PlatformType PlatformType
         {

@@ -47,7 +47,7 @@ namespace DevNote
 
         public static string Encode(Dictionary<string, string> dictionary)
         {
-            var time = IEnvironment.Time;
+            var time = IEnvironment.UtcTime;
             string originData = ToDataString(dictionary);
             return $"{IGameState.VersionPrefix}{S.ENCODER}{time}{S.ENCODER}" + Compress(originData);
         }

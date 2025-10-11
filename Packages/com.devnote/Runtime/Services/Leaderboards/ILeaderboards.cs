@@ -4,11 +4,11 @@ namespace DevNote
     public interface ILeaderboards : ISelectableService, IInitializable
     {
         
-        public bool LeaderboardsIsSupported { get; }
+        public bool PlatformIsSupportsLeaderboards { get; }
 
         public void SetScore(int value, LeaderboardKey leaderboardKey = LeaderboardKey.Default);
 
-
+        public void OpenLeaderboard(LeaderboardKey leaderboardKey = LeaderboardKey.Default);
 
     }
 }

@@ -7,6 +7,9 @@ namespace DevNote
         public delegate void OnPurchaseHandle(ProductKey productKey, bool success);
         public static event OnPurchaseHandle OnPurchaseHandled;
 
+
+        public bool PlatformIsSupportsPurchases { get; }
+
         public string GetPriceString(ProductKey productKey);
         public void Purchase(ProductKey productKey, Action onSuccess = null, Action onError = null);
 

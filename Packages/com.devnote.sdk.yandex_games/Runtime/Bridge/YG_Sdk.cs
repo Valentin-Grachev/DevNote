@@ -22,6 +22,18 @@ namespace DevNote.SDK.YandexGames
         }
 
 
+        public static DateTime GetServerTime()
+        {
+            long milliseconds = 0;
+
+#if UNITY_WEBGL
+            milliseconds = (long)_GetServerTime();
+#endif
+
+            return DateTime.UnixEpoch.AddMilliseconds(milliseconds);
+        }
+
+
 
         private static bool _sdkInitialized = false;
         public static bool available 
@@ -69,6 +81,7 @@ namespace DevNote.SDK.YandexGames
 
 #if UNITY_WEBGL
         [DllImport("__Internal")] private static extern string RequestLanguage();
+        [DllImport("__Internal")] private static extern double _GetServerTime();
         [DllImport("__Internal")] private static extern void CheckSdkInit();
         [DllImport("__Internal")] private static extern void _GetDeviceType();
 #endif

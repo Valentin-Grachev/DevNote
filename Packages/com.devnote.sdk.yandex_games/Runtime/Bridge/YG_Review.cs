@@ -12,7 +12,7 @@ namespace DevNote.SDK.YandexGames
 
 
 
-        public static void Request(Action onOpened, Action onClosed)
+        public static void Request(Action onOpened = null, Action onClosed = null)
         {
             _onOpened = onOpened;
             _onClosed = onClosed;
