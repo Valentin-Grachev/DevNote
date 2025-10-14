@@ -6,6 +6,8 @@ namespace DevNote.SDK.YandexGames
 {
     public class YandexGamesSaveService : MonoBehaviour, ISave
     {
+        [SerializeField] private AutosaveSettings _autosaveSettings;
+
         private bool _initialized = false;
 
         
@@ -19,6 +21,8 @@ namespace DevNote.SDK.YandexGames
 
         async void IInitializable.Initialize()
         {
+            _autosaveSettings.Initialize();
+
             await UniTask.WaitUntil(() => YG_Saves.available);
             YG_Saves.InitializePlayer();
 
@@ -47,16 +51,6 @@ namespace DevNote.SDK.YandexGames
         }
 
 
-        void ISave.SaveLocal(Action onSuccess, Action onError)
-        {
-            if (ISave.SavesDeleted) { onError?.Invoke(); return; }
-
-            PlayerPrefs.SetString(ISave.DATA_KEY, IGameState.GetEncodedData());
-            PlayerPrefs.Save();
-
-            onSuccess?.Invoke();
-        }
-
         void ISave.SaveCloud(Action onSuccess, Action onError)
         {
             if (ISave.SavesDeleted) { onError?.Invoke(); return; }
@@ -74,11 +68,8 @@ namespace DevNote.SDK.YandexGames
             {
                 if (success)
                 {
-                    PlayerPrefs.SetString(ISave.DATA_KEY, string.Empty);
-                    PlayerPrefs.Save();
-
-                    onSuccess?.Invoke();
                     ISave.SetSavesAsDeleted();
+                    onSuccess?.Invoke();
                 }
                 else onError?.Invoke();
             });

@@ -1,16 +1,37 @@
+using System;
 using UnityEngine;
 
 namespace DevNote
 {
-    public class Autosave : MonoBehaviour
+    [Serializable] public class AutosaveSettings
     {
-        [SerializeField] private float _localSaveCooldown = 1f;
-        [SerializeField] private float _cloudSaveCooldown = 60f;
+        [SerializeField] private Autosave _autosave;
 
-        private readonly Holder<ISave> save = new();
+        [Space]
+        [SerializeField] private int _localSaveCooldown;
+        [SerializeField] private int _cloudSaveCooldown;
+
+        public void Initialize()
+        {
+            float localSaveCooldown = _localSaveCooldown > 0 ? _localSaveCooldown : float.MaxValue;
+            float cloudSaveCooldonw = _cloudSaveCooldown > 0 ? _cloudSaveCooldown : float.MaxValue;
+
+            _autosave.SetCooldowns(localSaveCooldown, cloudSaveCooldonw);
+        }
+    }
+
+
+
+        public class Autosave : MonoBehaviour
+    {
+        private float _localSaveCooldown = 1f;
+        private float _cloudSaveCooldown = 60f;
 
         private float _timeToLocalSave;
         private float _timeToCloudSave;
+
+        private readonly Holder<ISave> save = new();
+
 
         private void Awake()
         {
@@ -22,6 +43,13 @@ namespace DevNote
         {
             _timeToLocalSave = _localSaveCooldown;
             _timeToCloudSave = _cloudSaveCooldown;
+        }
+
+
+        public void SetCooldowns(float localSaveCooldown, float cloudSaveCooldown)
+        {
+            _timeToLocalSave = _localSaveCooldown = localSaveCooldown;
+            _timeToCloudSave = _cloudSaveCooldown = cloudSaveCooldown;
         }
 
 

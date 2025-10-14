@@ -24,78 +24,64 @@ namespace DevNote.SDK.YandexGames
 
         void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
-            if (IAds.SkipAds)
-                IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Success);
+            if (IAds.TryInternalHandleRewarded(onRewarded, callback, key)) return;
 
-            else
+            bool rewarded = false;
+            bool error = false;
+
+            YG_Ads.ShowRewarded((action) =>
             {
-                bool rewarded = false;
-                bool error = false;
-
-                YG_Ads.ShowRewarded((action) =>
+                switch (action)
                 {
-                    switch (action)
-                    {
-                        case YG_Ads.RewardedAction.Opened:
-                            TimeMode.SetActive(TimeMode.Mode.Stop, true);
-                            break;
+                    case YG_Ads.RewardedAction.Opened:
+                        TimeMode.SetActive(TimeMode.Mode.Stop, true);
+                        break;
 
-                        case YG_Ads.RewardedAction.Failed:
-                            error = true;
-                            break;
+                    case YG_Ads.RewardedAction.Failed:
+                        error = true;
+                        break;
 
-                        case YG_Ads.RewardedAction.Rewarded:
-                            rewarded = true;
-                            break;
+                    case YG_Ads.RewardedAction.Rewarded:
+                        rewarded = true;
+                        break;
 
-                        case YG_Ads.RewardedAction.Closed:
-                            TimeMode.SetActive(TimeMode.Mode.Stop, false);
+                    case YG_Ads.RewardedAction.Closed:
+                        TimeMode.SetActive(TimeMode.Mode.Stop, false);
 
-                            var status = !error && rewarded ? AdShowStatus.Success : AdShowStatus.Error;
-                            IAds.InvokeRewardedCallback(onRewarded, callback, key, status);
+                        var status = !error && rewarded ? AdShowStatus.Success : AdShowStatus.Error;
+                        IAds.InvokeRewardedCallback(onRewarded, callback, key, status);
 
-                            break;
-                    }
+                        break;
+                }
 
-                });
-            }
+            });
         }
 
         void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
-            if (IAds.SkipAds)
-                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.Success);
+            if (IAds.TryInternalHandleInterstitial(callback, key)) return;
 
-            else if (IGameState.NoAdsPurchased.Value)
-                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.NoAdsPurchased);
 
-            else if (!IAds.InterstitialCooldownPassed)
-                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.CooldownNotFinished);
+            bool interstitialWasShown = false;
+            TimeMode.SetActive(TimeMode.Mode.Stop, true);
 
-            else
+            YG_Ads.ShowInterstitial((action) =>
             {
-                bool interstitialWasShown = false;
-                TimeMode.SetActive(TimeMode.Mode.Stop, true);
-
-                YG_Ads.ShowInterstitial((action) =>
+                switch (action)
                 {
-                    switch (action)
-                    {
-                        case YG_Ads.InterstitialAction.Opened:
-                            interstitialWasShown = true;
-                            break;
+                    case YG_Ads.InterstitialAction.Opened:
+                        interstitialWasShown = true;
+                        break;
 
-                        case YG_Ads.InterstitialAction.Closed:
-                            TimeMode.SetActive(TimeMode.Mode.Stop, false);
+                    case YG_Ads.InterstitialAction.Closed:
+                        TimeMode.SetActive(TimeMode.Mode.Stop, false);
 
-                            var status = interstitialWasShown ? AdShowStatus.Success : AdShowStatus.Error;
-                            IAds.InvokeInterstitialCallback(callback, key, status);
+                        var status = interstitialWasShown ? AdShowStatus.Success : AdShowStatus.Error;
+                        IAds.InvokeInterstitialCallback(callback, key, status);
 
-                            break;
-                    }
-
-                });
-            }
+                        break;
+                }
+            });
         }
     }
 }

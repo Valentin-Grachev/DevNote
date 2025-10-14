@@ -36,7 +36,7 @@ namespace DevNote.SDK.YandexGames
 
                     var purchasedProductKey = purchasedProductKeyString.ToEnum<ProductKey>();
 
-                    IPurchase.InvokeHandlePurchaseCallback(purchasedProductKey, success: true);
+                    IPurchase.InvokeHandlePurchase(purchasedProductKey, success: true);
 
                     if (IPurchaseHandler.ProductIsConsumable(purchasedProductKey))
                         YG_Purchases.Consume(purchasedProductKeyString);
@@ -75,7 +75,7 @@ namespace DevNote.SDK.YandexGames
                         YG_Purchases.Consume(productKey.ToString());
                 }
 
-                IPurchase.InvokeHandlePurchaseCallback(productKey, success, onSuccess, onError);
+                IPurchase.InvokeHandlePurchase(productKey, success, onSuccess, onError);
             });
             
         }

@@ -14,7 +14,7 @@ namespace DevNote
         public void Purchase(ProductKey productKey, Action onSuccess = null, Action onError = null);
 
 
-        public static void InvokeHandlePurchaseCallback(ProductKey productKey, bool success, Action onSuccess = null, Action onError = null)
+        public static void InvokeHandlePurchase(ProductKey productKey, bool success, Action onSuccess = null, Action onError = null)
         {
             if (success) IPurchaseHandler.HandlePurchaseStatic(productKey);
 

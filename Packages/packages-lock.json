@@ -20,6 +20,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.devnote.sdk.game_push": {
+      "version": "file:com.devnote.sdk.game_push",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.devnote.sdk.yandex_games": {
       "version": "file:com.devnote.sdk.yandex_games",
       "depth": 0,

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DevNote
 {
-    public partial interface IAds : IInitializable, ISelectableService // Interface
+    public interface IAds : IInitializable, ISelectableService
     {
         public bool RewardedAvailable { get; }
         public bool InterstitialAvailable { get; }
@@ -14,10 +14,10 @@ namespace DevNote
         public void ShowInterstitial(AdKey key = AdKey.Default, Action<AdShowStatus> callback = null);
         public void SetBanner(bool active);
 
-    }
 
-    public partial interface IAds // Handlers
-    {
+
+
+
         public delegate void OnAdShow(AdKey key, AdShowStatus status);
         public static event OnAdShow OnInterstitialShown, OnRewardedShown;
 
@@ -49,6 +49,45 @@ namespace DevNote
             callback?.Invoke(status);
             OnRewardedShown?.Invoke(key, status);
         }
+
+        protected static bool TryInternalHandleRewarded(Action onRewarded, Action<AdShowStatus> callback, AdKey key)
+        {
+            if (SkipAds)
+            {
+                InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Success);
+                return true;
+            }
+
+            return false;
+        }
+
+
+        protected static bool TryInternalHandleInterstitial(Action<AdShowStatus> callback, AdKey key)
+        {
+            if (SkipAds)
+            {
+                InvokeInterstitialCallback(callback, key, AdShowStatus.Success);
+                return true;
+            }
+            else if (IGameState.NoAdsPurchased.Value)
+            {
+                InvokeInterstitialCallback(callback, key, AdShowStatus.NoAdsPurchased);
+                return true;
+            }
+            else if (!InterstitialCooldownPassed)
+            {
+                InvokeInterstitialCallback(callback, key, AdShowStatus.CooldownNotFinished);
+                return true;
+            }
+                
+            return false;
+        }
+
+
+
+
+
+
     }
 
 

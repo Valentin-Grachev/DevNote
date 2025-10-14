@@ -6,9 +6,9 @@ namespace DevNote
         
         public bool PlatformIsSupportsLeaderboards { get; }
 
-        public void SetScore(int value, LeaderboardKey leaderboardKey = LeaderboardKey.Default);
+        public void SetScore(int value, LeaderboardKey leaderboardKey = LeaderboardKey.Main);
 
-        public void OpenLeaderboard(LeaderboardKey leaderboardKey = LeaderboardKey.Default);
+        public void OpenLeaderboard(LeaderboardKey leaderboardKey = LeaderboardKey.Main);
 
     }
 }
