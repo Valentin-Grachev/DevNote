@@ -8,6 +8,8 @@ namespace DevNote.SDK.Test
 
         bool IInitializable.Initialized => true;
 
+        bool IReview.ReviewIsAvailable => true;
+
         void IInitializable.Initialize() { }
 
         void IReview.Rate() => Debug.Log($"{Info.Prefix} Review is requested");

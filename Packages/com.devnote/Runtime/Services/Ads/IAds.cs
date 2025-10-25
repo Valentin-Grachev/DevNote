@@ -34,8 +34,8 @@ namespace DevNote
             if (status == AdShowStatus.Success)
                 AdShowLastTime = Time.unscaledTime;
 
-            callback?.Invoke(status);
             OnInterstitialShown?.Invoke(key, status);
+            callback?.Invoke(status);
         }
 
         protected static void InvokeRewardedCallback(Action onRewarded, Action<AdShowStatus> callback, AdKey key, AdShowStatus status)
@@ -46,8 +46,8 @@ namespace DevNote
                 onRewarded?.Invoke();
             }
 
-            callback?.Invoke(status);
             OnRewardedShown?.Invoke(key, status);
+            callback?.Invoke(status);
         }
 
         protected static bool TryInternalHandleRewarded(Action onRewarded, Action<AdShowStatus> callback, AdKey key)

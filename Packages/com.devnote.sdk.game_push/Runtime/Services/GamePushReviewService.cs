@@ -9,6 +9,8 @@ namespace DevNote.SDK.GamePush
 
         bool ISelectableService.IsAvailableForSelection => GamePushEnvironmentService.IsAvailableForSelection;
 
+        bool IReview.ReviewIsAvailable => GP_App.CanReview() && !GP_App.IsAlreadyReviewed();
+
         void IInitializable.Initialize() { }
 
 

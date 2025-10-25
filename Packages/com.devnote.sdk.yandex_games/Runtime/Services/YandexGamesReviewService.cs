@@ -10,6 +10,7 @@ namespace DevNote.SDK.YandexGames
 
         bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
 
+        bool IReview.ReviewIsAvailable => true;
 
         void IInitializable.Initialize() { }
 
