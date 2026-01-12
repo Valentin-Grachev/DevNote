@@ -24,7 +24,7 @@ namespace DevNote
 
         public LoadingStatus Status { get; private set; }
 
-        private List<List<string>> _cells;
+        public List<List<string>> Cells { get; private set; }
 
         private string OpenURL => OPEN_URL_TEMPLATE.Replace("*", _webId) + "#gid=" + _gid;
         private const string OPEN_URL_TEMPLATE = "https://docs.google.com/spreadsheets/d/*/edit";
@@ -35,11 +35,8 @@ namespace DevNote
 
         public void OpenTable() => Application.OpenURL(OpenURL);
 
-
-        public string Get(int row, Column column) => _cells[row - 1][(int)column];
-
-        public int Rows => _cells.Count;
-        public int Columns => _cells[0].Count;
+        public int Rows => Cells.Count;
+        public int Columns => Cells[0].Count;
 
 
         public async UniTask RequestData()
@@ -53,7 +50,7 @@ namespace DevNote
                 if (request.result == UnityWebRequest.Result.Success)
                 {
                     string csvData = request.downloadHandler.text;
-                    _cells = CsvParcer.Parce(csvData);
+                    Cells = CsvParcer.Parce(csvData);
 
                     Status = LoadingStatus.Success;
                     Debug.Log($"{Info.Prefix} Table {Key} Success");

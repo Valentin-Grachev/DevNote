@@ -8,6 +8,7 @@ namespace DevNote.SDK.GamePush
 {
     public class GamePushSaveService : MonoBehaviour, ISave
     {
+        [SerializeField] private bool _useLocalSaves;
         [SerializeField] private AutosaveSettings _autosaveSettings;
 
         private bool _initialized = false;
@@ -37,7 +38,7 @@ namespace DevNote.SDK.GamePush
             var cloudTime = GameStateEncoder.GetSaveTime(cloudData);
             var localTime = GameStateEncoder.GetSaveTime(localData);
 
-            bool useCloud = cloudTime > localTime;
+            bool useCloud = cloudTime > localTime || !_useLocalSaves;
             string data = useCloud ? cloudData : localData;
 
             ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(data);
@@ -50,6 +51,8 @@ namespace DevNote.SDK.GamePush
 
         void ISave.SaveCloud(Action onSuccess, Action onError)
         {
+            if (ISave.SavesDeleted) { onError?.Invoke(); return; }
+
             _onSuccess = onSuccess;
             _onError = onError;
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace DevNote.SDK.Test
@@ -12,7 +13,11 @@ namespace DevNote.SDK.Test
 
         void IInitializable.Initialize() { }
 
-        void IReview.Rate() => Debug.Log($"{Info.Prefix} Review is requested");
+        void IReview.Rate(Action onGameRated, Action onRejected)
+        {
+            Debug.Log($"{Info.Prefix} Game rated");
+            IReview.GameRated(onGameRated);
+        }
     }
 }
 

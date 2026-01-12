@@ -6,18 +6,22 @@ namespace DevNote
     public interface IGameState
     {
         public static ReactiveValue<bool> NoAdsPurchased { get; private set; }
+        public static ReactiveValue<int> SaveVersion { get; private set; }
 
-        private const string NO_ADS_PURCHASED_KEY = "noAds";
+        private const string NO_ADS_PURCHASED = "noAds";
+        private const string SAVE_VERSION = "sVer";
 
 
         protected static void ParseState(Dictionary<string, string> data)
         {
-            NoAdsPurchased = new(bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED_KEY, "False")));
+            SaveVersion = new(int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0")));
+            NoAdsPurchased = new(bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED, $"{false}")));
         }
 
         protected static Dictionary<string, string> GetStateDictionary() => new()
         {
-            { NO_ADS_PURCHASED_KEY, NoAdsPurchased.ToString() },
+            { NO_ADS_PURCHASED, NoAdsPurchased.ToString() },
+            { SAVE_VERSION, SaveVersion.ToString() },
         };
 
 

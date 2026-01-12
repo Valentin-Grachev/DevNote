@@ -50,7 +50,14 @@ namespace DevNote
         public DeviceType DeviceType { get; }
         public void GameReady();
         public void OpenURL(string url);
-        
+
+        public void StartGameplay();
+        public void StopGameplay();
+
+
+        public void SetChannelMute(Sound.Channel channel, bool value);
+        public bool ChannelIsMuted(Sound.Channel channel);
+
 
     }
 

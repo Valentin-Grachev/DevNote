@@ -32,6 +32,11 @@ namespace DevNote
             onSuccess?.Invoke();
         }
 
+        public sealed void FullSave(Action onSuccess = null, Action onError = null)
+        {
+            SaveLocal();
+            SaveCloud(onSuccess, onError);
+        }
 
         public void SaveCloud(Action onSuccess = null, Action onError = null);
         public void DeleteSaves(Action onSuccess = null, Action onError = null);

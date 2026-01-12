@@ -14,7 +14,10 @@ namespace DevNote.SDK.YandexGames
         bool IAds.AdBlockEnabled => false;
 
 
-        void IInitializable.Initialize() { }
+        void IInitializable.Initialize() 
+        {
+            IAds.InterstitialCooldown = 60f;
+        }
 
         void IAds.SetBanner(bool active)
         {

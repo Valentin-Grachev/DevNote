@@ -29,6 +29,8 @@ namespace DevNote.SDK.YandexGames
             YG_Purchases.GetPurchasedProducts((purchasedProductKeys) =>
             {
                 _purchasedProductKeys = purchasedProductKeys;
+                bool hasConsumableProduct = false;
+
                 foreach (var purchasedProductKeyString in _purchasedProductKeys)
                 {
                     if (purchasedProductKeyString == string.Empty)
@@ -39,8 +41,13 @@ namespace DevNote.SDK.YandexGames
                     IPurchase.InvokeHandlePurchase(purchasedProductKey, success: true);
 
                     if (IPurchaseHandler.ProductIsConsumable(purchasedProductKey))
+                    {
                         YG_Purchases.Consume(purchasedProductKeyString);
+                        hasConsumableProduct = true;
+                    }  
                 }
+
+                if (hasConsumableProduct) save.Item.FullSave();
             });
 
             YG_Purchases.GetPrices((productPrices) =>
@@ -48,8 +55,6 @@ namespace DevNote.SDK.YandexGames
                 _productPrices = new();
                 foreach (var productPrice in productPrices)
                     _productPrices.Add(productPrice.Key.ToEnum<ProductKey>(), productPrice.Value);
-
-
             });
 
             await UniTask.WaitUntil(() => _purchasedProductKeys != null && _productPrices != null);
@@ -76,6 +81,8 @@ namespace DevNote.SDK.YandexGames
                 }
 
                 IPurchase.InvokeHandlePurchase(productKey, success, onSuccess, onError);
+
+                if (success) save.Item.FullSave();
             });
             
         }

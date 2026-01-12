@@ -82,7 +82,8 @@ namespace DevNote
                 return key;
             }
 
-            return _instance._tranlationDictionary[key].GetTranslation(CurrentLanguage);
+            return _instance._tranlationDictionary[key].GetTranslation(CurrentLanguage)
+                .Replace("\r", string.Empty);
         }
 
 

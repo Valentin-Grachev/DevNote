@@ -42,6 +42,11 @@ namespace DevNote
         private Orientation GetCurrentOrientation() 
             => Screen.width > Screen.height ? Orientation.Landscape : Orientation.Portrait;
 
+        public static void ForceUpdate()
+        {
+            OnResolutionChanged?.Invoke();
+            OnOrientationChanged?.Invoke();
+        }
 
 
     }

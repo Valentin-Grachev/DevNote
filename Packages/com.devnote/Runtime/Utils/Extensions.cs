@@ -11,7 +11,6 @@ namespace DevNote
         public static Color SetAlpha(this Color color, float alpha) 
             => new Color(color.r, color.g, color.b, alpha);
 
-        public static T GetRandom<T>(this List<T> list) => list[UnityEngine.Random.Range(0, list.Count)];
 
         public static Vector3 SetX(this Vector3 vector, float value) => new Vector3(value, vector.y, vector.z);
         public static Vector3 SetY(this Vector3 vector, float value) => new Vector3(vector.x, value, vector.z);
@@ -52,6 +51,9 @@ namespace DevNote
             => (T)Enum.Parse(typeof(T), enumString);
 
 
+
+        public static T GetRandom<T>(this List<T> list) => list[UnityEngine.Random.Range(0, list.Count)];
+
         public static void Shuffle<T>(this List<T> list)
         {
             int n = list.Count;
@@ -65,6 +67,30 @@ namespace DevNote
                 list[n] = value;
             }
         }
+
+        public static T FindOrException<T>(this List<T> list, Predicate<T> predicate)
+        {
+            int index = list.FindIndex(predicate);
+            if (index == -1) throw new Exception("List doesn't contain the desired value!");
+            return list[index];
+        }
+
+        public static bool TryFind<T>(this List<T> list, Predicate<T> predicate, out T value)
+        {
+            int index = list.FindIndex(predicate);
+            if (index == -1)
+            {
+                value = default;
+                return false;
+            }
+            else
+            {
+                value = list[index];
+                return true;
+            }
+        }
+
+
 
 
     }

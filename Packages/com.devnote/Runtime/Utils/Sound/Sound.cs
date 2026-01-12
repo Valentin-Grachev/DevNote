@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -9,7 +8,7 @@ namespace DevNote
     public class Sound : MonoBehaviour, IInitializable
     {
         public enum Channel { Music, SFX }
-        public static bool Initialized => _instance != null;
+        public static bool Initialized { get; private set; }
 
 
         public class Settings
@@ -64,6 +63,8 @@ namespace DevNote
             _musicAudioSource.outputAudioMixerGroup = _audioMixer.FindMatchingGroups("Music")[0];
 
             Settings.Apply();
+
+            Initialized = true;
         }
 
 

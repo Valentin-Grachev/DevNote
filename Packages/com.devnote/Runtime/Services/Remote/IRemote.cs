@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace DevNote
@@ -14,7 +13,22 @@ namespace DevNote
             => Values.ContainsKey(remoteKey) ? Values[remoteKey] : defaultValue;
 
         public bool GetBool(RemoteKey remoteKey, bool defaultValue = false)
-            => Values.ContainsKey(remoteKey) ? Values[remoteKey].FromBinaryToBool() : defaultValue;
+        {
+            if (Values.ContainsKey(remoteKey))
+            {
+                string stringValue = Values[remoteKey];
+
+                if (stringValue.ToLower() == "true")
+                    return true;
+
+                else if (stringValue.ToLower() == "false")
+                    return false;
+
+                else throw new System.Exception($"Wrong remote key bool format: {remoteKey} = {stringValue}");
+            }
+            
+            else return defaultValue;
+        }
 
         public int GetInt(RemoteKey remoteKey, int defaultValue = 0) 
             => Values.ContainsKey(remoteKey) ? int.Parse(Values[remoteKey]) : defaultValue;

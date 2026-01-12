@@ -12,6 +12,8 @@ namespace DevNote.SDK.GamePush
         private bool _successFetched = false;
         private Dictionary<ProductKey, string> _prices;
 
+        private readonly Holder<ISave> save = new();
+
         bool IPurchase.PlatformIsSupportsPurchases => GP_Payments.IsPaymentsAvailable();
 
         bool IInitializable.Initialized => _initialized;
@@ -27,7 +29,7 @@ namespace DevNote.SDK.GamePush
 
         async void IInitializable.Initialize()
         {
-            await UniTask.WaitUntil(() => GP_Init.isReady);
+            await UniTask.WaitUntil(() => GP_Init.isReady && save.Item.Initialized);
 
             bool productsFetchSuccess = false;
             bool purchasesFetchSuccess = false;
@@ -46,13 +48,22 @@ namespace DevNote.SDK.GamePush
             },
             onFetchPlayerPurchases: (playerPurchasesList) =>
             {
+                bool hasConsumableProduct = false;
                 foreach (var playerPurchase in playerPurchasesList)
                 {
                     ProductKey productKey = playerPurchase.tag.ToEnum<ProductKey>();
 
+                    IPurchase.InvokeHandlePurchase(productKey, success: true);
+
                     if (IPurchaseHandler.ProductIsConsumable(productKey))
+                    {
                         GP_Payments.Consume(productKey.ToString());
+                        hasConsumableProduct = true;
+                    } 
                 }
+
+                if (hasConsumableProduct) save.Item.FullSave();
+
                 purchasesFetchSuccess = true;
             }, 
             onFetchProductsError: () => isError = true);
@@ -75,6 +86,8 @@ namespace DevNote.SDK.GamePush
 
                     if (IPurchaseHandler.ProductIsConsumable(productKey))
                         GP_Payments.Consume(productKey.ToString());
+
+                    save.Item.FullSave();
                 },
                 onPurchaseError: () =>
                 {

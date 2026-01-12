@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -45,7 +44,24 @@ namespace DevNote.SDK.YandexGames
         void IEnvironment.GameReady() => YG_GameReady.GameReady();
 
         void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
+
+        void IEnvironment.StartGameplay() { }
+
+        void IEnvironment.StopGameplay() { }
+
+        void IEnvironment.SetChannelMute(Sound.Channel channel, bool value)
+        {
+            if (channel == Sound.Channel.Music)
+                Sound.Settings.MusicEnabled = !value;
+
+            if (channel == Sound.Channel.SFX)
+                Sound.Settings.SfxEnabled = !value;
+        }
+
+        bool IEnvironment.ChannelIsMuted(Sound.Channel channel)
+            => channel == Sound.Channel.Music ? !Sound.Settings.MusicEnabled : !Sound.Settings.SfxEnabled;
     }
+    
 
 }
 

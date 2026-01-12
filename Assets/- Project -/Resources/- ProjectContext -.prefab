@@ -275,7 +275,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2271676686073822452}
   - component: {fileID: 7241609361578475195}
-  - component: {fileID: 4629814693589485523}
   m_Layer: 0
   m_Name: Remote
   m_TagString: Untagged
@@ -312,19 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _remoteData:
   - key: 0
-    value: 0
---- !u!114 &4629814693589485523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4697947235498327650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28ff6d903fd404647ab6c6f395c3d23a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+    value: True
 --- !u!1 &5757904575588715954
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +451,7 @@ MonoBehaviour:
   - {fileID: 4856056519297636303}
   - {fileID: 7015754158051850859}
   _analyticsServices:
+  - {fileID: 5129125928556069717}
   - {fileID: 277298678872990553}
   _reviewServices:
   - {fileID: 8488859895849501058}
@@ -474,7 +462,6 @@ MonoBehaviour:
   - {fileID: 7003572554124297371}
   - {fileID: 1596562408722734094}
   _remoteServices:
-  - {fileID: 4629814693589485523}
   - {fileID: 7241609361578475195}
 --- !u!1 &6259500352824893252
 GameObject:
@@ -679,7 +666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _testVersion: 1
-  _environmentKey: 2
+  _environmentKey: 1
   _gameState: {fileID: 5144421767994305594}
   _purchaseHandler: {fileID: 5410525825226000994}
   _serviceSelector: {fileID: 2552094838235886111}
@@ -771,6 +758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded95f8f8d728984e883e154cbe3587e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _useLocalSaves: 0
   _autosaveSettings:
     _autosave: {fileID: 7249514994722003677}
     _localSaveCooldown: 1
@@ -921,6 +909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576015703bc1f914884b77e35b4dfa77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interstitialCooldown: 60
+  _noAdsDisableBanner: 1
 --- !u!114 &2820489054020795116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,6 +1090,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8785028290862818029}
+  - component: {fileID: 5129125928556069717}
   - component: {fileID: 277298678872990553}
   m_Layer: 0
   m_Name: Analytics
@@ -1123,6 +1114,20 @@ Transform:
   m_Father: {fileID: 4020861219779086674}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5129125928556069717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950268423520486393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db02fa25c054ae42990de0010690f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useInBuild: 1
+  _counterId: 102067635
 --- !u!114 &277298678872990553
 MonoBehaviour:
   m_ObjectHideFlags: 0

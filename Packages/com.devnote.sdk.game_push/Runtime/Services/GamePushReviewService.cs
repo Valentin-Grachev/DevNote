@@ -1,3 +1,4 @@
+using System;
 using GamePush;
 using UnityEngine;
 
@@ -13,10 +14,21 @@ namespace DevNote.SDK.GamePush
 
         void IInitializable.Initialize() { }
 
-
-        void IReview.Rate()
+        void IReview.Rate(Action onGameRated, Action onRejected)
         {
-            GP_App.ReviewRequest();
+            bool gameRated = false;
+
+            GP_App.ReviewRequest(
+            onReviewResult: (result) =>
+            {
+                IReview.GameRated(onGameRated);
+                gameRated = true;
+            },
+            onReviewClose: (error) =>
+            {
+                if (!gameRated) onRejected?.Invoke();
+            });
+
         }
     }
 }

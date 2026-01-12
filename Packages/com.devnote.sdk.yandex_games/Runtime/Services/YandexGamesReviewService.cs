@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -14,11 +15,11 @@ namespace DevNote.SDK.YandexGames
 
         void IInitializable.Initialize() { }
 
-        void IReview.Rate()
+        void IReview.Rate(Action onGameRated, Action onRejected)
         {
             YG_Review.Request();
+            IReview.GameRated(onGameRated);
         }
-
     }
 }
 

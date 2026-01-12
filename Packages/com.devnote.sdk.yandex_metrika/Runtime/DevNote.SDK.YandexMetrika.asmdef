@@ -1,11 +1,10 @@
 {
-    "name": "DevNote",
-    "rootNamespace": "DevNote",
+    "name": "DevNote.SDK.YandexMetrika",
+    "rootNamespace": "",
     "references": [
-        "NaughtyAttributes.Core",
-        "Unity.TextMeshPro",
         "UniTask",
-        "Keys"
+        "DevNote",
+        "NaughtyAttributes.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
