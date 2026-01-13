@@ -1,0 +1,8 @@
+{
+  "name": "com.devnote.sdk.yandex_metrika",
+  "displayName": "Yandex Metrika (DevNote SDK)",
+  "version": "1.0.1",
+  "author": {
+    "name": "DevNote Studio"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "name": "DevNote",
+    "rootNamespace": "DevNote",
+    "references": [
+        "NaughtyAttributes.Core",
+        "Unity.TextMeshPro",
+        "UniTask",
+        "Keys"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

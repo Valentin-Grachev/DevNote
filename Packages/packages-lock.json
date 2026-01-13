@@ -15,25 +15,28 @@
       "hash": "8a8fa5a9659a6d63f196391c71e06c4286c8acd7"
     },
     "com.devnote": {
-      "version": "https://github.com/Valentin-Grachev/DevNote.git?path=com.devnote",
+      "version": "file:com.devnote",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "13747a2a88c1304fd13c59f0a6e245b916492a5a"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.devnote.sdk.game_push": {
-      "version": "https://github.com/Valentin-Grachev/DevNote.git?path=com.devnote.sdk.game_push",
+      "version": "file:com.devnote.sdk.game_push",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "13747a2a88c1304fd13c59f0a6e245b916492a5a"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.devnote.sdk.yandex_games": {
-      "version": "https://github.com/Valentin-Grachev/DevNote.git?path=com.devnote.sdk.yandex_games",
+      "version": "file:com.devnote.sdk.yandex_games",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "13747a2a88c1304fd13c59f0a6e245b916492a5a"
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.devnote.sdk.yandex_metrika": {
+      "version": "file:com.devnote.sdk.yandex_metrika",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.2d.animation": {
       "version": "7.1.1",
