@@ -4,9 +4,7 @@ namespace DevNote
 {
     public interface IRemote : ISelectableService, IInitializable
     {
-
         protected Dictionary<RemoteKey, string> Values { get; }
-
 
 
         public string GetString(RemoteKey remoteKey, string defaultValue = "") 
@@ -35,7 +33,6 @@ namespace DevNote
 
         public float GetFloat(RemoteKey remoteKey, float defaultValue = 0f) 
             => Values.ContainsKey(remoteKey) ? float.Parse(Values[remoteKey]) : defaultValue;
-
 
 
         public bool KeyExists(RemoteKey remoteKey) => Values.ContainsKey(remoteKey);

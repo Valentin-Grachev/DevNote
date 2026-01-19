@@ -1,0 +1,582 @@
+# DevNote - Правила использования плагина
+
+## Общая информация
+
+**DevNote** (версия 2.10.1) - это фреймворк для Unity, предоставляющий систему сервисов и контекстов для управления состоянием игры, интеграцией платформ и различными игровыми системами.
+
+**Документация:** https://buildin.ai/share/7195b8a1-50a6-45a9-8378-e56eac754372?code=M50M76
+
+---
+
+## Архитектура
+
+### Система контекстов
+
+DevNote использует двухуровневую систему контекстов:
+
+1. **ProjectContext** - глобальный контекст проекта, инициализируется один раз при старте приложения
+2. **SceneContext** - контекст сцены, создается для каждой сцены
+
+### Dependency Injection (DI)
+
+Все сервисы регистрируются через систему `Context` и доступны через `Holder<T>` с автоматической инъекцией зависимостей.
+
+---
+
+## Обязательные компоненты
+
+### 1. ProjectContext
+
+**Расположение:** Должен находиться в `Resources/- ProjectContext -` (префаб)
+
+**Обязательные поля:**
+- `_gameState` - MonoBehaviour, реализующий `IGameState`
+- `_purchaseHandler` - MonoBehaviour, реализующий `IPurchaseHandler`
+- `_serviceSelector` - компонент `ServiceSelector` с настроенными сервисами
+- `_testVersion` - флаг тестовой версии
+- `_environmentKey` - ключ окружения (enum `EnvironmentKey`)
+
+**Опциональные поля:**
+- `_sound` - компонент `Sound`
+- `_googleTables` - компонент `GoogleTables`
+- `_localization` - компонент `Localization`
+- `_onlyBootstrapGameObject` - список GameObject'ов, которые активны только во время бутстрапа
+
+### 2. ContextStartup
+
+**Расположение:** Должен быть добавлен в первую сцену проекта
+
+**Назначение:** Автоматически создает и инициализирует ProjectContext при старте приложения
+
+**Обязательные поля:**
+- `_contexts` - список `SceneContext` для текущей сцены
+
+---
+
+## Сервисы
+
+### Обязательные сервисы
+
+Все сервисы должны быть настроены в `ServiceSelector` компонента на ProjectContext префабе.
+
+#### 1. IEnvironment - Окружение/Платформа
+
+**Назначение:** Определение платформы, языка устройства, управление звуком
+
+**Основные методы:**
+- `DeviceLanguage` - язык устройства
+- `DeviceType` - тип устройства
+- `GameReady()` - вызывается после полной инициализации всех сервисов
+- `OpenURL(string url)` - открытие URL
+- `StartGameplay()` / `StopGameplay()` - управление геймплеем
+- `SetChannelMute()` / `ChannelIsMuted()` - управление звуком
+
+**Статические свойства:**
+- `IEnvironment.IsTest` - флаг тестовой версии
+- `IEnvironment.EnvironmentKey` - ключ окружения
+- `IEnvironment.PlatformType` - тип платформы (WebGL, Android, iOS, Desktop)
+- `IEnvironment.IsEditor` - проверка на редактор Unity
+- `IEnvironment.UtcTime` - UTC время сервера
+
+#### 2. ISave - Система сохранений
+
+**Назначение:** Локальные и облачные сохранения игрового состояния
+
+**Основные методы:**
+- `SaveLocal()` - сохранение в PlayerPrefs
+- `SaveCloud()` - сохранение в облако
+- `FullSave()` - сохранение локально и в облако
+- `DeleteSaves()` - удаление всех сохранений
+
+**Статические события:**
+- `ISave.OnSavesDeleted` - событие удаления сохранений
+
+**Важно:** Сохранения используют `IGameState.GetEncodedData()` для сериализации данных.
+
+#### 3. IRemote - Удаленный конфиг
+
+**Назначение:** Получение конфигурационных данных с сервера
+
+**Особенности:**
+- Инициализируется первым (после Environment)
+- Все остальные сервисы ждут его инициализации
+- Булевые значения должны быть строками "True" или "False" (регистр не важен)
+
+**Основные методы:**
+- `GetString(RemoteKey key, string defaultValue = "")`
+- `GetBool(RemoteKey key, bool defaultValue = false)` - требует "True" или "False"
+- `GetInt(RemoteKey key, int defaultValue = 0)`
+- `GetFloat(RemoteKey key, float defaultValue = 0f)`
+- `KeyExists(RemoteKey key)`
+
+**Важно:** Для булевых значений в Remote-сервисе используйте только строки "True" или "False", иначе будет выброшено исключение.
+
+#### 4. IAds - Реклама
+
+**Назначение:** Показ рекламы (rewarded, interstitial, banner)
+
+**Основные методы:**
+- `ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)`
+- `ShowInterstitial(AdKey key, Action<AdShowStatus> callback)`
+- `SetBanner(bool active)`
+
+**Свойства:**
+- `RewardedAvailable` - доступность rewarded рекламы
+- `InterstitialAvailable` - доступность interstitial рекламы
+- `AdBlockEnabled` - включен ли блокировщик рекламы
+
+**Статические свойства:**
+- `IAds.SkipAds` - пропуск показа рекламы (для тестирования)
+- `IAds.InterstitialCooldown` - кулдаун между показами interstitial рекламы
+- `IAds.AdShowLastTime` - время последнего показа рекламы
+
+**Статические события:**
+- `IAds.OnInterstitialShown` - событие показа interstitial рекламы
+- `IAds.OnRewardedShown` - событие показа rewarded рекламы
+
+**Особенности:**
+- Interstitial реклама автоматически пропускается, если куплена покупка "No Ads" (`IGameState.NoAdsPurchased.Value`)
+- Interstitial реклама учитывает кулдаун между показами
+
+#### 5. IPurchase - Покупки
+
+**Назначение:** Внутриигровые покупки
+
+**Основные методы:**
+- `Purchase(ProductKey productKey, Action onSuccess, Action onError)`
+- `GetPriceString(ProductKey productKey)` - получение строки с ценой
+
+**Свойства:**
+- `PlatformIsSupportsPurchases` - поддерживает ли платформа покупки
+
+**Статические события:**
+- `IPurchase.OnPurchaseHandled` - событие обработки покупки
+
+**Важно:** После успешной покупки автоматически вызывается `IPurchaseHandler.HandlePurchaseStatic(productKey)`.
+
+#### 6. IAnalytics - Аналитика
+
+**Назначение:** Отправка аналитических событий
+
+**Основные методы:**
+- `SendEvent(string eventName, Dictionary<string, object> parameters = null)`
+
+#### 7. IReview - Отзывы
+
+**Назначение:** Запрос отзывов пользователей
+
+**Основные методы:**
+- `Rate(Action onGameRated, Action onRejected)`
+
+**Свойства:**
+- `ReviewIsAvailable` - доступен ли запрос отзывов
+
+**Статические события:**
+- `IReview.OnGameRated` - событие оценки игры
+
+#### 8. ILeaderboards - Лидерборды
+
+**Назначение:** Работа с таблицами лидеров
+
+**Основные методы:**
+- `SetScore(int value, LeaderboardKey leaderboardKey)`
+- `OpenLeaderboard(LeaderboardKey leaderboardKey)`
+
+**Свойства:**
+- `PlatformIsSupportsLeaderboards` - поддерживает ли платформа лидерборды
+
+---
+
+## Ключи (Enums)
+
+**Важно:** Начиная с версии 2.8.0, вместо строковых ключей используются enum-ключи, которые можно расширять.
+
+### Типы ключей:
+
+- `AdKey` - ключи для рекламы
+- `ProductKey` - ключи продуктов для покупок
+- `LeaderboardKey` - ключи лидербордов
+- `RemoteKey` - ключи удаленного конфига
+- `EnvironmentKey` - ключи окружения
+
+**Правило:** Все ключи должны быть определены как enum и расширяться по необходимости в проекте.
+
+---
+
+## IGameState - Состояние игры
+
+**Назначение:** Управление состоянием игры, сериализация и десериализация данных
+
+**Обязательная реализация:** Должен быть реализован MonoBehaviour, который назначается в ProjectContext
+
+**Основные методы:**
+- `Parse(Dictionary<string, string> data)` - парсинг данных из сохранения
+- `ToDictionary()` - преобразование состояния в словарь для сохранения
+- `Version` - версия состояния (для миграций)
+- `TransferParsingAvailable` - доступность трансфер-парсинга (для миграций со старых версий)
+- `TransferParse(string data)` - парсинг данных из старых версий
+
+**Статические свойства:**
+- `IGameState.NoAdsPurchased` - ReactiveValue<bool>, флаг покупки "No Ads"
+- `IGameState.SaveVersion` - ReactiveValue<int>, версия сохранения
+- `IGameState.VersionPrefix` - префикс версии (формат: "DN{Version}")
+- `IGameState.GetEncodedData()` - получение закодированных данных для сохранения
+- `IGameState.RestoreFromEncodedData(string data)` - восстановление из закодированных данных
+
+**Важно:** 
+- Состояние игры автоматически сохраняется через `ISave.SaveLocal()` и `ISave.SaveCloud()`
+- При загрузке используется `IGameState.RestoreFromEncodedData()`
+- Если версия сохранения не совпадает с текущей, используется `TransferParse()` если доступен
+
+---
+
+## IPurchaseHandler - Обработчик покупок
+
+**Назначение:** Обработка успешных покупок
+
+**Обязательная реализация:** Должен быть реализован MonoBehaviour, который назначается в ProjectContext
+
+**Основные методы:**
+- `HandlePurchase(ProductKey productKey)` - обработка покупки (protected abstract)
+- `ConsumableProductKeys` - список потребляемых продуктов (protected abstract)
+
+**Статические методы:**
+- `IPurchaseHandler.HandlePurchaseStatic(ProductKey productKey)` - статический вызов обработчика
+- `IPurchaseHandler.ProductIsConsumable(ProductKey productKey)` - проверка, является ли продукт потребляемым
+
+**Важно:** 
+- Вызывается автоматически при успешной покупке через `IPurchase.Purchase()`
+- Должен обрабатывать логику разблокировки контента, начисления валюты и т.д.
+
+---
+
+## ServiceSelector - Выбор сервисов
+
+**Назначение:** Выбор конкретных реализаций сервисов в зависимости от платформы/окружения
+
+**Расположение:** Компонент на ProjectContext префабе
+
+**Настройка:**
+- Для каждого типа сервиса указывается список возможных реализаций
+- Сервисы должны реализовывать `ISelectableService` с методом `IsAvailableForSelection`
+- Выбирается первый доступный сервис из списка
+
+**Типы сервисов:**
+- `_environmentServices` - список реализаций IEnvironment
+- `_saveServices` - список реализаций ISave
+- `_adsServices` - список реализаций IAds
+- `_purchaseServices` - список реализаций IPurchase
+- `_analyticsServices` - список реализаций IAnalytics
+- `_reviewServices` - список реализаций IReview
+- `_leaderboardsServices` - список реализаций ILeaderboards
+- `_remoteServices` - список реализаций IRemote
+
+**Важно:** 
+- Валидация сервисов происходит автоматически через атрибут `[ValidateInput]`
+- Если доступный сервис не найден, выбрасывается исключение
+
+---
+
+## Порядок инициализации
+
+Инициализация сервисов происходит в следующем порядке:
+
+1. **Environment** - инициализируется первым
+2. **Remote** - инициализируется вторым, все остальные ждут его завершения
+3. **Save** - после Remote
+4. **Ads** - после Remote
+5. **Purchase** - после Remote
+6. **Analytics** - после Remote
+7. **Review** - после Remote
+8. **Leaderboards** - после Remote
+9. **Sound** - после Remote
+10. **GoogleTables** - после Remote
+11. **Localization** - после Remote
+12. **ScreenState** - регистрируется в Context
+13. Ожидание полной инициализации всех сервисов
+14. Активация всех корневых объектов сцены
+15. Деактивация bootstrap объектов
+16. Вызов `IEnvironment.GameReady()` - сигнал о готовности игры
+
+**Важно:** Все корневые объекты сцены деактивируются до инициализации и активируются после полной инициализации.
+
+---
+
+## Использование сервисов через Holder
+
+### Правила именования зависимостей
+
+Зависимости от сервисов и контроллеров объявляются с модификаторами **private readonly** и их названия начинаются с маленькой буквы **без подчеркивания** и **без постфикса "Holder"**:
+
+```csharp
+// ✅ Правильно
+private readonly Holder<IAds> ads = new();
+private readonly Holder<ISave> save = new();
+private readonly Holder<MyController> controller = new();
+
+// ❌ Неправильно
+private readonly Holder<IAds> _adsHolder = new();
+private readonly Holder<ISave> saveHolder = new();
+private readonly Holder<MyController> _controller = new();
+```
+
+Для доступа к сервису используется свойство `.Item`:
+
+```csharp
+ads.Item.ShowRewarded(AdKey.Default);
+save.Item.SaveLocal();
+controller.Item.TestMethod();
+```
+
+### Получение сервисов
+
+```csharp
+// Использование Holder для получения сервисов
+public class MyComponent : MonoBehaviour
+{
+    private readonly Holder<IAds> ads = new();
+    private readonly Holder<ISave> save = new();
+    private readonly Holder<IPurchase> purchase = new();
+    
+    private void Awake()
+    {
+        Context.RegisterHolder(ads);
+        Context.RegisterHolder(save);
+        Context.RegisterHolder(purchase);
+    }
+    
+    private void OnEnable()
+    {
+        ads.Item.ShowRewarded(AdKey.Default); // Автоматически получит IAds когда он будет зарегистрирован
+        save.Item.SaveLocal();
+        purchase.Item.Purchase(ProductKey.Default);
+    }
+}
+```
+
+### Регистрация собственных компонентов
+
+```csharp
+// В SceneContext
+public class MySceneContext : SceneContext
+{
+    public override void RegisterContext()
+    {
+        var myController = new MyController();
+        Register(myController); // Регистрация в Context
+    }
+}
+
+// Использование через Holder
+public class MyComponent : MonoBehaviour
+{
+    private readonly Holder<MyController> controller = new();
+    
+    private void Awake()
+    {
+        Context.RegisterHolder(controller);
+    }
+    
+    private void OnEnable()
+    {
+        controller.Item.TestMethod(); // Автоматически получит MyController когда он будет зарегистрирован
+    }
+}
+```
+
+---
+
+## Дополнительные утилиты
+
+### Sound - Система звука
+
+**Назначение:** Управление звуком игры
+
+**Интеграция:** Настраивается в ProjectContext
+
+**Управление через IEnvironment:**
+- `IEnvironment.SetChannelMute(Sound.Channel channel, bool value)`
+- `IEnvironment.ChannelIsMuted(Sound.Channel channel)`
+
+### Localization - Локализация
+
+**Назначение:** Управление переводами игры
+
+**Интеграция:** Настраивается в ProjectContext
+
+**Особенности:**
+- Поддержка загрузки переводов с нескольких таблиц (с версии 2.8.0)
+
+### GoogleTables - Google Таблицы
+
+**Назначение:** Загрузка данных из Google Таблиц
+
+**Интеграция:** Настраивается в ProjectContext
+
+---
+
+## Тестовые сервисы
+
+В пакете включены тестовые реализации сервисов для разработки:
+
+- `TestEnvironmentService` - тестовый сервис окружения
+- `TestAdsService` - тестовый сервис рекламы
+- `TestAnalyticsService` - тестовый сервис аналитики
+- `TestPurchaseService` - тестовый сервис покупок
+- `TestReviewService` - тестовый сервис отзывов
+- `TestLeaderboardsService` - тестовый сервис лидербордов
+- `PlayerPrefsSaveService` - сохранение через PlayerPrefs (для тестирования)
+
+**Использование:** Добавьте тестовые сервисы в ServiceSelector для разработки без интеграции реальных SDK.
+
+---
+
+## Правила разработки
+
+### 1. Именование зависимостей
+
+- Зависимости объявляются с модификаторами **private readonly**
+- Названия начинаются с маленькой буквы **без подчеркивания** и **без постфикса "Holder"**
+- Для доступа используется свойство `.Item`, а не `.Value`
+
+```csharp
+// ✅ Правильно
+private readonly Holder<IAds> ads = new();
+private readonly Holder<ISave> save = new();
+
+// ❌ Неправильно
+private readonly Holder<IAds> _adsHolder = new();
+private readonly Holder<ISave> saveHolder = new();
+```
+
+### 2. Реализация сервисов
+
+- Все сервисы должны реализовывать соответствующий интерфейс (`IAds`, `ISave`, и т.д.)
+- Сервисы должны реализовывать `ISelectableService` для работы с ServiceSelector
+- Сервисы должны реализовывать `IInitializable` для инициализации
+- Метод `IsAvailableForSelection` должен возвращать `true` только если сервис доступен на текущей платформе/окружении
+
+### 3. Работа с ключами
+
+- Используйте enum-ключи вместо строковых
+- Расширяйте enum-ключи в проекте по необходимости
+- Не используйте строковые литералы для ключей
+
+### 4. Обработка ошибок
+
+- Все сервисы должны корректно обрабатывать ошибки
+- Используйте callback'и для асинхронных операций
+- Проверяйте доступность сервисов перед использованием (`PlatformIsSupportsPurchases`, `PlatformIsSupportsLeaderboards`)
+
+### 5. Сохранения
+
+- Все данные состояния должны быть в `IGameState`
+- Используйте `IGameState.SaveVersion` для версионирования сохранений
+- Реализуйте `TransferParse()` для миграций со старых версий
+- Не сохраняйте данные напрямую в PlayerPrefs, используйте `ISave`
+
+### 6. Асинхронность
+
+- Инициализация использует UniTask для асинхронных операций
+- Используйте callback'и для операций с сервисами (покупки, реклама, сохранения)
+
+### 7. Тестирование
+
+- Используйте тестовые сервисы для разработки
+- Устанавливайте `IEnvironment.IsTest = true` для тестовой версии
+- Используйте `IAds.SkipAds = true` для пропуска рекламы в тестах
+
+---
+
+## Частые ошибки
+
+### ❌ Неправильно
+
+```csharp
+// Прямое использование PlayerPrefs вместо ISave
+PlayerPrefs.SetString("score", "100");
+
+// Использование строковых ключей
+ads.ShowRewarded("reward_1");
+
+// Прямое создание сервисов вместо использования Holder
+var ads = new YandexAdsService();
+
+// Использование Context.Get напрямую
+var ads = Context.Get<IAds>();
+```
+
+### ✅ Правильно
+
+```csharp
+// Использование ISave через Holder
+public class MyComponent : MonoBehaviour
+{
+    private readonly Holder<ISave> save = new();
+    
+    private void Awake()
+    {
+        Context.RegisterHolder(save);
+    }
+    
+    private void Save()
+    {
+        save.Item.SaveLocal();
+    }
+}
+
+// Использование enum-ключей
+ads.Item.ShowRewarded(AdKey.Reward1);
+
+// Получение сервисов через Holder
+public class AdComponent : MonoBehaviour
+{
+    private readonly Holder<IAds> ads = new();
+    
+    private void Awake()
+    {
+        Context.RegisterHolder(ads);
+    }
+    
+    private void ShowAd()
+    {
+        ads.Item.ShowRewarded(AdKey.Reward1);
+    }
+}
+```
+
+---
+
+## Миграция с предыдущих версий
+
+### Версия 2.8.0+
+
+- Замените все строковые ключи на enum-ключи
+- Обновите все вызовы методов с ключами
+
+### Версия 2.9.0+
+
+- `IEnvironment.ServerTime` переименован в `IEnvironment.UtcTime`
+- Добавлены флаги `PlatformIsSupportsPurchases` и `PlatformIsSupportsLeaderboards`
+
+### Версия 2.10.0+
+
+- Булевые значения в Remote-сервисе теперь требуют строки "True" или "False"
+
+---
+
+## Дополнительные ресурсы
+
+- **Документация:** https://buildin.ai/share/7195b8a1-50a6-45a9-8378-e56eac754372?code=M50M76
+- **Версия пакета:** 2.10.1
+- **Требования Unity:** 2021.3+
+
+---
+
+## Контакты
+
+**Автор:** DevNote Studio
+
+---
+
+*Документ обновлен: 2025*

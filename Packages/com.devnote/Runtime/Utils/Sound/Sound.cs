@@ -90,7 +90,12 @@ namespace DevNote
             return audioSource;
         }
 
-        
+
+        public static AudioSource Play(string soundName) 
+            => Play(Resources.Load<SoundUnit>($"Sounds/{soundName}"));
+
+
+
     }
 }
 
