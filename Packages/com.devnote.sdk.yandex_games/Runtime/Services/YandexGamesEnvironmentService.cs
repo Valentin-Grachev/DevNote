@@ -41,6 +41,10 @@ namespace DevNote.SDK.YandexGames
 
         DeviceType IEnvironment.DeviceType => YG_Sdk.GetDeviceType();
 
+        bool IEnvironment.FullscreenIsSupported => false;
+
+        bool IEnvironment.IsFullscreen => false;
+
         void IEnvironment.GameReady() => YG_GameReady.GameReady();
 
         void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
@@ -60,6 +64,9 @@ namespace DevNote.SDK.YandexGames
 
         bool IEnvironment.ChannelIsMuted(Sound.Channel channel)
             => channel == Sound.Channel.Music ? !Sound.Settings.MusicEnabled : !Sound.Settings.SfxEnabled;
+
+        void IEnvironment.SetFullscreen(bool active) { }
+
     }
     
 

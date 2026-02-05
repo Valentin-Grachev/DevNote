@@ -55,7 +55,7 @@ namespace DevNote
                 Debug.Log($"{Info.Prefix} Game state version \"{VersionPrefix}\": " +
                     $"Using transfer parsing old saves to current version of the encoder.");
 
-                _handler.TransferParse(data);
+                _handler.Parse(_handler.TransferParse(data));
             }
             else
             {

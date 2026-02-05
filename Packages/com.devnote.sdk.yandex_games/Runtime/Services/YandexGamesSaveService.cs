@@ -37,7 +37,7 @@ namespace DevNote.SDK.YandexGames
                 var localTime = GameStateEncoder.GetSaveTime(localData);
                 
 
-                bool useCloud = cloudTime > localTime;
+                bool useCloud = cloudTime >= localTime;
                 string data = useCloud ? cloudData : localData;
 
                 ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(data);

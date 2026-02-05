@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class GameState : MonoBehaviour, IGameState // Parsing
+public class GameState : MonoBehaviour, IGameState
 {
     int IGameState.Version => 1;
 

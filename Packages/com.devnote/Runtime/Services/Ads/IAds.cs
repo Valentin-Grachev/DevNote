@@ -21,6 +21,7 @@ namespace DevNote
         public delegate void OnAdShow(AdKey key, AdShowStatus status);
         public static event OnAdShow OnInterstitialShown, OnRewardedShown;
 
+        public static bool RewardedInProcess { get; set; } = false;
         public static bool SkipAds { get; set; } = false;
         public static float InterstitialCooldown { get; set; } = 0f;
 

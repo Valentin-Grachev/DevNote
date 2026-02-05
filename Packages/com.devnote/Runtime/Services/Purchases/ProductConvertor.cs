@@ -4,21 +4,32 @@ using UnityEngine;
 
 namespace DevNote
 {
-    [Serializable] public class ProductConvertor
+    [Serializable] public class ProductConverter
     {
-        [Serializable] private struct ConvertorData
+        [Serializable] private struct ConvertData
         {
-            public string key;
+            public ProductKey productKey;
             public string id;
         }
 
-        [SerializeField] private List<ConvertorData> _convertions;
+        [SerializeField] private List<ConvertData> _convertableProducts;
 
-        public string GetProductId(string productKey)
-            => _convertions.Find((typeId) => typeId.key == productKey).id;
+        public string GetProductId(ProductKey productKey)
+        {
+            if (_convertableProducts.TryFind((data) => data.productKey == productKey, out ConvertData convertData))
+                return convertData.id;
 
-        public string GetProductKey(string productId)
-            => _convertions.Find((typeId) => typeId.id == productId).key;
+            return productKey.ToString();
+        }
+
+
+        public ProductKey GetProductKey(string productId)
+        {
+            if (_convertableProducts.TryFind((data) => data.id == productId, out ConvertData convertData))
+                return convertData.productKey;
+
+            return productId.ToEnum<ProductKey>();
+        }
 
 
 

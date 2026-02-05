@@ -1,5 +1,7 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Audio;
 
 namespace DevNote
@@ -44,7 +46,7 @@ namespace DevNote
 
         private static Sound _instance;
 
-
+        [SerializeField] private bool _logWarnings = true;
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private AudioPool _sfxAudioPool;
 
@@ -91,9 +93,27 @@ namespace DevNote
         }
 
 
-        public static AudioSource Play(string soundName) 
-            => Play(Resources.Load<SoundUnit>($"Sounds/{soundName}"));
+        public static async UniTask<AudioSource> PlayAsync(string soundName)
+        {
+            string path = $"Sounds/{soundName}";
 
+            var soundUnit = Resources.Load<SoundUnit>(path);
+
+            if (soundUnit == null && await Utils.AddressableExists(path))
+                soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(path);
+
+            if (soundUnit == null)
+            {
+                if (_instance._logWarnings)
+                    Debug.LogWarning($"{Info.Prefix} Sound with path \"{path}\" doesn't exists!");
+
+                return null;
+            }
+
+            return Play(soundUnit);
+        }
+
+        public static void Play(string soundName) => PlayAsync(soundName).Forget();
 
 
     }

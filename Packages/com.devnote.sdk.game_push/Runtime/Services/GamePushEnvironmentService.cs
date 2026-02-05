@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePush;
 using GamePush.Initialization;
@@ -10,10 +11,20 @@ namespace DevNote.SDK.GamePush
     {
         private bool _initialized = false;
         private bool _gameplayStarted = false;
+        private bool _isFullscreen = false;
+
+
+        private readonly List<DistributionKey> DISTRIBUTIONS_SUPPORTS_FULLSCREEN = new()
+        {
+            DistributionKey.OK, 
+            DistributionKey.VK, 
+            DistributionKey.Other
+        };
+
 
 
         public static bool IsAvailableForSelection 
-            => IEnvironment.EnvironmentKey == EnvironmentKey.GamePush;
+            => IEnvironment.EnvironmentKey == EnvironmentKey.GamePush && !IEnvironment.IsEditor;
 
         Language IEnvironment.DeviceLanguage => GP_Language.Current() switch
         {
@@ -29,6 +40,11 @@ namespace DevNote.SDK.GamePush
 
         bool ISelectableService.IsAvailableForSelection => IsAvailableForSelection;
 
+        bool IEnvironment.FullscreenIsSupported => 
+            DISTRIBUTIONS_SUPPORTS_FULLSCREEN.Contains(IEnvironment.DistributionKey);
+
+        bool IEnvironment.IsFullscreen => _isFullscreen;
+
         void IEnvironment.GameReady() => GP_Game.GameReady();
 
 
@@ -38,6 +54,13 @@ namespace DevNote.SDK.GamePush
 
             await UniTask.WaitUntil(() => GP_Init.isReady && Sound.Initialized);
 
+            IEnvironment.DistributionKey = GP_Platform.Type() switch
+            {
+                Platform.OK => DistributionKey.OK,
+                Platform.VK => DistributionKey.VK,
+                Platform.YANDEX => DistributionKey.YandexGames,
+                _ => DistributionKey.Other,
+            };
             IEnvironment.StartGameUtcTime = GP_Server.Time();
 
             Sound.Settings.MusicEnabled = !GP_Sounds.IsMuted(SoundType.Music);
@@ -47,6 +70,10 @@ namespace DevNote.SDK.GamePush
             GP_Sounds.OnMuteSFX += () => Sound.Settings.SfxEnabled = false;
             GP_Sounds.OnUnmuteMusic += () => Sound.Settings.MusicEnabled = true;
             GP_Sounds.OnUnmuteSFX += () => Sound.Settings.SfxEnabled = true;
+
+            GP_Fullscreen.OnFullscreenClose += () => _isFullscreen = false;
+            GP_Fullscreen.OnFullscreenOpen += () => _isFullscreen = true;
+
 
             _initialized = true;
         }
@@ -91,7 +118,11 @@ namespace DevNote.SDK.GamePush
                 
         }
 
-
+        void IEnvironment.SetFullscreen(bool active)
+        {
+            if (_isFullscreen) GP_Fullscreen.Close();
+            else GP_Fullscreen.Open();
+        }
     }
 }
 

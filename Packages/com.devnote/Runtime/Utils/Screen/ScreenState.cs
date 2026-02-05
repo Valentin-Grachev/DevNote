@@ -28,13 +28,14 @@ namespace DevNote
             if (Resolution.x != Screen.width || Resolution.y != Screen.height)
             {
                 Resolution = new Vector2Int(Screen.width, Screen.height);
-                OnResolutionChanged?.Invoke();
 
                 if (Orientation != GetCurrentOrientation())
                 {
                     Orientation = GetCurrentOrientation();
                     OnOrientationChanged?.Invoke();
                 }
+
+                OnResolutionChanged?.Invoke();
             }
         }
 

@@ -1,12 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using GamePush.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
-using GamePush.Utilities;
 
 namespace GamePush
 {
@@ -203,10 +201,13 @@ namespace GamePush
         private async void Start()
         {
             await GP_Init.Ready;
+
+            /*
             FetchFields(fields =>
             {
                 PlayerFields = fields;
             });
+            */
         }
 
         #region Getters

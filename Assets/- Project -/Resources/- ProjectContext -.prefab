@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8abbd746f54c84d9de5045c6db34f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _logWarnings: 1
   _audioMixer: {fileID: 24100000, guid: aca1dd39ad3e5f341965e7aca7f31f7a, type: 2}
   _sfxAudioPool: {fileID: 1867901138155090129}
 --- !u!114 &1867901138155090129
@@ -808,6 +809,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576015703bc1f914884b77e35b4dfa77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interstitialCooldown: 60
+  _noAdsDisableBanner: 1
 --- !u!114 &2820489054020795116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1019,7 +1022,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5083198421977732407}
-  - component: {fileID: 3037825748008122034}
   - component: {fileID: 918403182837805303}
   m_Layer: 0
   m_Name: Environment
@@ -1043,18 +1045,6 @@ Transform:
   m_Father: {fileID: 4020861219779086674}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3037825748008122034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8992132696936692313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 070e8691d768a6f4ca65d8f48129cb16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &918403182837805303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,7 +1057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef04d45144636b4abc33f8abc00e315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _delayBeforeInitialization: 0
+  _distributionKey: 0
+  _fullscreenIsSupported: 0
   _deviceLanguage: 1
   _deviceType: 0
 --- !u!1001 &4528692624445434330

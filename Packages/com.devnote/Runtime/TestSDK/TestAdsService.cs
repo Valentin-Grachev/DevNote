@@ -5,6 +5,9 @@ namespace DevNote.SDK.Test
 {
     public class TestAdsService : MonoBehaviour, IAds
     {
+        [SerializeField] private AdShowStatus _adShowStatus = AdShowStatus.Success;
+
+
         bool ISelectableService.IsAvailableForSelection => true;
         bool IInitializable.Initialized => true;
 
@@ -23,7 +26,7 @@ namespace DevNote.SDK.Test
 
         void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
-            var status = AdShowStatus.Success;
+            var status = _adShowStatus;
             if (IGameState.NoAdsPurchased.Value) status = AdShowStatus.NoAdsPurchased;
             else if (!IAds.InterstitialCooldownPassed) status = AdShowStatus.CooldownNotFinished;
 
@@ -33,7 +36,7 @@ namespace DevNote.SDK.Test
 
         void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
-            var status = AdShowStatus.Success;
+            var status = _adShowStatus;
 
             Debug.Log($"{Info.Prefix} Show rewarded. Key: \"{key}\", Status: {status}");
             IAds.InvokeRewardedCallback(onRewarded, callback, key, status);

@@ -7,8 +7,9 @@ namespace DevNote.SDK.YandexGames
 {
     public class YandexGamesPurchaseService : MonoBehaviour, IPurchase
     {
+        [SerializeField] private ProductConverter _converter;
+
         private bool _initialized = false;
-        private List<string> _purchasedProductKeys;
         private Dictionary<ProductKey, string> _productPrices;
 
         private readonly Holder<ISave> save = new();
@@ -20,29 +21,32 @@ namespace DevNote.SDK.YandexGames
 
         async void IInitializable.Initialize()
         {
+            List<string> purchasedProductIds = null;
+
             await UniTask.WaitUntil(() => YG_Purchases.available && save.Item.Initialized);
 
             ISave.OnSavesDeleted += OnSavesDeleted;
 
             YG_Purchases.InitializePayments();
 
-            YG_Purchases.GetPurchasedProducts((purchasedProductKeys) =>
+            YG_Purchases.GetPurchasedProducts((productIds) =>
             {
-                _purchasedProductKeys = purchasedProductKeys;
+                purchasedProductIds = productIds;
+
                 bool hasConsumableProduct = false;
 
-                foreach (var purchasedProductKeyString in _purchasedProductKeys)
+                foreach (var purchasedProductId in purchasedProductIds)
                 {
-                    if (purchasedProductKeyString == string.Empty)
+                    if (purchasedProductId == string.Empty)
                         continue;
 
-                    var purchasedProductKey = purchasedProductKeyString.ToEnum<ProductKey>();
+                    var purchasedProductKey = _converter.GetProductKey(purchasedProductId);
 
                     IPurchase.InvokeHandlePurchase(purchasedProductKey, success: true);
 
                     if (IPurchaseHandler.ProductIsConsumable(purchasedProductKey))
                     {
-                        YG_Purchases.Consume(purchasedProductKeyString);
+                        YG_Purchases.Consume(purchasedProductId);
                         hasConsumableProduct = true;
                     }  
                 }
@@ -54,10 +58,14 @@ namespace DevNote.SDK.YandexGames
             {
                 _productPrices = new();
                 foreach (var productPrice in productPrices)
-                    _productPrices.Add(productPrice.Key.ToEnum<ProductKey>(), productPrice.Value);
+                {
+                    var productId = productPrice.Key;
+                    var productKey = _converter.GetProductKey(productId);
+                    _productPrices.Add(productKey, productPrice.Value);
+                }
             });
 
-            await UniTask.WaitUntil(() => _purchasedProductKeys != null && _productPrices != null);
+            await UniTask.WaitUntil(() => purchasedProductIds != null && _productPrices != null);
             _initialized = true;
         }
 
@@ -72,7 +80,9 @@ namespace DevNote.SDK.YandexGames
 
         void IPurchase.Purchase(ProductKey productKey, Action onSuccess, Action onError)
         {
-            YG_Purchases.Purchase(productKey.ToString(), onPurchasedSuccess: (success) =>
+            string productId = _converter.GetProductId(productKey);
+
+            YG_Purchases.Purchase(productId, onPurchasedSuccess: (success) =>
             {
                 if (success)
                 {

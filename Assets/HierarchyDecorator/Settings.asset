@@ -995,6 +995,42 @@ MonoBehaviour:
         isBuiltIn: 1
         script: {fileID: 0}
         hasToggle: 1
+      - displayName: DelayedActionManager
+        name: UnityEngine.ResourceManagement.Util.DelayedActionManager, Unity.ResourceManager,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        shown: 0
+        excluded: 0
+        isBuiltIn: 1
+        script: {fileID: 0}
+        hasToggle: 1
+      - displayName: DiagnosticEventCollector
+        name: UnityEngine.ResourceManagement.Diagnostics.DiagnosticEventCollector,
+          Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        shown: 0
+        excluded: 0
+        isBuiltIn: 1
+        script: {fileID: 0}
+        hasToggle: 1
+      - displayName: DiagnosticEventCollectorSingleton
+        name: UnityEngine.ResourceManagement.Diagnostics.DiagnosticEventCollectorSingleton,
+          Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        shown: 0
+        excluded: 0
+        isBuiltIn: 1
+        script: {fileID: 0}
+        hasToggle: 1
       - displayName: DropdownItem
         name: UnityEngine.UI.Dropdown+DropdownItem, UnityEngine.UI, Version=1.0.0.0,
           Culture=neutral, PublicKeyToken=null
@@ -1142,6 +1178,18 @@ MonoBehaviour:
       - displayName: LODGroup
         name: UnityEngine.LODGroup, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
           PublicKeyToken=null
+        content:
+          m_Text: 
+          m_Image: {fileID: 0}
+          m_Tooltip: 
+        shown: 0
+        excluded: 0
+        isBuiltIn: 1
+        script: {fileID: 0}
+        hasToggle: 1
+      - displayName: MonoBehaviourCallbackHooks
+        name: MonoBehaviourCallbackHooks, Unity.ResourceManager, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
         content:
           m_Text: 
           m_Image: {fileID: 0}
@@ -2979,4 +3027,4 @@ MonoBehaviour:
         script: {fileID: 11500000, guid: 37e9ade6664463c46afb8d5527c52677, type: 3}
         hasToggle: 1
     unityVersion: 2021.3.45f2
-    unityCount: 186
+    unityCount: 190

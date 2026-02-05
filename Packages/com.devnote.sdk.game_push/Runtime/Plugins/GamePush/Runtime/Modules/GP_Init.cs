@@ -52,7 +52,7 @@ namespace GamePush
             
         }
 
-        private void CallOnSDKReady()
+        private void CallOnSDKReady() // Calls from _gpInit.jspre
         {
             isReady = true;
             OnReady?.Invoke();

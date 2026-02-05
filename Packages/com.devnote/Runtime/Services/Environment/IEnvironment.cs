@@ -6,6 +6,7 @@ namespace DevNote
     {
         public static bool IsTest { get; set; }
         public static EnvironmentKey EnvironmentKey { get; set; }
+        public static DistributionKey DistributionKey { get; set; } = DistributionKey.Other;
 
         protected static DateTime StartGameUtcTime { get; set; }
 
@@ -57,6 +58,11 @@ namespace DevNote
 
         public void SetChannelMute(Sound.Channel channel, bool value);
         public bool ChannelIsMuted(Sound.Channel channel);
+
+
+        public bool FullscreenIsSupported { get; }
+        public bool IsFullscreen { get; }
+        public void SetFullscreen(bool active);
 
 
     }

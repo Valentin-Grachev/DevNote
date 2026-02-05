@@ -5,7 +5,8 @@
         "DevNote",
         "Keys",
         "GamePush",
-        "UniTask"
+        "UniTask",
+        "GamePush.Data"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

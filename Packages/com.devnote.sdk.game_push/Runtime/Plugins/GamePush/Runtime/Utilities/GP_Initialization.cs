@@ -1,18 +1,16 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using GamePush;
-using GamePush.Data;
-using GamePush.ConsoleController;
-using System.Threading.Tasks;
-using System;
 using System.Runtime.InteropServices;
-using System.Collections;
+using System.Threading.Tasks;
+using GamePush.ConsoleController;
+using GamePush.Data;
+using UnityEngine;
 
 namespace GamePush.Initialization
 {
-    
+
     public class GP_Initialization
     {
+        
+
         public static string VERSION = PluginData.SDK_VERSION;
 
 #if UNITY_WEBGL

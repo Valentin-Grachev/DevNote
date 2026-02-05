@@ -5,7 +5,10 @@
         "NaughtyAttributes.Core",
         "Unity.TextMeshPro",
         "UniTask",
-        "Keys"
+        "Keys",
+        "Unity.Addressables",
+        "UniTask.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -32,6 +32,8 @@ namespace DevNote.SDK.YandexGames
             bool rewarded = false;
             bool error = false;
 
+            IAds.RewardedInProcess = true;
+
             YG_Ads.ShowRewarded((action) =>
             {
                 switch (action)
@@ -49,6 +51,7 @@ namespace DevNote.SDK.YandexGames
                         break;
 
                     case YG_Ads.RewardedAction.Closed:
+                        IAds.RewardedInProcess = false;
                         TimeMode.SetActive(TimeMode.Mode.Stop, false);
 
                         var status = !error && rewarded ? AdShowStatus.Success : AdShowStatus.Error;
