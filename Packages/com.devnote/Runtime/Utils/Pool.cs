@@ -8,10 +8,12 @@ namespace DevNote
         private T _prefab;
         private List<T> _poolObjects;
         private Transform _container;
+        private System.Action<T> _objectPreprocessor;
 
 
-        public Pool(T poolObject, Transform container = null)
+        public Pool(T poolObject, Transform container = null, System.Action<T> objectPreprocessor = null)
         {
+            _objectPreprocessor = objectPreprocessor;
             _prefab = poolObject;
             _poolObjects = new();
             _container = container;
@@ -51,6 +53,8 @@ namespace DevNote
 
             if (poolObject.transform.parent != container)
                 poolObject.transform.SetParent(container);
+
+            _objectPreprocessor?.Invoke(poolObject);
 
             return poolObject;
         }

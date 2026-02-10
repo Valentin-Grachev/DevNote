@@ -13,6 +13,7 @@ namespace GamePush.Data
 #endif
         public TextAsset projectData;
         public TextAsset jsAnchor;
+        public TextAsset dataFieldsAnchor;
 
     }
 

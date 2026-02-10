@@ -8,7 +8,10 @@ namespace DevNote.SDK.YandexGames
 {
     public class YG_Saves : MonoBehaviour
     {
-        
+        public static string ActualKey { get; set; }
+        public static string LegacyKey { get; set; }
+
+
         public static bool available 
         { 
             get 
@@ -26,17 +29,17 @@ namespace DevNote.SDK.YandexGames
             _onSavesDataReceived = onSavesDataReceived;
 
 #if UNITY_WEBGL
-            RequestSaves();
+            RequestSaves(ActualKey, LegacyKey);
 #endif
 
         }
 
-        public static void SendSaves(string savesData, Action<bool> onSavesSent)
+        public static void SendSaves(string data, Action<bool> onSavesSent)
         {
             _onSavesSent = onSavesSent;
 
 #if UNITY_WEBGL
-            SendSaves(savesData);
+            SendSaves(ActualKey, LegacyKey, data);
 #endif
 
         }
@@ -79,8 +82,8 @@ namespace DevNote.SDK.YandexGames
 
 #if UNITY_WEBGL
         [DllImport("__Internal")] private static extern void CheckPlayerInit();
-        [DllImport("__Internal")] private static extern void SendSaves(string savesData);
-        [DllImport("__Internal")] private static extern void RequestSaves();
+        [DllImport("__Internal")] private static extern void SendSaves(string actualKey, string legacyKey, string data);
+        [DllImport("__Internal")] private static extern void RequestSaves(string actualKey, string legacyKey);
         [DllImport("__Internal")] private static extern void _InitializePlayer();
 
 #endif

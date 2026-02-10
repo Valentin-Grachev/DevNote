@@ -32,7 +32,7 @@ namespace DevNote
 
         protected static void InvokeInterstitialCallback(Action<AdShowStatus> callback, AdKey key, AdShowStatus status)
         {
-            if (status == AdShowStatus.Success)
+            if (status == AdShowStatus.Success && !SkipAds)
                 AdShowLastTime = Time.unscaledTime;
 
             OnInterstitialShown?.Invoke(key, status);
@@ -43,7 +43,7 @@ namespace DevNote
         {
             if (status == AdShowStatus.Success)
             {
-                AdShowLastTime = Time.unscaledTime;
+                if (!SkipAds) AdShowLastTime = Time.unscaledTime;
                 onRewarded?.Invoke();
             }
 

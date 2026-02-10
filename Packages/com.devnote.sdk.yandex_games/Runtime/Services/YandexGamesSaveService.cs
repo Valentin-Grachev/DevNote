@@ -7,6 +7,9 @@ namespace DevNote.SDK.YandexGames
     public class YandexGamesSaveService : MonoBehaviour, ISave
     {
         [SerializeField] private AutosaveSettings _autosaveSettings;
+        [SerializeField] private string _actualSaveDataKey = "data"; 
+        [SerializeField] private string _legacySaveDataKey; 
+
 
         private bool _initialized = false;
 
@@ -21,6 +24,9 @@ namespace DevNote.SDK.YandexGames
 
         async void IInitializable.Initialize()
         {
+            YG_Saves.ActualKey = !string.IsNullOrEmpty(_actualSaveDataKey) ? _actualSaveDataKey : ISave.DATA_KEY;
+            YG_Saves.LegacyKey = !string.IsNullOrEmpty(_legacySaveDataKey) ? _legacySaveDataKey : "legacy";
+
             _autosaveSettings.Initialize();
 
             await UniTask.WaitUntil(() => YG_Saves.available);
@@ -28,7 +34,7 @@ namespace DevNote.SDK.YandexGames
 
             YG_Saves.RequestSaves((cloudData) =>
             {
-                var localData = PlayerPrefs.GetString(ISave.DATA_KEY);
+                var localData = PlayerPrefs.GetString(_actualSaveDataKey, defaultValue: string.Empty);
 
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Cloud data: {cloudData}");
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Local data: {localData}");

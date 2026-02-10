@@ -658,6 +658,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8342386225550020222}
   - component: {fileID: 8065846313917698065}
+  - component: {fileID: 2140091999587866909}
   m_Layer: 0
   m_Name: Saves
   m_TagString: Untagged
@@ -696,6 +697,24 @@ MonoBehaviour:
     _autosave: {fileID: 7249514994722003677}
     _localSaveCooldown: 1
     _cloudSaveCooldown: 0
+--- !u!114 &2140091999587866909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095102371805940163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a02e22027a3f814a9ef32b236e6c399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autosaveSettings:
+    _autosave: {fileID: 0}
+    _localSaveCooldown: 0
+    _cloudSaveCooldown: 0
+  _actualSaveDataKey: data
+  _legacySaveDataKey: 
 --- !u!1 &8104478146421446695
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,6 +842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d37f7332767094fb38c9aa09c5d9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _adShowStatus: 0
 --- !u!1 &8627241340399656994
 GameObject:
   m_ObjectHideFlags: 0

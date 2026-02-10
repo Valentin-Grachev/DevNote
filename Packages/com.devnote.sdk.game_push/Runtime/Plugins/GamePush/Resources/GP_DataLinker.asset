@@ -17,3 +17,4 @@ MonoBehaviour:
   saveFile: {fileID: 4900000, guid: 222ebe341f37840e7ba034aa12217178, type: 3}
   projectData: {fileID: 11500000, guid: 75853f2e09cfe1545b3bfd4621c7b53e, type: 3}
   jsAnchor: {fileID: 4900000, guid: fe7ba544528f0473c9646a6721dd45dd, type: 3}
+  dataFieldsAnchor: {fileID: 4900000, guid: 199f26a274be06245aae3fc40bb9e516, type: 3}

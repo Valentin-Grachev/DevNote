@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-
+  legacyData: "",
 
   CheckSdkInit: function () {
 
@@ -139,8 +139,9 @@ mergeInto(LibraryManager.library, {
     
   },
 
-  SendSaves: function (data) {
-    
+  
+
+  SendSaves: function (actualKey, legacyKey, data) {
     // === SDK недоступен ===
     if (!player.setData) {
       unity.SendMessage('YandexGames', 'HTML_OnSavesSent', 0);
@@ -148,28 +149,44 @@ mergeInto(LibraryManager.library, {
       return;
     }
 
+    const legacyKeyString = UTF8ToString(legacyKey);
+    const actualKeyString = UTF8ToString(actualKey);
+
     // === Обработка ===
-    player.setData({ data: UTF8ToString(data) })
+    player.setData({ [actualKeyString]: UTF8ToString(data), [legacyKeyString]: this.legacyData })
     .then(() => {
       unity.SendMessage('YandexGames', 'HTML_OnSavesSent', 1);
-      console.log('Player saves sent');
+      console.log('Player saves sent to key:', actualKeyString);
     });
     
     
   },
 
-  RequestSaves: function () {
-    
+  RequestSaves: function (actualKey, legacyKey) {
+
+    const actualKeyString = UTF8ToString(actualKey);
+    const legacyKeyString = UTF8ToString(legacyKey);
+
     console.log('Request saves');
 
-    player.getData(["data"]).then((data) => {
+    player.getData([actualKeyString, legacyKeyString]).then((data) => {
       
       console.log('Saves received');
       
-      if (data.data) 
+      // Cash legacy data
+      if (data[legacyKeyString]) 
+        this.legacyData = data[legacyKeyString];
+
+      // Handle saves - select actual or legacy data
+      if (data[actualKeyString] && data[actualKeyString].length > 0) 
       {
-        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', data.data);
-        console.log('Player saves received');
+        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', data[actualKeyString]);
+        console.log('Player saves received from key: ', actualKeyString);
+      }
+      else if (data[legacyKeyString] && data[legacyKeyString].length > 0) 
+      {
+        unity.SendMessage('YandexGames', 'HTML_OnSavesReceived', data[legacyKeyString]);
+        console.log('Player saves received from key:', legacyKeyString);
       }
       else 
       {

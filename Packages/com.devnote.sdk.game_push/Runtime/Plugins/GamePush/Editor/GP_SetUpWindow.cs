@@ -119,8 +119,8 @@ namespace GamePushEditor
 
         private static void SaveProjectDataToJavaScript()
         {
-            var pathToJS = AssetDatabase.GetAssetPath(DataLinker.jsAnchor);
-            var pathJspre = pathToJS.Replace(Path.GetFileName(AssetDatabase.GetAssetPath(DataLinker.jsAnchor)), "_dataFields.jspre");
+            var pathToJS = AssetDatabase.GetAssetPath(DataLinker.dataFieldsAnchor);
+            var pathJspre = pathToJS.Replace(Path.GetFileName(AssetDatabase.GetAssetPath(DataLinker.dataFieldsAnchor)), "_dataFields.jspre");
             
             var filePre = new StreamWriter(pathJspre);
 
