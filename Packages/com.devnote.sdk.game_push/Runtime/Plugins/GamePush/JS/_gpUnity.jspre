@@ -932,6 +932,10 @@ class GamePushUnityInner {
     }
     //Sync
     PlayerSync(storage, override) {
+        if (window.__GP_SIMULATE_SAVE_ERROR) {
+            setTimeout(() => this.trigger('CallPlayerSyncError'), 0);
+            return;
+        }
         if (override == 'True') override = true;
         else if (override == 'False') override = false;
         this.gp.player.sync({ storage: storage, override: Boolean(override) });
@@ -945,6 +949,10 @@ class GamePushUnityInner {
     }
 
     PlayerLoad() {
+        if (window.__GP_SIMULATE_SAVE_ERROR) {
+            setTimeout(() => this.trigger('CallPlayerLoadError'), 0);
+            return;
+        }
         return this.gp.player.load();
     }
     PlayerLogin() {

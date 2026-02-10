@@ -203,6 +203,9 @@ mergeInto(LibraryManager.library, {
     GP_Player_Load: function () {
         _GP().PlayerLoad();
     },
+    GP_Player_SetSimulateSaveError: function (enable) {
+        window.__GP_SIMULATE_SAVE_ERROR = (enable !== 0);
+    },
     GP_Player_Login: function () {
         _GP().PlayerLogin();
     },

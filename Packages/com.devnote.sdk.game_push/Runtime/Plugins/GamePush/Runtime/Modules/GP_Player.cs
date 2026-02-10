@@ -165,6 +165,9 @@ namespace GamePush
         private static extern void GP_Player_Load();
 
         [DllImport("__Internal")]
+        private static extern void GP_Player_SetSimulateSaveError(int enable);
+
+        [DllImport("__Internal")]
         private static extern void GP_Player_Login();
         
         [DllImport("__Internal")]
@@ -627,6 +630,19 @@ namespace GamePush
             GP_Player_DisableAutoSync(storage.ToString());
 #else
             ConsoleLog("AUTO SYNC: OFF");
+#endif
+        }
+
+        /// <summary>
+        /// For testing: when enabled, next Load() and Sync() will report error (OnLoadError / OnSyncError) instead of calling GamePush.
+        /// Can also be enabled via URL param: ?gp_simulate_save_error=1
+        /// </summary>
+        public static void SetSimulateSaveError(bool enable)
+        {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            GP_Player_SetSimulateSaveError(enable ? 1 : 0);
+#else
+            ConsoleLog("SetSimulateSaveError: editor/stub, no-op");
 #endif
         }
 

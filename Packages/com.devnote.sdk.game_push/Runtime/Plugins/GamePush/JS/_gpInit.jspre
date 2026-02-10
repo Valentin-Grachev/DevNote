@@ -1,5 +1,8 @@
 let GamePush;
 
+// Test flag: set to true via ?gp_simulate_save_error=1 in URL or from Unity (SetSimulateSaveError). Forces Load/Sync to report error.
+window.__GP_SIMULATE_SAVE_ERROR = (typeof URLSearchParams !== 'undefined' && new URLSearchParams(window.location.search).get('gp_simulate_save_error') === '1');
+
 function _GP(){
     return GamePush || window.GamePush;
 }
