@@ -16,7 +16,8 @@ namespace DevNote.SDK.GamePush
 
         bool IAds.RewardedAvailable => GP_Ads.IsRewardedAvailable() || IEnvironment.IsEditor;
 
-        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed && GP_Ads.IsFullscreenAvailable();
+        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed 
+            && GP_Ads.IsFullscreenAvailable() && !IAds.SkipAds && !GP_Ads.IsAdblockEnabled();
 
         bool IAds.AdBlockEnabled => GP_Ads.IsAdblockEnabled();
 
@@ -72,6 +73,12 @@ namespace DevNote.SDK.GamePush
             else if (IAds.TryInternalHandleRewarded(onRewarded, callback, key)) 
                 return;
 
+
+            else if (GP_Ads.IsAdblockEnabled())
+            {
+                IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.AdBlockEnabled);
+            }
+
             else if (GP_Ads.IsRewardedAvailable())
             {
                 GP_Ads.ShowRewarded(key.ToString(), onRewardedReward: (id) =>
@@ -84,10 +91,10 @@ namespace DevNote.SDK.GamePush
                         IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Error);
                 });
             }
+
             else
             {
-                var status = GP_Ads.IsAdblockEnabled() ? AdShowStatus.AdBlockEnabled : AdShowStatus.Error;
-                IAds.InvokeRewardedCallback(onRewarded, callback, key, status);
+                IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Error);
             }
         }
     }

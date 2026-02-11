@@ -7,7 +7,6 @@ namespace DevNote.SDK.Test
 {
     public class TestEnvironmentService : MonoBehaviour, IEnvironment
     {
-        [SerializeField] private DistributionKey _distributionKey;
         [SerializeField] private bool _fullscreenIsSupported;
         [SerializeField] private Language _deviceLanguage = Language.EN;
         [SerializeField] private DeviceType _deviceType = DeviceType.Desktop;
@@ -21,7 +20,6 @@ namespace DevNote.SDK.Test
         void IInitializable.Initialize() 
         { 
             IEnvironment.StartGameUtcTime = DateTime.Now;
-            IEnvironment.DistributionKey = _distributionKey;
 
             _initialized = true;
         }

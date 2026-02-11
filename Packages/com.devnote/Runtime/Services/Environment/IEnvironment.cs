@@ -6,7 +6,6 @@ namespace DevNote
     {
         public static bool IsTest { get; set; }
         public static EnvironmentKey EnvironmentKey { get; set; }
-        public static DistributionKey DistributionKey { get; set; } = DistributionKey.Other;
 
         protected static DateTime StartGameUtcTime { get; set; }
 

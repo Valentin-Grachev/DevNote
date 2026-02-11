@@ -1,6 +1,5 @@
 
 public enum EnvironmentKey { Test = 0, YandexGames = 1, GamePush = 2 }
-public enum DistributionKey { Other, YandexGames, VK, OK }
 
 public enum AdKey
 {

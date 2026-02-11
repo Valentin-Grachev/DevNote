@@ -10,7 +10,7 @@ namespace DevNote.SDK.YandexGames
         bool IInitializable.Initialized => YG_Sdk.available;
 
         bool IAds.RewardedAvailable => true;
-        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed;
+        bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed && !IAds.SkipAds;
         bool IAds.AdBlockEnabled => false;
 
 

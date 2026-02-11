@@ -151,9 +151,13 @@ mergeInto(LibraryManager.library, {
 
     const legacyKeyString = UTF8ToString(legacyKey);
     const actualKeyString = UTF8ToString(actualKey);
+    const dataString = UTF8ToString(data);
+
+    // При удалении сохранений удаляем и бэкап
+    if (dataString === "") this.legacyData = "";
 
     // === Обработка ===
-    player.setData({ [actualKeyString]: UTF8ToString(data), [legacyKeyString]: this.legacyData })
+    player.setData({ [actualKeyString]: dataString, [legacyKeyString]: this.legacyData })
     .then(() => {
       unity.SendMessage('YandexGames', 'HTML_OnSavesSent', 1);
       console.log('Player saves sent to key:', actualKeyString);
