@@ -60,6 +60,7 @@ namespace DevNote
             RunInitialization(_localization);
 
             Context.Register(new ScreenState());
+            Context.Register(new Clock());
 
             await UniTask.WaitUntil(() => !_initializables.Exists(initializable => !initializable.Initialized));
             await UniTask.WaitUntil(() => !contexts.Exists(context => !context.Initialized));
