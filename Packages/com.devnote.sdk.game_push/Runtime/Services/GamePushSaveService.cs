@@ -8,12 +8,15 @@ namespace DevNote.SDK.GamePush
 {
     public class GamePushSaveService : MonoBehaviour, ISave
     {
+        [SerializeField] private string _actualSaveData;
         [SerializeField] private bool _useLocalSaves;
         [SerializeField] private AutosaveSettings _autosaveSettings;
 
         private bool _initialized = false;
         private Action _onSuccess;
         private Action _onError;
+
+        private string DataKey => string.IsNullOrEmpty(_actualSaveData) ? ISave.DATA_KEY : _actualSaveData;
 
 
         bool IInitializable.Initialized => _initialized;
@@ -29,8 +32,8 @@ namespace DevNote.SDK.GamePush
             GP_Player.OnSyncComplete += () => _onSuccess?.Invoke();
             GP_Player.OnSyncError += () => _onError?.Invoke();
 
-            var cloudData = GP_Player.GetString(ISave.DATA_KEY);
-            var localData = PlayerPrefs.GetString(ISave.DATA_KEY);
+            var cloudData = GP_Player.GetString(DataKey);
+            var localData = PlayerPrefs.GetString(DataKey);
 
             Debug.Log($"[{nameof(GamePushSaveService)}] Cloud data: {cloudData}");
             Debug.Log($"[{nameof(GamePushSaveService)}] Local data: {localData}");
@@ -38,7 +41,7 @@ namespace DevNote.SDK.GamePush
             var cloudTime = GameStateEncoder.GetSaveTime(cloudData);
             var localTime = GameStateEncoder.GetSaveTime(localData);
 
-            bool useCloud = cloudTime > localTime || !_useLocalSaves;
+            bool useCloud = cloudTime >= localTime || !_useLocalSaves;
             string data = useCloud ? cloudData : localData;
 
             ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(data);
@@ -57,7 +60,7 @@ namespace DevNote.SDK.GamePush
             _onError = onError;
 
             string data = IGameState.GetEncodedData();
-            GP_Player.Set(ISave.DATA_KEY, data);
+            GP_Player.Set(DataKey, data);
             GP_Player.Sync();
         }
 
@@ -71,7 +74,7 @@ namespace DevNote.SDK.GamePush
                 onSuccess?.Invoke();
             };
 
-            GP_Player.Set(ISave.DATA_KEY, string.Empty);
+            GP_Player.Set(DataKey, string.Empty);
             GP_Player.Sync();
         }
     }

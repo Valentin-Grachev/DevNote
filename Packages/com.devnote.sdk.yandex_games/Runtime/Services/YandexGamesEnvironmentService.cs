@@ -60,12 +60,14 @@ namespace DevNote.SDK.YandexGames
 
             if (channel == Sound.Channel.SFX)
                 Sound.Settings.SfxEnabled = !value;
+
+            IEnvironment.InvokeChangeSoundChannel();
         }
 
         bool IEnvironment.ChannelIsMuted(Sound.Channel channel)
             => channel == Sound.Channel.Music ? !Sound.Settings.MusicEnabled : !Sound.Settings.SfxEnabled;
 
-        void IEnvironment.SetFullscreen(bool active) { }
+        void IEnvironment.ToggleFullscreen() { }
 
     }
     

@@ -45,6 +45,7 @@ namespace DevNote
             }
         }
 
+        
 
         public Language DeviceLanguage { get; }
         public DeviceType DeviceType { get; }
@@ -55,13 +56,17 @@ namespace DevNote
         public void StopGameplay();
 
 
+        public static event Action OnSoundChannelChanged; public static void InvokeChangeSoundChannel() => OnSoundChannelChanged?.Invoke();
         public void SetChannelMute(Sound.Channel channel, bool value);
         public bool ChannelIsMuted(Sound.Channel channel);
 
 
+        // === Fullscreen ===
+
+        public static event Action OnFullscreenChanged; public static void InvokeChangeFullscreen() => OnFullscreenChanged?.Invoke();
         public bool FullscreenIsSupported { get; }
         public bool IsFullscreen { get; }
-        public void SetFullscreen(bool active);
+        public void ToggleFullscreen();
 
 
     }

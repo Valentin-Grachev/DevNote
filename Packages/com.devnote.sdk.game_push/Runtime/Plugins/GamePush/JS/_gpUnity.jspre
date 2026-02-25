@@ -1440,6 +1440,9 @@ class GamePushUnityInner {
     FullscreenToggle() {
         return this.gp.fullscreen.toggle();
     }
+    FullscreenIsEnabled() {
+        return this.toUnity(this.gp.fullscreen.isEnabled);
+    }
 
     // ADS
     AdsShowFullscreen() {

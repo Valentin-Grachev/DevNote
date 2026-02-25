@@ -47,12 +47,15 @@ namespace DevNote
                         if (languageIndex != -1)
                         {
                             Language language = _availableLanguages[languageIndex].language;
-                            string value = table.Get(row: i, column);
-                            translations.Add((language, value));
+                            string value = table.Get(row: i, column).Trim();
+
+                            if (value != string.Empty)
+                                translations.Add((language, value));
                         }
                     }
 
-                    Translations.Add(new Translation(key, translations));
+                    if (translations.Count > 0)
+                        Translations.Add(new Translation(key, translations));
                 }
             }
 

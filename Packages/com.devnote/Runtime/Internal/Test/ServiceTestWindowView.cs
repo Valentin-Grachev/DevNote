@@ -127,8 +127,8 @@ namespace DevNote
             _purchasesProductPriceText.text = _purchasesProductPriceText.text.Replace("<price>", priceValue);
             _purchasesProductKeyText.text = _purchasesProductKeyText.text.Replace("<key>", ProductKey.NoAds.ToString());
 
-            bool remoteValue = remote.Item.GetBool(RemoteKey.Test);
-            _remoteTestValueText.text = $"Test: {remoteValue}";
+            //bool remoteValue = remote.Item.GetBool(RemoteKey.Test);
+            //_remoteTestValueText.text = $"Test: {remoteValue}";
 
             DisplayPurchaseButton();
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Events;
@@ -60,6 +60,18 @@ namespace GamePush
 #else
 
             ConsoleLog("TOGGLE");
+#endif
+        }
+
+
+        [DllImport("__Internal")]
+        private static extern string GP_Fullscreen_IsEnabled();
+        public static bool IsEnabled()
+        {
+#if !UNITY_EDITOR && UNITY_WEBGL
+            return GP_Fullscreen_IsEnabled() == "true";
+#else
+            return false;
 #endif
         }
 

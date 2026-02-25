@@ -1,4 +1,6 @@
 
+
+
 public enum EnvironmentKey { Test = 0, YandexGames = 1, GamePush = 2 }
 
 public enum AdKey
@@ -28,6 +30,8 @@ public enum ProductKey
 public enum RemoteKey
 {
     Test = 0,
-
 }
+
+
+
 

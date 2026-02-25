@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePush;
@@ -11,7 +12,6 @@ namespace DevNote.SDK.GamePush
     {
         private bool _initialized = false;
         private bool _gameplayStarted = false;
-        private bool _isFullscreen = false;
 
 
         private readonly List<Platform> DISTRIBUTIONS_SUPPORTS_FULLSCREEN = new()
@@ -42,7 +42,7 @@ namespace DevNote.SDK.GamePush
         bool IEnvironment.FullscreenIsSupported => 
             DISTRIBUTIONS_SUPPORTS_FULLSCREEN.Contains(GP_Platform.Type());
 
-        bool IEnvironment.IsFullscreen => _isFullscreen;
+        bool IEnvironment.IsFullscreen => GP_Fullscreen.IsEnabled();
 
         void IEnvironment.GameReady() => GP_Game.GameReady();
 
@@ -58,14 +58,28 @@ namespace DevNote.SDK.GamePush
             Sound.Settings.MusicEnabled = !GP_Sounds.IsMuted(SoundType.Music);
             Sound.Settings.SfxEnabled = !GP_Sounds.IsMuted(SoundType.SFX);
 
-            GP_Sounds.OnMuteMusic += () => Sound.Settings.MusicEnabled = false;
-            GP_Sounds.OnMuteSFX += () => Sound.Settings.SfxEnabled = false;
-            GP_Sounds.OnUnmuteMusic += () => Sound.Settings.MusicEnabled = true;
-            GP_Sounds.OnUnmuteSFX += () => Sound.Settings.SfxEnabled = true;
+            GP_Sounds.OnMuteMusic += () =>
+            {
+                Sound.Settings.MusicEnabled = false;
+                IEnvironment.InvokeChangeSoundChannel();
+            };
+            GP_Sounds.OnMuteSFX += () =>
+            {
+                Sound.Settings.SfxEnabled = false;
+                IEnvironment.InvokeChangeSoundChannel();
+            };
+            GP_Sounds.OnUnmuteMusic += () =>
+            {
+                Sound.Settings.MusicEnabled = true;
+                IEnvironment.InvokeChangeSoundChannel();
+            };
+            GP_Sounds.OnUnmuteSFX += () =>
+            {
+                Sound.Settings.SfxEnabled = true;
+                IEnvironment.InvokeChangeSoundChannel();
+            };
 
-            GP_Fullscreen.OnFullscreenClose += () => _isFullscreen = false;
-            GP_Fullscreen.OnFullscreenOpen += () => _isFullscreen = true;
-
+            GP_Fullscreen.OnFullscreenChange += () => IEnvironment.InvokeChangeFullscreen();
 
             _initialized = true;
         }
@@ -94,32 +108,30 @@ namespace DevNote.SDK.GamePush
         bool IEnvironment.ChannelIsMuted(Sound.Channel channel)
             => channel == Sound.Channel.Music ? GP_Sounds.IsMuted(SoundType.Music) : GP_Sounds.IsMuted(SoundType.SFX);
 
-        void IEnvironment.SetChannelMute(Sound.Channel channel, bool value)
+        void IEnvironment.SetChannelMute(Sound.Channel channel, bool isMute)
         {
             if (channel == Sound.Channel.Music)
             {
-                if (value) GP_Sounds.Mute(SoundType.Music);
+                if (isMute) GP_Sounds.Mute(SoundType.Music);
                 else GP_Sounds.Unmute(SoundType.Music);
             }
 
             if (channel == Sound.Channel.SFX)
             {
-                if (value) GP_Sounds.Mute(SoundType.SFX);
+                if (isMute) GP_Sounds.Mute(SoundType.SFX);
                 else GP_Sounds.Unmute(SoundType.SFX);
             }
                 
         }
 
-        void IEnvironment.SetFullscreen(bool active)
+        async void IEnvironment.ToggleFullscreen()
         {
-            GP_Fullscreen.OnFullscreenChange += OnFullscreenChange;
-            if (_isFullscreen) GP_Fullscreen.Close();
-            else GP_Fullscreen.Open();
-        }
+            bool isFullscreenPrevious = GP_Fullscreen.IsEnabled();
+            GP_Fullscreen.Toggle();
 
-        private void OnFullscreenChange()
-        {
-            throw new System.NotImplementedException();
+            await UniTask.WaitUntil(() => isFullscreenPrevious != GP_Fullscreen.IsEnabled());
+
+            IEnvironment.InvokeChangeFullscreen();
         }
     }
 }

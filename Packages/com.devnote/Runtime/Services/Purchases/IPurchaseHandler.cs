@@ -8,11 +8,14 @@ namespace DevNote
         public static void SetHandler(IPurchaseHandler handler) => _handler = handler;
 
         public static void HandlePurchaseStatic(ProductKey productKey) => _handler.HandlePurchase(productKey);
+        public static bool ProductIsPurchasedStatic(ProductKey productKey) => _handler.ProductIsPurchased(productKey);
         public static bool ProductIsConsumable(ProductKey productKey) => _handler.ConsumableProductKeys.Contains(productKey);
 
 
         protected abstract void HandlePurchase(ProductKey productKey);
         protected abstract List<ProductKey> ConsumableProductKeys { get; }
+        protected abstract bool ProductIsPurchased(ProductKey productKey);
+
 
     }
 }

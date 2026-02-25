@@ -16,6 +16,10 @@ namespace DevNote
 
         public static void InvokeHandlePurchase(ProductKey productKey, bool success, Action onSuccess = null, Action onError = null)
         {
+            if (IPurchaseHandler.ProductIsPurchasedStatic(productKey))
+                return;
+
+
             if (success) IPurchaseHandler.HandlePurchaseStatic(productKey);
 
             if (success) onSuccess?.Invoke();

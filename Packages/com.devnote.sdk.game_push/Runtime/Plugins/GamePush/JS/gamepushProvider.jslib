@@ -349,6 +349,10 @@ mergeInto(LibraryManager.library, {
     GP_Fullscreen_Toggle: function () {
         _GP().FullscreenToggle();
     },
+    GP_Fullscreen_IsEnabled: function () {
+        var value = _GP().FullscreenIsEnabled();
+        return _ToBuff(value);
+    },
     /* FULLSCREEN */
 
 

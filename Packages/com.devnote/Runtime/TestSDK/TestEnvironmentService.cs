@@ -61,15 +61,19 @@ namespace DevNote.SDK.Test
 
             if (channel == Sound.Channel.SFX)
                 Sound.Settings.SfxEnabled = !value;
+
+            IEnvironment.InvokeChangeSoundChannel();
         }
 
         bool IEnvironment.ChannelIsMuted(Sound.Channel channel) 
             => channel == Sound.Channel.Music ? !Sound.Settings.MusicEnabled : !Sound.Settings.SfxEnabled;
 
-        void IEnvironment.SetFullscreen(bool active)
+        void IEnvironment.ToggleFullscreen()
         {
-            _isFullscreen = active;
-            Debug.Log($"{Info.Prefix} Set fullscreen: {active}");
+            _isFullscreen = !_isFullscreen;
+            Debug.Log($"{Info.Prefix} Set fullscreen: {_isFullscreen}");
+
+            IEnvironment.InvokeChangeFullscreen();
         }
     }
 }

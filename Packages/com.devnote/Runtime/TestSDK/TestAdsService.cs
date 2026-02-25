@@ -5,15 +5,18 @@ namespace DevNote.SDK.Test
 {
     public class TestAdsService : MonoBehaviour, IAds
     {
-        [SerializeField] private AdShowStatus _adShowStatus = AdShowStatus.Success;
+        private enum EmulateAdBlockType { None, Editor, EditorAndBuild }
 
+        [SerializeField] private AdShowStatus _adShowStatus = AdShowStatus.Success;
+        [SerializeField] private EmulateAdBlockType _emulateAdBlock;
 
         bool ISelectableService.IsAvailableForSelection => true;
         bool IInitializable.Initialized => true;
 
         bool IAds.RewardedAvailable => true;
         bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed;
-        bool IAds.AdBlockEnabled => false;
+        bool IAds.AdBlockEnabled => _emulateAdBlock == EmulateAdBlockType.EditorAndBuild 
+            || (IEnvironment.IsEditor && _emulateAdBlock == EmulateAdBlockType.Editor);
 
 
         void IInitializable.Initialize() { }

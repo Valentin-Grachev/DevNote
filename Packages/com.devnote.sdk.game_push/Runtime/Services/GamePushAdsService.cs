@@ -48,9 +48,15 @@ namespace DevNote.SDK.GamePush
 
         void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
-            if (IAds.TryInternalHandleInterstitial(callback, key)) return;
+            if (IAds.TryInternalHandleInterstitial(callback, key)) 
+                return;
 
-            if (GP_Ads.IsFullscreenAvailable())
+            // <-- Ad block -->
+            else if (GP_Ads.IsAdblockEnabled())
+                IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.AdBlockEnabled);
+
+            // <-- Ads available -->
+            else if (GP_Ads.IsFullscreenAvailable())
             {
                 GP_Ads.ShowFullscreen(onFullscreenClose: (success) =>
                 {
@@ -58,11 +64,9 @@ namespace DevNote.SDK.GamePush
                     IAds.InvokeInterstitialCallback(callback, key, status);
                 });
             }
-            else
-            {
-                var status = GP_Ads.IsAdblockEnabled() ? AdShowStatus.AdBlockEnabled : AdShowStatus.Error;
-                IAds.InvokeInterstitialCallback(callback, key, status);
-            }
+
+            // <-- Ads not available -->
+            else IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.Error);
         }
 
         void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
@@ -73,12 +77,11 @@ namespace DevNote.SDK.GamePush
             else if (IAds.TryInternalHandleRewarded(onRewarded, callback, key)) 
                 return;
 
-
+            // <-- Ad block -->
             else if (GP_Ads.IsAdblockEnabled())
-            {
                 IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.AdBlockEnabled);
-            }
 
+            // <-- Ads available -->
             else if (GP_Ads.IsRewardedAvailable())
             {
                 GP_Ads.ShowRewarded(key.ToString(), onRewardedReward: (id) =>
@@ -92,10 +95,9 @@ namespace DevNote.SDK.GamePush
                 });
             }
 
-            else
-            {
-                IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Error);
-            }
+            // <-- Ads not available -->
+            else IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Error);
+
         }
     }
 }

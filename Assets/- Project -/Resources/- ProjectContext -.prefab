@@ -299,7 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _remoteData:
   - key: 0
-    value: True
+    value: AbA
 --- !u!1 &5757904575588715954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,7 +1077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef04d45144636b4abc33f8abc00e315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distributionKey: 0
   _fullscreenIsSupported: 0
   _deviceLanguage: 1
   _deviceType: 0

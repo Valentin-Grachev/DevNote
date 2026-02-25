@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -45,10 +46,13 @@ namespace DevNote.SDK.YandexGames
 
                     if (keyValue.Length == 2)
                     {
-                        var key = keyValue[0].Trim().Trim('"').ToEnum<RemoteKey>();
-                        string value = keyValue[1].Trim().Trim('"');
+                        string keyString = keyValue[0].Trim().Trim('"');
 
-                        values[key] = value;
+                        if (Enum.TryParse(typeof(RemoteKey), keyString, out object key))
+                        {
+                            string value = keyValue[1].Trim().Trim('"');
+                            values[(RemoteKey)key] = value;
+                        }
                     }
                 }
             }
