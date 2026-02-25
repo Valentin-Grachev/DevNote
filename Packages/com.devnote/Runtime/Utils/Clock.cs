@@ -4,8 +4,8 @@ namespace DevNote
 {
     public class Clock : IUpdateHandler
     {
-        public delegate void OnSecondsPass(int seconds);
-        public event OnSecondsPass OnUnscaledSecondsPassed;
+        public delegate void OnTimePassed(int seconds);
+        public static event OnTimePassed OnUnscaledSecondsPassed;
 
 
         private float _lastUpdateTime = 0f;
