@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace DevNote
@@ -9,6 +8,7 @@ namespace DevNote
     {
         private List<Type> _registeredTypes = new();
 
+        public bool Initialized { get; protected set; } = false;
 
         public abstract void RegisterContext();
 

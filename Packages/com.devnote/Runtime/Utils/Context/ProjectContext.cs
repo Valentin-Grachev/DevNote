@@ -8,6 +8,9 @@ namespace DevNote
 {
     public class ProjectContext : MonoBehaviour
     {
+        public static bool Initialized { get; private set; } = false;
+
+
         [Header("DevNote " + Info.VERSION), Space]
         [SerializeField] private bool _testVersion;
         [SerializeField] private EnvironmentKey _environmentKey;
@@ -22,7 +25,7 @@ namespace DevNote
 
         private List<IInitializable> _initializables = new();
 
-        public async void RegisterContext()
+        public async void RegisterContext(List<SceneContext> contexts)
         {
             SetActiveRootGameObjects(false);
 
@@ -58,7 +61,10 @@ namespace DevNote
 
             Context.Register(new ScreenState());
 
-            await WaitFullInitialization();
+            await UniTask.WaitUntil(() => !_initializables.Exists(initializable => !initializable.Initialized));
+            await UniTask.WaitUntil(() => !contexts.Exists(context => !context.Initialized));
+
+            Initialized = true;
 
             SetActiveRootGameObjects(true);
             _onlyBootstrapGameObject.ForEach(gameObject => gameObject.SetActive(false));
@@ -73,20 +79,6 @@ namespace DevNote
             Context.Register(service);
             return service;
         }
-
-
-
-        private UniTask WaitFullInitialization() => UniTask.WaitUntil(() =>
-        {
-            for (int i = 0; i < _initializables.Count; i++)
-            {
-                if (_initializables[i].Initialized == false)
-                    return false;
-            }
-
-            return true;
-        });
-
 
 
         private void RunInitialization(IInitializable initializable)

@@ -18,7 +18,9 @@ namespace DevNote
                 _projectContextExists = true;
             }
 
-            _contexts.ForEach(context => context.RegisterContext());
+            foreach (var context in _contexts)
+                context.RegisterContext();
+
             gameObject.AddComponent<Context>();
         }
 
@@ -27,7 +29,7 @@ namespace DevNote
         {
             var projectContext = Instantiate(Resources.Load<ProjectContext>("- ProjectContext -"));
             DontDestroyOnLoad(projectContext.gameObject);
-            projectContext.RegisterContext();
+            projectContext.RegisterContext(_contexts);
             projectContext.name = "ProjectContext";
             
         }
