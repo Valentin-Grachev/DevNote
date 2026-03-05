@@ -111,6 +111,9 @@ namespace DevNote
         public static List<T> SaveDataToList<T>(this string data, Func<string, T> converter)
         {
             var result = new List<T>();
+
+            if (string.IsNullOrEmpty(data)) return result;
+
             var splitData = data.Split(S.S4);
 
             foreach (var stringValue in splitData)
