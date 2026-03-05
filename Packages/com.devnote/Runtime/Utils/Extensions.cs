@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -92,6 +93,32 @@ namespace DevNote
                 return true;
             }
         }
+
+
+        public static string ToSaveData<T>(this List<T> list)
+        {
+            var builder = new StringBuilder();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (i != 0) builder.Append(S.S4);
+                builder.Append(list[i].ToString());
+            }
+
+            return builder.ToString();
+        }
+
+        public static List<T> SaveDataToList<T>(this string data, Func<string, T> converter)
+        {
+            var result = new List<T>();
+            var splitData = data.Split(S.S4);
+
+            foreach (var stringValue in splitData)
+                result.Add(converter(stringValue));
+
+            return result;
+        }
+
 
     }
 }
