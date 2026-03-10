@@ -110,11 +110,17 @@ namespace DevNote
             }
 
             // <-- Try load from Addressables -->
+
+            string key = $"Sounds/{soundName}";
+            if (await Utils.AddressableExists(key))
+                soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(key);
+
             if (soundUnit == null)
             {
                 foreach (var folderName in _instance._folders)
                 {
-                    string key = $"Sounds/{folderName}/{soundName}";
+                    key = $"Sounds/{folderName}/{soundName}";
+
                     if (await Utils.AddressableExists(key))
                     {
                         soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(key);
