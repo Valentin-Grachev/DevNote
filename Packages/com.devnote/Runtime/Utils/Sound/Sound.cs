@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -49,6 +50,7 @@ namespace DevNote
         [SerializeField] private bool _logWarnings = true;
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private AudioPool _sfxAudioPool;
+        [SerializeField] private List<string> _folders;
 
         private AudioMixerGroup _sfxGroup;
         private AudioSource _musicAudioSource;
@@ -71,7 +73,7 @@ namespace DevNote
 
 
 
-        public static AudioSource Play(SoundUnit soundUnit)
+        private static AudioSource Play(SoundUnit soundUnit)
         {
             AudioSource audioSource = soundUnit.channel == Channel.Music ? 
                 _instance._musicAudioSource : _instance._sfxAudioPool.GetAudioSource();
@@ -95,17 +97,36 @@ namespace DevNote
 
         public static async UniTask<AudioSource> PlayAsync(string soundName)
         {
-            string path = $"Sounds/{soundName}";
+            var soundUnit = Resources.Load<SoundUnit>($"Sounds/{soundName}");
 
-            var soundUnit = Resources.Load<SoundUnit>(path);
+            // <-- Try load from Resources -->
+            if (soundUnit == null)
+            {
+                foreach (var folderName in _instance._folders)
+                {
+                    soundUnit = Resources.Load<SoundUnit>($"Sounds/{folderName}/{soundName}");
+                    if (soundUnit != null) break;
+                }
+            }
 
-            if (soundUnit == null && await Utils.AddressableExists(path))
-                soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(path);
-
+            // <-- Try load from Addressables -->
+            if (soundUnit == null)
+            {
+                foreach (var folderName in _instance._folders)
+                {
+                    string key = $"Sounds/{folderName}/{soundName}";
+                    if (await Utils.AddressableExists(key))
+                    {
+                        soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(key);
+                        break;
+                    }
+                }
+            }
+                
             if (soundUnit == null)
             {
                 if (_instance._logWarnings)
-                    Debug.LogWarning($"{Info.Prefix} Sound with path \"{path}\" doesn't exists!");
+                    Debug.LogWarning($"{Info.Prefix} Sound with name \"{soundName}\" doesn't exists!");
 
                 return null;
             }

@@ -42,17 +42,6 @@ namespace DevNote
             Random.Range(_randomPitch.x, _randomPitch.y) : _pitch;
 
 
-        public AudioSource Play() => Sound.Play(this);
-
-        /*
-        private void OnValidate()
-        {
-            if (_audioClip != null) _audioClipName = _audioClip.name;
-            _audioClipNames = new List<string>() { "Readf", "sfaf" };
-        }
-        */
-
-
     }
 
 
