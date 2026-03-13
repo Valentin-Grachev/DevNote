@@ -42,6 +42,7 @@ namespace DevNote
             Random.Range(_randomPitch.x, _randomPitch.y) : _pitch;
 
 
+        public AudioSource Play() => Sound.Play(this);
 
         [Button("Play")] private void PlayPreview() => Sound.Play(name);
 

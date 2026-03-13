@@ -73,7 +73,7 @@ namespace DevNote
 
 
 
-        private static AudioSource Play(SoundUnit soundUnit)
+        public static AudioSource Play(SoundUnit soundUnit)
         {
             AudioSource audioSource = soundUnit.channel == Channel.Music ? 
                 _instance._musicAudioSource : _instance._sfxAudioPool.GetAudioSource();
