@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -31,10 +32,21 @@ namespace DevNote
         public static DateTime GetSaveTime(string encodedData)
         {
             string[] splitData = encodedData.Split(S.ENCODER);
-            return splitData.Length == 3 ? DateTime.Parse(splitData[1]) : DateTime.MinValue;
+
+            if (splitData.Length == 3)
+            {
+                string dateTimeData = splitData[1];
+
+                bool success = DateTime.TryParseExact(dateTimeData, "dd.MM.yyyy HH:mm:ss",
+                    CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.None, out DateTime dateTime);
+
+                return success ? dateTime : DateTime.MinValue;
+            }
+            else return DateTime.MinValue;
         }
 
-        public static Dictionary<string, string> Decode(string encodedData)
+
+    public static Dictionary<string, string> Decode(string encodedData)
         {
             string[] splitData = encodedData.Split(S.ENCODER);
             bool decodeAvailable = splitData.Length == 3 && splitData[2] != string.Empty;
@@ -47,7 +59,7 @@ namespace DevNote
 
         public static string Encode(Dictionary<string, string> dictionary)
         {
-            var time = IEnvironment.UtcTime;
+            var time = IEnvironment.UtcTime.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"));
             string originData = ToDataString(dictionary);
             return $"{IGameState.VersionPrefix}{S.ENCODER}{time}{S.ENCODER}" + Compress(originData);
         }
