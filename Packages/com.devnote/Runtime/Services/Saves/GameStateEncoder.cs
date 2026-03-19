@@ -32,17 +32,7 @@ namespace DevNote
         public static DateTime GetSaveTime(string encodedData)
         {
             string[] splitData = encodedData.Split(S.ENCODER);
-
-            if (splitData.Length == 3)
-            {
-                string dateTimeData = splitData[1];
-
-                bool success = DateTime.TryParseExact(dateTimeData, "dd.MM.yyyy HH:mm:ss",
-                    CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.None, out DateTime dateTime);
-
-                return success ? dateTime : DateTime.MinValue;
-            }
-            else return DateTime.MinValue;
+            return splitData.Length == 3 ? splitData[1].ToDateTime() : DateTime.MinValue;
         }
 
 
@@ -59,7 +49,7 @@ namespace DevNote
 
         public static string Encode(Dictionary<string, string> dictionary)
         {
-            var time = IEnvironment.UtcTime.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"));
+            var time = IEnvironment.UtcTime.ToDataString();
             string originData = ToDataString(dictionary);
             return $"{IGameState.VersionPrefix}{S.ENCODER}{time}{S.ENCODER}" + Compress(originData);
         }

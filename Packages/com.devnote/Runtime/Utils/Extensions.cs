@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -120,6 +121,18 @@ namespace DevNote
                 result.Add(converter(stringValue));
 
             return result;
+        }
+
+
+        public static string ToDataString(this DateTime dateTime)
+            => dateTime.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"));
+
+        public static DateTime ToDateTime(this string data)
+        {
+            bool success = DateTime.TryParseExact(data, "dd.MM.yyyy HH:mm:ss",
+                CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.None, out DateTime dateTime);
+
+            return success ? dateTime : DateTime.MinValue;
         }
 
 
