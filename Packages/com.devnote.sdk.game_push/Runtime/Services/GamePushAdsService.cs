@@ -46,7 +46,7 @@ namespace DevNote.SDK.GamePush
             else GP_Ads.CloseSticky();
         }
 
-        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
+        async void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             if (IAds.TryInternalHandleInterstitial(callback, key)) 
                 return;
@@ -63,6 +63,10 @@ namespace DevNote.SDK.GamePush
                     var status = success ? AdShowStatus.Success : AdShowStatus.Error;
                     IAds.InvokeInterstitialCallback(callback, key, status);
                 });
+
+                // Remove inner GamePush pause
+                await UniTask.NextFrame();
+                TimeMode.SetActive(TimeMode.Mode.Pause, false);
             }
 
             // <-- Ads not available -->
