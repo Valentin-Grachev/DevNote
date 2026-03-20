@@ -70,12 +70,13 @@ namespace DevNote.SDK.GamePush
             _onError = onError;
             _onSuccess = () =>
             {
-                ISave.SetSavesAsDeleted();
                 onSuccess?.Invoke();
             };
 
             GP_Player.Set(DataKey, string.Empty);
             GP_Player.Sync();
+
+            ISave.SetSavesAsDeleted();
         }
     }
 }
