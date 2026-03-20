@@ -34,7 +34,7 @@ namespace DevNote.SDK.YandexGames
 
             YG_Saves.RequestSaves((cloudData) =>
             {
-                var localData = PlayerPrefs.GetString(_actualSaveDataKey, defaultValue: string.Empty);
+                var localData = PlayerPrefs.GetString(ISave.DATA_KEY, defaultValue: string.Empty);
 
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Cloud data: {cloudData}");
                 Debug.Log($"[{nameof(YandexGamesSaveService)}] Local data: {localData}");

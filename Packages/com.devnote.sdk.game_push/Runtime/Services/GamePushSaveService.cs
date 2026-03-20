@@ -33,7 +33,7 @@ namespace DevNote.SDK.GamePush
             GP_Player.OnSyncError += () => _onError?.Invoke();
 
             var cloudData = GP_Player.GetString(DataKey);
-            var localData = PlayerPrefs.GetString(DataKey);
+            var localData = PlayerPrefs.GetString(ISave.DATA_KEY, defaultValue: string.Empty);
 
             Debug.Log($"[{nameof(GamePushSaveService)}] Cloud data: {cloudData}");
             Debug.Log($"[{nameof(GamePushSaveService)}] Local data: {localData}");
