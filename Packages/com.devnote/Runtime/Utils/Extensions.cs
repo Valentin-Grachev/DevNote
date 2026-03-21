@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 
 namespace DevNote
@@ -131,6 +133,25 @@ namespace DevNote
 
             return success ? dateTime : DateTime.MinValue;
         }
+
+
+        private static Dictionary<AssetReference, UnityEngine.Object> _loadedAssetReferences = new();
+        public static async UniTask<T> Load<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
+        {
+            if (!_loadedAssetReferences.ContainsKey(assetReference))
+            {
+                var asset = await assetReference.LoadAssetAsync();
+                _loadedAssetReferences.Add(assetReference, asset);
+            }
+
+            return (T)_loadedAssetReferences[assetReference];
+        }
+
+
+
+
+
+
 
 
     }
