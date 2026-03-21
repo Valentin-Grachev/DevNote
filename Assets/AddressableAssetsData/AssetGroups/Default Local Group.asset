@@ -16,7 +16,15 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 12785349eba9d7844988aa97d4dfe6a9
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 33804d82ce187e34886a782e7a334611
+    m_Address: Assets/- Project -/SFX_SpinWheel_Start_1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 785a9b1b49a8fc4478245b08e35b4ded
+    m_Address: Assets/- Project -/casual_interface_sounds_FX_17_1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9d40d784576c98145ab8393a5b0308bd, type: 2}
   m_SchemaSet:

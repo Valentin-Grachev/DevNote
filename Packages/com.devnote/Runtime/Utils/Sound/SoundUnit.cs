@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 
 namespace DevNote
@@ -10,41 +13,91 @@ namespace DevNote
     {
         public enum PlayType { Simple, Loop, OneShot }
 
-
         [SerializeField] private Sound.Channel _channel; public Sound.Channel channel => _channel;
         [SerializeField] private PlayType _playType; public PlayType playType => _playType;
 
+        [HorizontalLine]
+        [SerializeField] private bool _useAddressables; private bool NotUseAddressables => !_useAddressables;
+        [SerializeField] private bool _useRandomAudioClip; private bool NotUseRandomAudioClip => !_useRandomAudioClip;
 
-        
-        [SerializeField, HideIf(nameof(_useRandomAudioClip))] private AudioClip _audioClip;
-        [SerializeField, ShowIf(nameof(_useRandomAudioClip))] private List<AudioClip> _randomAudioClips;
-        
+        [SerializeField, ShowIf(EConditionOperator.And, nameof(NotUseAddressables), nameof(NotUseRandomAudioClip))] 
+        private AudioClip _audioClip;
+
+        [SerializeField, ShowIf(EConditionOperator.And, nameof(NotUseAddressables), nameof(_useRandomAudioClip))]
+        private List<AudioClip> _randomAudioClips;
+
+        [SerializeField, ShowIf(EConditionOperator.And, nameof(_useAddressables), nameof(NotUseRandomAudioClip))]
+        private AssetReferenceT<AudioClip> _audioClipReference;
+
+        [SerializeField, ShowIf(EConditionOperator.And, nameof(_useAddressables), nameof(_useRandomAudioClip))]
+        private List<AssetReferenceT<AudioClip>> _randomAudioClipReferences;
+
+        [HorizontalLine]
+        [SerializeField] private bool _useRandomVolume;
         [SerializeField, HideIf(nameof(_useRandomVolume))] [Range(0f, 1f)] private float _volume = 1f;
         [SerializeField, MinMaxSlider(0f, 1f), ShowIf(nameof(_useRandomVolume))] private Vector2 _randomVolume;
-
+        [Space(10)]
+        [SerializeField] private bool _useRandomPitch;
         [SerializeField, Range(-3f, 3f), HideIf(nameof(_useRandomPitch))] private float _pitch = 1f;
         [SerializeField, MinMaxSlider(-3f, 3f), ShowIf(nameof(_useRandomPitch))] private Vector2 _randomPitch;
 
-        [Space(10)]
-        [SerializeField] private bool _useRandomAudioClip;
-        [SerializeField] private bool _useRandomVolume;
-        [SerializeField] private bool _useRandomPitch;
+        private Dictionary<AssetReferenceT<AudioClip>, AsyncOperationHandle<AudioClip>> _cashedHandlers = new();
 
+        
+        public async UniTask<AudioClip> GetAudioClip()
+        {
+            if (_useAddressables)
+            {
+                var audioReference = _useRandomAudioClip ? 
+                    _randomAudioClipReferences.GetRandom() : _audioClipReference;
 
+                if (_cashedHandlers.ContainsKey(audioReference))
+                    return _cashedHandlers[audioReference].Result;
 
-        public AudioClip audioClip => _useRandomAudioClip ? 
-            _randomAudioClips[Random.Range(0, _randomAudioClips.Count)] : _audioClip;
+                else
+                {
+                    var handler = audioReference.LoadAssetAsync();
+                    _cashedHandlers.Add(audioReference, handler);
 
-        public float volume => _useRandomVolume ?
+                    return await handler.ToUniTask();
+                }
+            }
+            else
+            {
+                var audioClip = _useRandomAudioClip ? _randomAudioClips.GetRandom() : _audioClip;
+                return audioClip;
+            }
+        }
+
+        public float Volume => _useRandomVolume ?
             Random.Range(_randomVolume.x, _randomVolume.y) : _volume;
 
-        public float pitch => _useRandomPitch ?
+        public float Pitch => _useRandomPitch ?
             Random.Range(_randomPitch.x, _randomPitch.y) : _pitch;
 
 
-        public AudioSource Play() => Sound.Play(this);
+        public void Play() => Sound.Play(this).Forget();
 
-        [Button("Play")] private void PlayPreview() => Sound.Play(name);
+        public async UniTask<AudioSource> PlayAsync() => await Sound.Play(this);
+
+        [Button("▶ Play")] private void PlayPreview() => Play();
+
+
+        private void OnValidate()
+        {
+            if (_useAddressables)
+            {
+                _audioClip = null;
+                _randomAudioClips = null;
+            }
+            else
+            {
+                _audioClipReference = null;
+                _randomAudioClipReferences = null;
+            }
+        }
+
+
 
     }
 
