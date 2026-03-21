@@ -135,16 +135,16 @@ namespace DevNote
         }
 
 
-        private static Dictionary<AssetReference, UnityEngine.Object> _loadedAssetReferences = new();
+        private static Dictionary<string, UnityEngine.Object> _loadedAssetReferences = new();
         public static async UniTask<T> Load<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
         {
-            if (!_loadedAssetReferences.ContainsKey(assetReference))
+            if (!_loadedAssetReferences.ContainsKey(assetReference.AssetGUID))
             {
                 var asset = await assetReference.LoadAssetAsync();
-                _loadedAssetReferences.Add(assetReference, asset);
+                _loadedAssetReferences.Add(assetReference.AssetGUID, asset);
             }
 
-            return (T)_loadedAssetReferences[assetReference];
+            return (T)_loadedAssetReferences[assetReference.AssetGUID];
         }
 
 
