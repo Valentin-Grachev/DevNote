@@ -13,10 +13,13 @@ namespace DevNote
     {
         public enum PlayType { Simple, Loop, OneShot }
 
+        [Space(10), SerializeField, Label("▶ PLAY")] private bool _clickToPlay;
+
+        [Space(20)]
         [SerializeField] private Sound.Channel _channel; public Sound.Channel channel => _channel;
         [SerializeField] private PlayType _playType; public PlayType playType => _playType;
 
-        [HorizontalLine]
+        [Space(20)]
         [SerializeField] private bool _useAddressables; private bool NotUseAddressables => !_useAddressables;
         [SerializeField] private bool _useRandomAudioClip; private bool NotUseRandomAudioClip => !_useRandomAudioClip;
 
@@ -32,7 +35,7 @@ namespace DevNote
         [SerializeField, ShowIf(EConditionOperator.And, nameof(_useAddressables), nameof(_useRandomAudioClip))]
         private List<AssetReferenceT<AudioClip>> _randomAudioClipReferences;
 
-        [HorizontalLine]
+        [Space(20)]
         [SerializeField] private bool _useRandomVolume;
         [SerializeField, HideIf(nameof(_useRandomVolume))] [Range(0f, 1f)] private float _volume = 1f;
         [SerializeField, MinMaxSlider(0f, 1f), ShowIf(nameof(_useRandomVolume))] private Vector2 _randomVolume;
@@ -80,11 +83,13 @@ namespace DevNote
 
         public async UniTask<AudioSource> PlayAsync() => await Sound.Play(this);
 
-        [Button("▶ Play")] private void PlayPreview() => Play();
-
 
         private void OnValidate()
         {
+            if (_clickToPlay && Application.isPlaying) Play();
+
+            _clickToPlay = false;
+
             if (_useAddressables)
             {
                 _audioClip = null;

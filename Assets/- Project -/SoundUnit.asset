@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec417005c1808a544832a1ac4245ad65, type: 3}
   m_Name: SoundUnit
   m_EditorClassIdentifier: 
+  _clickToPlay: 0
   _channel: 1
   _playType: 2
   _useAddressables: 1
@@ -19,18 +20,14 @@ MonoBehaviour:
   _audioClip: {fileID: 0}
   _randomAudioClips: []
   _audioClipReference:
-    m_AssetGUID: 785a9b1b49a8fc4478245b08e35b4ded
+    m_AssetGUID: 33804d82ce187e34886a782e7a334611
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  _randomAudioClipReferences:
-  - m_AssetGUID: 33804d82ce187e34886a782e7a334611
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  _randomAudioClipReferences: []
   _useRandomVolume: 0
   _volume: 1
   _randomVolume: {x: 0.46321744, y: 1}
   _useRandomPitch: 0
-  _pitch: 3
+  _pitch: 1
   _randomPitch: {x: 0, y: 0}
