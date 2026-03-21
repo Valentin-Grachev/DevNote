@@ -5,6 +5,7 @@ using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 
 namespace DevNote
@@ -134,17 +135,10 @@ namespace DevNote
             return success ? dateTime : DateTime.MinValue;
         }
 
-
-        private static Dictionary<string, UnityEngine.Object> _loadedAssetReferences = new();
-        public static async UniTask<T> Load<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
+        public static async UniTask<T> LoadAssetWithKey<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
         {
-            if (!_loadedAssetReferences.ContainsKey(assetReference.AssetGUID))
-            {
-                var asset = await assetReference.LoadAssetAsync();
-                _loadedAssetReferences.Add(assetReference.AssetGUID, asset);
-            }
-
-            return (T)_loadedAssetReferences[assetReference.AssetGUID];
+            string key = (string)assetReference.RuntimeKey;
+            return await Addressables.LoadAssetAsync<T>(key);
         }
 
 
