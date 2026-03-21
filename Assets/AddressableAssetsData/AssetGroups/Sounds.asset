@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sounds
+  m_EditorClassIdentifier: 
+  m_GroupName: Sounds
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 2b0d70d6b7fdaba46afaedeb5925c518
+  m_SerializeEntries:
+  - m_GUID: 33804d82ce187e34886a782e7a334611
+    m_Address: Assets/- Project -/SFX_SpinWheel_Start_1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 785a9b1b49a8fc4478245b08e35b4ded
+    m_Address: Assets/- Project -/casual_interface_sounds_FX_17_1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 9d40d784576c98145ab8393a5b0308bd, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f34bee6a943c81c4cbbe97120b106e5b, type: 2}
+    - {fileID: 11400000, guid: 87df998566423c840a30e6fd5dd98687, type: 2}

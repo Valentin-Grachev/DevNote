@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -13,63 +14,60 @@ namespace DevNote
     {
         public enum PlayType { Simple, Loop, OneShot }
 
+        private enum AssemblyType { BuildIn, Addressable }
+
+
         [Space(10), SerializeField, Label("▶ PLAY")] private bool _clickToPlay;
 
-        [Space(20)]
+        [Space(15)]
         [SerializeField] private Sound.Channel _channel; public Sound.Channel channel => _channel;
         [SerializeField] private PlayType _playType; public PlayType playType => _playType;
+        
 
-        [Space(20)]
-        [SerializeField] private bool _useAddressables; private bool NotUseAddressables => !_useAddressables;
-        [SerializeField] private bool _useRandomAudioClip; private bool NotUseRandomAudioClip => !_useRandomAudioClip;
+        
 
-        [SerializeField, ShowIf(EConditionOperator.And, nameof(NotUseAddressables), nameof(NotUseRandomAudioClip))] 
-        private AudioClip _audioClip;
 
-        [SerializeField, ShowIf(EConditionOperator.And, nameof(NotUseAddressables), nameof(_useRandomAudioClip))]
-        private List<AudioClip> _randomAudioClips;
+        [Space(15)]
+        [SerializeField] private AssemblyType _assemblyType = AssemblyType.BuildIn;
 
-        [SerializeField, ShowIf(EConditionOperator.And, nameof(_useAddressables), nameof(NotUseRandomAudioClip))]
-        private AssetReferenceT<AudioClip> _audioClipReference;
+        [SerializeField, ShowIf(nameof(NotUseAddressables))] private AudioClip _audioClip;
 
-        [SerializeField, ShowIf(EConditionOperator.And, nameof(_useAddressables), nameof(_useRandomAudioClip))]
-        private List<AssetReferenceT<AudioClip>> _randomAudioClipReferences;
+        [SerializeField, ShowIf(nameof(UseAddressables))] private AssetReferenceT<AudioClip> _audioClipReference;
 
-        [Space(20)]
+
+        [Space(15)]
         [SerializeField] private bool _useRandomVolume;
         [SerializeField, HideIf(nameof(_useRandomVolume))] [Range(0f, 1f)] private float _volume = 1f;
         [SerializeField, MinMaxSlider(0f, 1f), ShowIf(nameof(_useRandomVolume))] private Vector2 _randomVolume;
-        [Space(10)]
+        [Space(15)]
         [SerializeField] private bool _useRandomPitch;
         [SerializeField, Range(-3f, 3f), HideIf(nameof(_useRandomPitch))] private float _pitch = 1f;
         [SerializeField, MinMaxSlider(-3f, 3f), ShowIf(nameof(_useRandomPitch))] private Vector2 _randomPitch;
 
         private Dictionary<AssetReferenceT<AudioClip>, AsyncOperationHandle<AudioClip>> _cashedHandlers = new();
 
-        
+        private bool NotUseAddressables => _assemblyType == AssemblyType.BuildIn;
+        private bool UseAddressables => _assemblyType == AssemblyType.Addressable;
+
+
         public async UniTask<AudioClip> GetAudioClip()
         {
-            if (_useAddressables)
+            if (UseAddressables)
             {
-                var audioReference = _useRandomAudioClip ? 
-                    _randomAudioClipReferences.GetRandom() : _audioClipReference;
 
-                if (_cashedHandlers.ContainsKey(audioReference))
-                    return _cashedHandlers[audioReference].Result;
+                if (_cashedHandlers.ContainsKey(_audioClipReference))
+                    return _cashedHandlers[_audioClipReference].Result;
 
                 else
                 {
-                    var handler = audioReference.LoadAssetAsync();
-                    _cashedHandlers.Add(audioReference, handler);
+                    var handler = _audioClipReference.LoadAssetAsync();
+                    _cashedHandlers.Add(_audioClipReference, handler);
 
                     return await handler.ToUniTask();
                 }
             }
-            else
-            {
-                var audioClip = _useRandomAudioClip ? _randomAudioClips.GetRandom() : _audioClip;
-                return audioClip;
-            }
+            else return _audioClip;
+
         }
 
         public float Volume => _useRandomVolume ?
@@ -86,22 +84,40 @@ namespace DevNote
 
         private void OnValidate()
         {
-            if (_clickToPlay && Application.isPlaying) Play();
+            // <-- Play preview sound -->
+            if (Application.isPlaying)
+            {
+                if (_clickToPlay) Play();
+            }
+
+            else // <-- Handle Addressables/Buildin -->
+            {
+                if (UseAddressables)
+                {
+                    if (_audioClip != null)
+                    {
+                        var path = AssetDatabase.GetAssetPath(_audioClip);
+                        var reference = Utils.MakeAssetAsAddressable<AudioClip>(path, "Sounds");
+                        _audioClipReference = reference;
+                    }
+
+                    _audioClip = null;
+                }
+                else
+                {
+                    if (_audioClipReference != null && !string.IsNullOrWhiteSpace(_audioClipReference.AssetGUID))
+                    {
+                        var guid = _audioClipReference.AssetGUID;
+                        var asset = Utils.RemoveAssetFromAddressables<AudioClip>(guid);
+                        _audioClip = asset;
+                    }
+
+                    _audioClipReference = null;
+                }
+            }
 
             _clickToPlay = false;
-
-            if (_useAddressables)
-            {
-                _audioClip = null;
-                _randomAudioClips = null;
-            }
-            else
-            {
-                _audioClipReference = null;
-                _randomAudioClipReferences = null;
-            }
         }
-
 
 
     }
