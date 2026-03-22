@@ -15,8 +15,6 @@ MonoBehaviour:
   _clickToPlay: 0
   _channel: 1
   _playType: 2
-  _assemblyType: 1
-  _audioClip: {fileID: 0}
   _audioClipReference:
     m_AssetGUID: 33804d82ce187e34886a782e7a334611
     m_SubObjectName: 

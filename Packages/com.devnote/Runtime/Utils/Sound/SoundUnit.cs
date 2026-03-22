@@ -14,8 +14,6 @@ namespace DevNote
     {
         public enum PlayType { Simple, Loop, OneShot }
 
-        private enum AssemblyType { BuildIn, Addressable }
-
 
         [Space(10), SerializeField, Label("▶ PLAY")] private bool _clickToPlay;
 
@@ -23,16 +21,8 @@ namespace DevNote
         [SerializeField] private Sound.Channel _channel; public Sound.Channel channel => _channel;
         [SerializeField] private PlayType _playType; public PlayType playType => _playType;
         
-
-        
-
-
         [Space(15)]
-        [SerializeField] private AssemblyType _assemblyType = AssemblyType.BuildIn;
-
-        [SerializeField, ShowIf(nameof(NotUseAddressables))] private AudioClip _audioClip;
-
-        [SerializeField, ShowIf(nameof(UseAddressables))] private AssetReferenceT<AudioClip> _audioClipReference;
+        [SerializeField] private AssetReferenceT<AudioClip> _audioClipReference;
 
 
         [Space(15)]
@@ -46,29 +36,8 @@ namespace DevNote
 
         private Dictionary<AssetReferenceT<AudioClip>, AsyncOperationHandle<AudioClip>> _cashedHandlers = new();
 
-        private bool NotUseAddressables => _assemblyType == AssemblyType.BuildIn;
-        private bool UseAddressables => _assemblyType == AssemblyType.Addressable;
 
-
-        public async UniTask<AudioClip> GetAudioClip()
-        {
-            if (UseAddressables)
-            {
-
-                if (_cashedHandlers.ContainsKey(_audioClipReference))
-                    return _cashedHandlers[_audioClipReference].Result;
-
-                else
-                {
-                    var handler = _audioClipReference.LoadAssetAsync();
-                    _cashedHandlers.Add(_audioClipReference, handler);
-
-                    return await handler.ToUniTask();
-                }
-            }
-            else return _audioClip;
-
-        }
+        public async UniTask<AudioClip> GetAudioClip() => await _audioClipReference.LoadAssetWithKey();
 
         public float Volume => _useRandomVolume ?
             Random.Range(_randomVolume.x, _randomVolume.y) : _volume;
@@ -84,38 +53,7 @@ namespace DevNote
 
         private void OnValidate()
         {
-            // <-- Play preview sound -->
-            if (Application.isPlaying)
-            {
-                if (_clickToPlay) Play();
-            }
-
-            else // <-- Handle Addressables/Buildin -->
-            {
-                if (UseAddressables)
-                {
-                    if (_audioClip != null)
-                    {
-                        var path = AssetDatabase.GetAssetPath(_audioClip);
-                        var reference = Utils.MakeAssetAsAddressable<AudioClip>(path, "Sounds");
-                        _audioClipReference = reference;
-                    }
-
-                    _audioClip = null;
-                }
-                else
-                {
-                    if (_audioClipReference != null && !string.IsNullOrWhiteSpace(_audioClipReference.AssetGUID))
-                    {
-                        var guid = _audioClipReference.AssetGUID;
-                        var asset = Utils.RemoveAssetFromAddressables<AudioClip>(guid);
-                        _audioClip = asset;
-                    }
-
-                    _audioClipReference = null;
-                }
-            }
-
+            if (Application.isPlaying && _clickToPlay) Play();
             _clickToPlay = false;
         }
 
