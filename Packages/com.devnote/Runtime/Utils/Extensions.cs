@@ -140,6 +140,7 @@ namespace DevNote
             return await Addressables.LoadAssetAsync<T>(key);
         }
 
+
     }
 }
 

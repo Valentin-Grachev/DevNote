@@ -104,6 +104,25 @@ namespace DevNote
             return result;
         }
 
+        public static bool GetBool(this Table table, int row, Column column)
+        {
+            if (table == null) return false;
+
+            string dataString = table.Get(row, column);
+
+            if (dataString.ToLower() == "true") return true;
+            else if (dataString.ToLower() == "false") return false;
+            else
+            {
+                Debug.LogError($"{Info.Prefix} Wrong bool format! Table: \"{table.Key}\", " +
+                    $"Row: {row}, Column: {column}, Value: \"{dataString}\"");
+
+                return false;
+            }
+        }
+
+
+
     }
 }
 
