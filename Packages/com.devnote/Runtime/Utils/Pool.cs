@@ -21,7 +21,7 @@ namespace DevNote
             if (!poolObject.gameObject.IsPrefab())
             {
                 poolObject.gameObject.SetActive(false);
-                _poolObjects.Add(poolObject);
+                poolObject.name = poolObject.name + " [Prefab]";
             }
         }
 
@@ -48,6 +48,8 @@ namespace DevNote
             else
             {
                 poolObject = Object.Instantiate(_prefab, container);
+                poolObject.name = poolObject.name.Replace("[Prefab]", string.Empty);
+                poolObject.gameObject.SetActive(true);
                 _poolObjects.Add(poolObject);
             }
 
