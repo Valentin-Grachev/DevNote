@@ -10,6 +10,19 @@ namespace DevNote
             => table == null ? string.Empty : table.Cells[row - 1][(int)column];
 
 
+        public static Column GetColumn(this Table table, string columnName)
+        {
+            for (int columnIndex = 0; columnIndex < table.Columns; columnIndex++)
+            {
+                var column = (Column)columnIndex;
+                if (table.Get(row: 1, column) == columnName) return column;
+            }
+
+            string errorMessage = $"{Info.Prefix} Column with name \"{columnName}\" does not exist in Table \"{table.Key}\"";
+            throw new System.Exception(errorMessage);
+        }
+
+
         public static int GetRow(this Table table, Column keyColumn, string key)
         {
             for (int row = 1; row <= table.Rows; row++)
