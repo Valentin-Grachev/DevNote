@@ -14,7 +14,9 @@ public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
     {
         switch (productKey)
         {
-            case ProductKey.NoAds: break;
+            case ProductKey.NoAds:
+                IGameState.NoAdsPurchased = true;
+                break;
 
             default:
                 Debug.LogWarning($"Handle for product {productKey} does not exist!");

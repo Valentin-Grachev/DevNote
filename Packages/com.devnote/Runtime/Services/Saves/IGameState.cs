@@ -6,8 +6,8 @@ namespace DevNote
 {
     public interface IGameState
     {
-        public static bool NoAdsPurchased => PurchasedPermanentProducts.Contains(ProductKey.NoAds);
-        public static ReactiveValue<int> SaveVersion { get; private set; }
+        public static bool NoAdsPurchased { get; set; }
+        public static int SaveVersion { get; set; }
         public static List<ProductKey> PurchasedPermanentProducts { get; private set; }
 
         private const string NO_ADS_PURCHASED = "noAds";
@@ -17,7 +17,8 @@ namespace DevNote
 
         protected static void ParseState(Dictionary<string, string> data)
         {
-            SaveVersion = new(int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0")));
+            NoAdsPurchased = bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED, $"{false}"));
+            SaveVersion = int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0"));
 
             List<string> purchasedProductStrings = data.GetValueOrDefault(PURCHASED_PRODUCTS, string.Empty)
                 .SaveDataToList(data => data);

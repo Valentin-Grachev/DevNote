@@ -22,18 +22,11 @@ namespace DevNote
 
             if (isConsumable || !permanentProductIsPurchased)
             {
-                Debug.Log(IGameState.PurchasedPermanentProducts.ToSaveData());
-
                 if (success)
                 {
-                    Debug.Log("success");
                     if (!isConsumable)
-                    {
                         IGameState.PurchasedPermanentProducts.Add(productKey);
-                        Debug.Log("add key");
-                    }
                         
-
                     IPurchaseHandler.HandlePurchaseStatic(productKey);
                     onSuccess?.Invoke();
                 }
