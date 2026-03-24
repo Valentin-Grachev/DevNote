@@ -135,7 +135,7 @@ namespace DevNote
 
         private void DisplayPurchaseButton()
         {
-            bool noAdsPurchased = IGameState.NoAdsPurchased.Value;
+            bool noAdsPurchased = IGameState.NoAdsPurchased;
             _purchasesPurchaseButton.image.material = noAdsPurchased ? _successMaterial : _originMaterial;
             _purchasesPurchaseButton.interactable = !noAdsPurchased;
             _purchaseButtonText.text = noAdsPurchased ? "Куплено" : "Купить";

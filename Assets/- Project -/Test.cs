@@ -13,7 +13,7 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log(remote.Item.GetEnum<TestType>(RemoteKey.Test));
+            Debug.Log(IGameState.PurchasedPermanentProducts.ToSaveData());
         }
         
     }

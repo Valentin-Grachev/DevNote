@@ -70,7 +70,7 @@ namespace DevNote
                 InvokeInterstitialCallback(callback, key, AdShowStatus.Success);
                 return true;
             }
-            else if (IGameState.NoAdsPurchased.Value)
+            else if (IGameState.NoAdsPurchased)
             {
                 InvokeInterstitialCallback(callback, key, AdShowStatus.NoAdsPurchased);
                 return true;
