@@ -4,29 +4,23 @@ using UnityEngine;
 
 public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
 {
-    List<ProductKey> IPurchaseHandler.ConsumableProductKeys => new();
+    List<ProductKey> IPurchaseHandler.PermanentProducts => new() 
+    { 
+        ProductKey.NoAds
+    };
 
 
     void IPurchaseHandler.HandlePurchase(ProductKey productKey)
     {
         switch (productKey)
         {
-            case ProductKey.NoAds:
-                IGameState.NoAdsPurchased.Value = true;
-                break;
+            case ProductKey.NoAds: break;
 
             default:
                 Debug.LogWarning($"Handle for product {productKey} does not exist!");
                 break;
         }
     }
-
-
-    bool IPurchaseHandler.ProductIsPurchased(ProductKey productKey) => productKey switch
-    {
-        ProductKey.NoAds => IGameState.NoAdsPurchased.Value,
-        _ => false,
-    };
 
 }
 

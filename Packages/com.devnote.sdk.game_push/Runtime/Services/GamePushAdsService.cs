@@ -30,7 +30,7 @@ namespace DevNote.SDK.GamePush
 
             await UniTask.WaitUntil(() => GP_Init.isReady && save.Item.Initialized);
 
-            if (!IGameState.NoAdsPurchased.Value)
+            if (!IGameState.NoAdsPurchased)
             {
                 if (GP_Ads.IsStickyAvailable()) GP_Ads.ShowSticky();
                 if (GP_Ads.IsPreloaderAvailable()) GP_Ads.ShowPreloader();

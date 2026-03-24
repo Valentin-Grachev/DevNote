@@ -30,7 +30,7 @@ namespace DevNote.SDK.Test
         void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             var status = _adShowStatus;
-            if (IGameState.NoAdsPurchased.Value) status = AdShowStatus.NoAdsPurchased;
+            if (IGameState.NoAdsPurchased) status = AdShowStatus.NoAdsPurchased;
             else if (!IAds.InterstitialCooldownPassed) status = AdShowStatus.CooldownNotFinished;
 
             Debug.Log($"{Info.Prefix} Show intertstitial. Key: \"{key}\", Status: {status}");
