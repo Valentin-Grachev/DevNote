@@ -140,19 +140,6 @@ namespace DevNote
             return await Addressables.LoadAssetAsync<T>(key);
         }
 
-        public static async UniTask<T> LoadAssetWithKey<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
-        {
-            string key = (string)assetReference.RuntimeKey;
-            return await Addressables.LoadAssetAsync<T>(key);
-        }
-
-
-
-
-
-
-
-
     }
 }
 
