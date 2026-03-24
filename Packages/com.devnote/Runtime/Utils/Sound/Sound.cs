@@ -47,13 +47,12 @@ namespace DevNote
 
         private static Sound _instance;
 
-        [SerializeField] private bool _logWarnings = true;
         [SerializeField] private AudioMixer _audioMixer;
+        [SerializeField] private AudioSource _musicAudioSource;
         [SerializeField] private AudioPool _sfxAudioPool;
-        [SerializeField] private List<string> _folders;
 
         private AudioMixerGroup _sfxGroup;
-        private AudioSource _musicAudioSource;
+        
 
         bool IInitializable.Initialized => Initialized;
 
@@ -62,8 +61,6 @@ namespace DevNote
             _instance = this;
 
             _sfxGroup = _audioMixer.FindMatchingGroups("SFX")[0];
-
-            _musicAudioSource = _sfxAudioPool.GetAudioSource();
             _musicAudioSource.outputAudioMixerGroup = _audioMixer.FindMatchingGroups("Music")[0];
 
             Settings.Apply();
@@ -73,74 +70,28 @@ namespace DevNote
 
 
 
-        public static AudioSource Play(SoundUnit soundUnit)
+        public static async UniTask<AudioSource> Play(SoundUnit soundUnit)
         {
             AudioSource audioSource = soundUnit.channel == Channel.Music ? 
                 _instance._musicAudioSource : _instance._sfxAudioPool.GetAudioSource();
 
-            audioSource.clip = soundUnit.audioClip;
+            var clip = await soundUnit.GetAudioClip();
+            audioSource.clip = clip;
 
             if (soundUnit.channel == Channel.SFX)
-            audioSource.outputAudioMixerGroup = _instance._sfxGroup;
+                audioSource.outputAudioMixerGroup = _instance._sfxGroup;
 
-            audioSource.volume = soundUnit.volume;
+            audioSource.volume = soundUnit.Volume;
             audioSource.loop = soundUnit.playType == SoundUnit.PlayType.Loop;
-            audioSource.pitch = soundUnit.pitch;
+            audioSource.pitch = soundUnit.Pitch;
 
             if (soundUnit.playType == SoundUnit.PlayType.OneShot)
-                audioSource.PlayOneShot(soundUnit.audioClip);
+                audioSource.PlayOneShot(clip);
+
             else audioSource.Play();
 
             return audioSource;
         }
-
-
-        public static async UniTask<AudioSource> PlayAsync(string soundName)
-        {
-            var soundUnit = Resources.Load<SoundUnit>($"Sounds/{soundName}");
-
-            // <-- Try load from Resources -->
-            if (soundUnit == null)
-            {
-                foreach (var folderName in _instance._folders)
-                {
-                    soundUnit = Resources.Load<SoundUnit>($"Sounds/{folderName}/{soundName}");
-                    if (soundUnit != null) break;
-                }
-            }
-
-            // <-- Try load from Addressables -->
-
-            string key = $"Sounds/{soundName}";
-            if (await Utils.AddressableExists(key))
-                soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(key);
-
-            if (soundUnit == null)
-            {
-                foreach (var folderName in _instance._folders)
-                {
-                    key = $"Sounds/{folderName}/{soundName}";
-
-                    if (await Utils.AddressableExists(key))
-                    {
-                        soundUnit = await Addressables.LoadAssetAsync<SoundUnit>(key);
-                        break;
-                    }
-                }
-            }
-                
-            if (soundUnit == null)
-            {
-                if (_instance._logWarnings)
-                    Debug.LogWarning($"{Info.Prefix} Sound with name \"{soundName}\" doesn't exists!");
-
-                return null;
-            }
-
-            return Play(soundUnit);
-        }
-
-        public static void Play(string soundName) => PlayAsync(soundName).Forget();
 
 
     }

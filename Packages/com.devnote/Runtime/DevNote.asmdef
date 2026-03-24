@@ -8,7 +8,8 @@
         "Keys",
         "Unity.Addressables",
         "UniTask.Addressables",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
+        "Unity.Addressables.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

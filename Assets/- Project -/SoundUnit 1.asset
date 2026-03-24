@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec417005c1808a544832a1ac4245ad65, type: 3}
-  m_Name: SoundUnit
+  m_Name: SoundUnit 1
   m_EditorClassIdentifier: 
   _clickToPlay: 0
   _channel: 1
   _playType: 2
+  _assemblyType: 1
+  _audioClip: {fileID: 0}
   _audioClipReference:
-    m_AssetGUID: 33804d82ce187e34886a782e7a334611
+    m_AssetGUID: 785a9b1b49a8fc4478245b08e35b4ded
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
