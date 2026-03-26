@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace DevNote
 {
@@ -16,16 +17,23 @@ namespace DevNote
 
         public static void InvokeHandlePurchase(ProductKey productKey, bool success, Action onSuccess = null, Action onError = null)
         {
-            if (IPurchaseHandler.ProductIsPurchasedStatic(productKey))
-                return;
+            bool isConsumable = IPurchaseHandler.ProductIsConsumable(productKey);
+            bool permanentProductIsPurchased = IGameState.PurchasedPermanentProducts.Contains(productKey);
 
+            if (isConsumable || !permanentProductIsPurchased)
+            {
+                if (success)
+                {
+                    if (!isConsumable)
+                        IGameState.PurchasedPermanentProducts.Add(productKey);
+                        
+                    IPurchaseHandler.HandlePurchaseStatic(productKey);
+                    onSuccess?.Invoke();
+                }
+                else onError?.Invoke();
 
-            if (success) IPurchaseHandler.HandlePurchaseStatic(productKey);
-
-            if (success) onSuccess?.Invoke();
-            else onError?.Invoke();
-
-            OnPurchaseHandled?.Invoke(productKey, success);
+                OnPurchaseHandled?.Invoke(productKey, success);
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,23 +6,36 @@ namespace DevNote
 {
     public interface IGameState
     {
-        public static ReactiveValue<bool> NoAdsPurchased { get; private set; }
-        public static ReactiveValue<int> SaveVersion { get; private set; }
+        public static bool NoAdsPurchased { get; set; }
+        public static int SaveVersion { get; set; }
+        public static List<ProductKey> PurchasedPermanentProducts { get; private set; }
 
         private const string NO_ADS_PURCHASED = "noAds";
         private const string SAVE_VERSION = "sVer";
+        private const string PURCHASED_PRODUCTS = "prods";
 
 
         protected static void ParseState(Dictionary<string, string> data)
         {
-            SaveVersion = new(int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0")));
-            NoAdsPurchased = new(bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED, $"{false}")));
+            NoAdsPurchased = bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED, $"{false}"));
+            SaveVersion = int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0"));
+
+            List<string> purchasedProductStrings = data.GetValueOrDefault(PURCHASED_PRODUCTS, string.Empty)
+                .SaveDataToList(data => data);
+
+            PurchasedPermanentProducts = new();
+            foreach (var purchasedProductString in purchasedProductStrings)
+            {
+                if (Enum.TryParse<ProductKey>(purchasedProductString, out var productKey))
+                    PurchasedPermanentProducts.Add(productKey);
+            }
         }
 
         protected static Dictionary<string, string> GetStateDictionary() => new()
         {
             { NO_ADS_PURCHASED, NoAdsPurchased.ToString() },
             { SAVE_VERSION, SaveVersion.ToString() },
+            { PURCHASED_PRODUCTS, PurchasedPermanentProducts.ToSaveData() },
         };
 
 

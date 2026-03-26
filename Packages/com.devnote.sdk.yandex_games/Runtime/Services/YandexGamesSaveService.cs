@@ -70,13 +70,11 @@ namespace DevNote.SDK.YandexGames
 
         void ISave.DeleteSaves(Action onSuccess, Action onError)
         {
+            ISave.SetSavesAsDeleted();
+
             YG_Saves.SendSaves(string.Empty, onSavesSent: (success) =>
             {
-                if (success)
-                {
-                    ISave.SetSavesAsDeleted();
-                    onSuccess?.Invoke();
-                }
+                if (success) onSuccess?.Invoke();
                 else onError?.Invoke();
             });
         }

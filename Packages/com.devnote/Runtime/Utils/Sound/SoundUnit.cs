@@ -1,6 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 
 namespace DevNote
@@ -11,40 +15,48 @@ namespace DevNote
         public enum PlayType { Simple, Loop, OneShot }
 
 
+        [Space(10), SerializeField, Label("▶ PLAY")] private bool _clickToPlay;
+
+        [Space(15)]
         [SerializeField] private Sound.Channel _channel; public Sound.Channel channel => _channel;
         [SerializeField] private PlayType _playType; public PlayType playType => _playType;
+        
+        [Space(15)]
+        [SerializeField] private AssetReferenceT<AudioClip> _audioClipReference;
 
 
-        
-        [SerializeField, HideIf(nameof(_useRandomAudioClip))] private AudioClip _audioClip;
-        [SerializeField, ShowIf(nameof(_useRandomAudioClip))] private List<AudioClip> _randomAudioClips;
-        
+        [Space(15)]
+        [SerializeField] private bool _useRandomVolume;
         [SerializeField, HideIf(nameof(_useRandomVolume))] [Range(0f, 1f)] private float _volume = 1f;
         [SerializeField, MinMaxSlider(0f, 1f), ShowIf(nameof(_useRandomVolume))] private Vector2 _randomVolume;
-
+        [Space(15)]
+        [SerializeField] private bool _useRandomPitch;
         [SerializeField, Range(-3f, 3f), HideIf(nameof(_useRandomPitch))] private float _pitch = 1f;
         [SerializeField, MinMaxSlider(-3f, 3f), ShowIf(nameof(_useRandomPitch))] private Vector2 _randomPitch;
 
-        [Space(10)]
-        [SerializeField] private bool _useRandomAudioClip;
-        [SerializeField] private bool _useRandomVolume;
-        [SerializeField] private bool _useRandomPitch;
+        private Dictionary<AssetReferenceT<AudioClip>, AsyncOperationHandle<AudioClip>> _cashedHandlers = new();
 
 
+        public async UniTask<AudioClip> GetAudioClip() => await _audioClipReference.LoadAssetWithKey();
 
-        public AudioClip audioClip => _useRandomAudioClip ? 
-            _randomAudioClips[Random.Range(0, _randomAudioClips.Count)] : _audioClip;
-
-        public float volume => _useRandomVolume ?
+        public float Volume => _useRandomVolume ?
             Random.Range(_randomVolume.x, _randomVolume.y) : _volume;
 
-        public float pitch => _useRandomPitch ?
+        public float Pitch => _useRandomPitch ?
             Random.Range(_randomPitch.x, _randomPitch.y) : _pitch;
 
 
-        public AudioSource Play() => Sound.Play(this);
+        public void Play() => Sound.Play(this).Forget();
 
-        [Button("Play")] private void PlayPreview() => Sound.Play(name);
+        public async UniTask<AudioSource> PlayAsync() => await Sound.Play(this);
+
+
+        private void OnValidate()
+        {
+            if (Application.isPlaying && _clickToPlay) Play();
+            _clickToPlay = false;
+        }
+
 
     }
 

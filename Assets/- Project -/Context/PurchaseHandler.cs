@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
 {
-    List<ProductKey> IPurchaseHandler.ConsumableProductKeys => new();
+    List<ProductKey> IPurchaseHandler.PermanentProducts => new() 
+    { 
+        ProductKey.NoAds
+    };
 
 
     void IPurchaseHandler.HandlePurchase(ProductKey productKey)
@@ -12,7 +15,7 @@ public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
         switch (productKey)
         {
             case ProductKey.NoAds:
-                IGameState.NoAdsPurchased.Value = true;
+                IGameState.NoAdsPurchased = true;
                 break;
 
             default:
@@ -20,13 +23,6 @@ public class PurchaseHandler : MonoBehaviour, IPurchaseHandler
                 break;
         }
     }
-
-
-    bool IPurchaseHandler.ProductIsPurchased(ProductKey productKey) => productKey switch
-    {
-        ProductKey.NoAds => IGameState.NoAdsPurchased.Value,
-        _ => false,
-    };
 
 }
 
