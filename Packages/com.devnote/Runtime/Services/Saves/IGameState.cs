@@ -56,12 +56,13 @@ namespace DevNote
 
         public static string VersionPrefix => $"DN{_handler.Version}";
 
+        public static bool DataIsSupported(string data) => string.IsNullOrEmpty(data) || data.StartsWith(VersionPrefix);
+
+
         public static string GetEncodedData() => GameStateEncoder.Encode(_handler.ToDictionary());
         public static void RestoreFromEncodedData(string data)
         {
-            bool dataIsSupported = string.IsNullOrEmpty(data) || data.StartsWith(VersionPrefix);
-
-            if (dataIsSupported)
+            if (DataIsSupported(data))
                 _handler.Parse(GameStateEncoder.Decode(data));
 
             else if (_handler.TransferParsingAvailable)

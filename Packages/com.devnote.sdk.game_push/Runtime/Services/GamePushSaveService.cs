@@ -41,7 +41,7 @@ namespace DevNote.SDK.GamePush
             var cloudTime = GameStateEncoder.GetSaveTime(cloudData);
             var localTime = GameStateEncoder.GetSaveTime(localData);
 
-            bool useCloud = cloudTime >= localTime || !_useLocalSaves;
+            bool useCloud = cloudTime >= localTime || !_useLocalSaves || !IGameState.DataIsSupported(cloudData);
             string data = useCloud ? cloudData : localData;
 
             ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(data);
