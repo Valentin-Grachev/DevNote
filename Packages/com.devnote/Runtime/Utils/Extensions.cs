@@ -124,6 +124,20 @@ namespace DevNote
         }
 
 
+        public static float ToFloat(this string data)
+        {
+            if (float.TryParse(data, NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
+                return value;
+
+            else
+            {
+                Debug.LogError($"[DATA ERROR] String \"{data}\" has incorrect Float format! Now using default value = 0f.");
+                return 0f;
+            }
+        }
+
+        public static string ToDataString(this float value) => value.ToString(CultureInfo.InvariantCulture);
+
         public static string ToDataString(this DateTime dateTime)
             => dateTime.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"));
 
@@ -132,8 +146,14 @@ namespace DevNote
             bool success = DateTime.TryParseExact(data, "dd.MM.yyyy HH:mm:ss",
                 CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.None, out DateTime dateTime);
 
-            return success ? dateTime : DateTime.MinValue;
+            if (success) return dateTime;
+            else
+            {
+                Debug.LogError($"[DATA ERROR] String \"{data}\" has incorrect DateTime format! Now using default value = DateTime.MinValue.");
+                return DateTime.MinValue;
+            }
         }
+
         public static async UniTask<T> LoadAssetWithKey<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
         {
             string key = (string)assetReference.RuntimeKey;
