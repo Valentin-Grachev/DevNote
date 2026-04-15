@@ -1,14 +1,17 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DevNote
 {
     public class Clock : IUpdateHandler
     {
+
         public delegate void OnTimePassed(int seconds);
         public static event OnTimePassed OnUnscaledSecondsPassed;
         public static event OnTimePassed OnSecondsPassed;
 
-
+        private List<Timer> _timers = new();
         private float _lastUnscaledUpdateTime = 0f;
         private float _lastUpdateTime = 0f;
 
@@ -30,9 +33,6 @@ namespace DevNote
 
                 OnSecondsPassed?.Invoke(passedSeconds);
             }
-
-
-
         }
 
 
