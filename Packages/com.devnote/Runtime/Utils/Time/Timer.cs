@@ -5,18 +5,22 @@ namespace DevNote
 {
     public class Timer
     {
+        public delegate bool PauseHandler();
+
+        private PauseHandler _pauseHandler;
         private bool _isStopped = false;
         private Action _onTick;
         private Action _onFinished;
 
         public int SecondsLeft { get; private set; } = 0;
-        public bool IsPaused { get; set; } = false;
 
-        public Timer(int seconds, Action onTick = null, Action onFinished = null, bool ignoreTimeScale = false)
+        public Timer(int seconds, Action onTick = null, 
+            Action onFinished = null, bool ignoreTimeScale = false, PauseHandler pauseHandler = null)
         {
             SecondsLeft = seconds;
             _onTick = onTick;
             _onFinished = onFinished;
+            _pauseHandler = pauseHandler;
 
             Start(ignoreTimeScale);
         }
@@ -27,7 +31,7 @@ namespace DevNote
             {
                 await UniTask.Delay(1000, ignoreTimeScale);
 
-                if (IsPaused) continue;
+                if (_pauseHandler != null && _pauseHandler.Invoke()) continue;
                 if (_isStopped) return;
 
                 SecondsLeft--;
@@ -36,6 +40,7 @@ namespace DevNote
 
             _onFinished?.Invoke();
         }
+
 
         public void Stop()
         {
