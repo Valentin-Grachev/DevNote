@@ -42,10 +42,10 @@ namespace DevNote
         }
 
 
-        public void Stop()
+        public void Stop(bool invokeFinish = true)
         {
             _isStopped = true;
-            _onFinished.Invoke();
+            if (invokeFinish) _onFinished.Invoke();
         }
 
 
