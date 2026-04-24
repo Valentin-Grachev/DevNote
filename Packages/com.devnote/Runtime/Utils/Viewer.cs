@@ -18,6 +18,8 @@ namespace DevNote
 
         public bool ViewExists => _viewInstance != null;
 
+        public bool ViewIsShowing => _viewInstance != null && _viewInstance.gameObject.activeSelf;
+
         public Viewer(PrefabLoader prefabLoader)
         {
             _prefabLoader = prefabLoader;
