@@ -7,13 +7,22 @@ namespace DevNote
 
     public class Viewer<T> where T : Component
     {
+        public delegate T PrefabLoader();
+
         public event Action OnShown;
         public event Action OnHidden;
 
         private T _prefab;
+        private PrefabLoader _prefabLoader;
         private T _viewInstance; public T View => _viewInstance;
 
         public bool ViewExists => _viewInstance != null;
+
+        public Viewer(PrefabLoader prefabLoader)
+        {
+            _prefabLoader = prefabLoader;
+        }
+
 
         public Viewer(T view)
         {
@@ -27,10 +36,8 @@ namespace DevNote
         {
             bool wasShownBefore = _viewInstance != null && _viewInstance.gameObject.activeSelf;
 
-            if (_viewInstance == null)
-                _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
-
-            else _viewInstance.gameObject.SetActive(true);
+            _viewInstance ??= CreateViewInstance(container);
+            _viewInstance.gameObject.SetActive(true);
 
             _viewInstance.transform.SetAsLastSibling();
 
@@ -43,10 +50,8 @@ namespace DevNote
         {
             bool wasShown = _viewInstance != null && _viewInstance.gameObject.activeSelf;
 
-            if (_viewInstance == null)
-                _viewInstance = UnityEngine.Object.Instantiate(_prefab, container);
-
-            else _viewInstance.gameObject.SetActive(true);
+            _viewInstance ??= CreateViewInstance(container);
+            _viewInstance.gameObject.SetActive(true);
 
             var rectTransform = _viewInstance.transform as RectTransform;
             rectTransform.SetParent(container, false);
@@ -73,6 +78,12 @@ namespace DevNote
             OnHidden?.Invoke();
         }
 
+
+        private T CreateViewInstance(Transform container)
+        {
+            if (_prefab == null) _prefab = _prefabLoader.Invoke();
+            return UnityEngine.Object.Instantiate(_prefab, container);
+        }
 
 
     }
