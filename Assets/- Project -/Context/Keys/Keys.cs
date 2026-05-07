@@ -3,6 +3,7 @@
 
 public enum EnvironmentKey { Test = 0, YandexGames = 1, GamePush = 2 }
 
+
 public enum AdKey
 {
     Default = 0,

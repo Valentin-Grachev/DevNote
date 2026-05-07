@@ -13,6 +13,9 @@ namespace DevNote.SDK.YandexGames
         bool IInitializable.Initialized => _initialized;
         async void IInitializable.Initialize()
         {
+            IEnvironment.GameStoreName = "yandex";
+
+
             var sdkPrefab = Resources.Load<YG_Sdk>("YandexGames");
 
             var sdkObject = Instantiate(sdkPrefab, parent: null);

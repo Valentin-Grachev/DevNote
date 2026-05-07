@@ -7,6 +7,8 @@ namespace DevNote
         public static bool IsTest { get; set; }
         public static EnvironmentKey EnvironmentKey { get; set; }
 
+        public static string GameStoreName { get; set; } = "None";
+
         protected static DateTime StartGameUtcTime { get; set; }
 
         public static DateTime UtcTime => StartGameUtcTime.AddSeconds(UnityEngine.Time.realtimeSinceStartup);

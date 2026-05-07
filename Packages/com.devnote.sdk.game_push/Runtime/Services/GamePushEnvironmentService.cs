@@ -54,6 +54,7 @@ namespace DevNote.SDK.GamePush
             await UniTask.WaitUntil(() => GP_Init.isReady && Sound.Initialized);
 
             IEnvironment.StartGameUtcTime = GP_Server.Time();
+            IEnvironment.GameStoreName = GP_Platform.Type().ToString().ToLower();
 
             Sound.Settings.MusicEnabled = !GP_Sounds.IsMuted(SoundType.Music);
             Sound.Settings.SfxEnabled = !GP_Sounds.IsMuted(SoundType.SFX);
