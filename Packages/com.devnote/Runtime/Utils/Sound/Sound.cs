@@ -16,6 +16,19 @@ namespace DevNote
 
         public class Settings
         {
+            public static void SetMasterVolume(float volume)
+            {
+                volume = Mathf.Clamp(volume, 0.0001f, 1f);
+                float db = Mathf.Log10(volume) * 20f;
+
+                if (!_instance._audioMixer.GetFloat("masterVolume", out _))
+                    Debug.LogWarning("Your audio mixer doesn't contain parameter \"masterVolume\"!");
+
+                _instance._audioMixer.SetFloat("masterVolume", Mathf.Clamp(db, -80f, 20f));
+            }
+
+
+
             public static bool MusicEnabled
             {
                 get => Convert.ToBoolean(PlayerPrefs.GetInt("Music", 1));
@@ -68,6 +81,7 @@ namespace DevNote
             Initialized = true;
         }
 
+        
 
 
         public static async UniTask<AudioSource> Play(SoundUnit soundUnit)
