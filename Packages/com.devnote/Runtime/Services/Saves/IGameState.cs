@@ -8,17 +8,25 @@ namespace DevNote
     {
         public static bool NoAdsPurchased { get; set; }
         public static int SaveVersion { get; set; }
-        public static List<ProductKey> PurchasedPermanentProducts { get; private set; }
+        public static List<ProductKey> PurchasedPermanentProducts { get; set; }
+        public static DateTime LastOnlineTime { get; set; }
+        public static bool IsFirstLaunch { get; set; }
+
+
 
         private const string NO_ADS_PURCHASED = "noAds";
         private const string SAVE_VERSION = "sVer";
         private const string PURCHASED_PRODUCTS = "prods";
+        private const string LAST_ONLINE_TIME = "online";
+        private const string IS_FIRST_LAUNCH = "firstLn";
 
 
         protected static void ParseState(Dictionary<string, string> data)
         {
             NoAdsPurchased = bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED, $"{false}"));
             SaveVersion = int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0"));
+            IsFirstLaunch = bool.Parse(data.GetValueOrDefault(IS_FIRST_LAUNCH, $"{true}"));
+            LastOnlineTime = data.GetValueOrDefault(LAST_ONLINE_TIME, $"{DateTime.MinValue}").ToDateTime();
 
             List<string> purchasedProductStrings = data.GetValueOrDefault(PURCHASED_PRODUCTS, string.Empty)
                 .SaveDataToList(data => data);
@@ -36,6 +44,8 @@ namespace DevNote
             { NO_ADS_PURCHASED, NoAdsPurchased.ToString() },
             { SAVE_VERSION, SaveVersion.ToString() },
             { PURCHASED_PRODUCTS, PurchasedPermanentProducts.ToSaveData() },
+            { IS_FIRST_LAUNCH, IsFirstLaunch.ToString() },
+            { LAST_ONLINE_TIME, LastOnlineTime.ToDataString() },
         };
 
 

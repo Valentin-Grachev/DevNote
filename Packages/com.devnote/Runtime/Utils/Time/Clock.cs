@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace DevNote
@@ -11,9 +11,19 @@ namespace DevNote
         public static event OnTimePassed OnUnscaledSecondsPassed;
         public static event OnTimePassed OnSecondsPassed;
 
-        private List<Timer> _timers = new();
         private float _lastUnscaledUpdateTime = 0f;
         private float _lastUpdateTime = 0f;
+
+        public static TimeSpan OfflineTime { get; private set; }
+
+
+        public async UniTask Initialize(ISave save, IEnvironment environment)
+        {
+            await UniTask.WaitUntil(() => save.Initialized && environment.Initialized);
+
+            OfflineTime = IGameState.IsFirstLaunch ?
+                TimeSpan.Zero : IEnvironment.UtcTime - IGameState.LastOnlineTime;
+        }
 
 
         void IUpdateHandler.Update()
@@ -22,6 +32,8 @@ namespace DevNote
             {
                 int passedSeconds = (int)(Time.unscaledTime - _lastUnscaledUpdateTime);
                 _lastUnscaledUpdateTime = Time.unscaledTime;
+
+                IGameState.LastOnlineTime = IEnvironment.UtcTime;
 
                 OnUnscaledSecondsPassed?.Invoke(passedSeconds);
             }
