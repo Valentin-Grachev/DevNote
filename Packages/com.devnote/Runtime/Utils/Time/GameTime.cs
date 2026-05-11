@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DevNote
 {
-    public class Clock : IUpdateHandler
+    public class GameTime : IUpdateHandler
     {
 
         public delegate void OnTimePassed(int seconds);
@@ -14,15 +14,19 @@ namespace DevNote
         private float _lastUnscaledUpdateTime = 0f;
         private float _lastUpdateTime = 0f;
 
+        public static bool IsFirstLaunch { get; private set; }
         public static TimeSpan OfflineTime { get; private set; }
 
 
-        public async UniTask Initialize(ISave save, IEnvironment environment)
+        public void Initialize(ISave save, IEnvironment environment)
         {
-            await UniTask.WaitUntil(() => save.Initialized && environment.Initialized);
-
             OfflineTime = IGameState.IsFirstLaunch ?
                 TimeSpan.Zero : IEnvironment.UtcTime - IGameState.LastOnlineTime;
+
+            IsFirstLaunch = IGameState.IsFirstLaunch;
+
+            IGameState.IsFirstLaunch = false;
+            IGameState.LastOnlineTime = IEnvironment.UtcTime;
         }
 
 

@@ -26,7 +26,7 @@ namespace DevNote
             NoAdsPurchased = bool.Parse(data.GetValueOrDefault(NO_ADS_PURCHASED, $"{false}"));
             SaveVersion = int.Parse(data.GetValueOrDefault(SAVE_VERSION, "0"));
             IsFirstLaunch = bool.Parse(data.GetValueOrDefault(IS_FIRST_LAUNCH, $"{true}"));
-            LastOnlineTime = data.GetValueOrDefault(LAST_ONLINE_TIME, $"{DateTime.MinValue}").ToDateTime();
+            LastOnlineTime = data.GetValueOrDefault(LAST_ONLINE_TIME, DateTime.MinValue.ToDataString()).ToDateTime();
 
             List<string> purchasedProductStrings = data.GetValueOrDefault(PURCHASED_PRODUCTS, string.Empty)
                 .SaveDataToList(data => data);

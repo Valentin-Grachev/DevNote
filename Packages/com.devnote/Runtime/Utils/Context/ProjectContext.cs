@@ -60,10 +60,14 @@ namespace DevNote
             RunInitialization(_localization);
 
             Context.Register(new ScreenState());
-            Context.Register(new Clock());
+
+            var gameTime = new GameTime(); 
+            Context.Register(gameTime);
 
             await UniTask.WaitUntil(() => !_initializables.Exists(initializable => !initializable.Initialized));
             await UniTask.WaitUntil(() => !contexts.Exists(context => !context.Initialized));
+
+           gameTime.Initialize(save, environment);
 
             Initialized = true;
 
