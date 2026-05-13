@@ -154,6 +154,17 @@ namespace DevNote
             }
         }
 
+        public static TimeSpan ToTimeSpan(this string data) 
+            => TimeSpan.FromTicks(long.Parse(data, CultureInfo.InvariantCulture));
+
+
+        public static string ToDataString(this TimeSpan timeSpan)
+            => timeSpan.Ticks.ToString(CultureInfo.InvariantCulture);
+
+
+
+
+
         public static async UniTask<T> LoadAssetWithKey<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
         {
             string key = (string)assetReference.RuntimeKey;
