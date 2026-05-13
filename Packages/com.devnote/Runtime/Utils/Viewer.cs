@@ -20,6 +20,23 @@ namespace DevNote
 
         public bool ViewIsShowing => _viewInstance != null && _viewInstance.gameObject.activeSelf;
 
+
+        public Viewer()
+        {
+            _prefabLoader = () =>
+            {
+                string prefabName = typeof(T).Name.Replace("View", string.Empty);
+
+                var view = Resources.Load<T>($"Views/{prefabName}");
+
+                if (view != null) return view;
+                else throw new Exception($"{Info.Prefix} Resource \"Views/{prefabName}\" doesn't exist");
+            };
+        }
+
+
+
+
         public Viewer(PrefabLoader prefabLoader)
         {
             _prefabLoader = prefabLoader;
