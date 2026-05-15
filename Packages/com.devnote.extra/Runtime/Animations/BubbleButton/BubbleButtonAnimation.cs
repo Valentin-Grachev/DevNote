@@ -9,6 +9,7 @@ namespace DevNote.Extra
     [RequireComponent(typeof(Button))]
     public class BubbleButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] private RectTransform _targetRect;
         [SerializeField, Expandable] private BubbleButtonAnimationPreset _preset;
 
         [HideIf(nameof(UsePreset)), Space, SerializeField] private SoundUnit _clickSound;
@@ -57,7 +58,7 @@ namespace DevNote.Extra
             PointerEnterSound?.Play();
 
             _pointerTween?.Kill();
-            _pointerTween = transform.DOScale(HighlightScale, HighlightDuration)
+            _pointerTween = _targetRect.DOScale(HighlightScale, HighlightDuration)
                 .SetEase(Ease.OutFlash).SetUpdate(true);
         }
 
@@ -68,7 +69,7 @@ namespace DevNote.Extra
             PointerExitSound?.Play();
 
             _pointerTween?.Kill();
-            _pointerTween = transform.DOScale(1f, HighlightDuration)
+            _pointerTween = _targetRect.DOScale(1f, HighlightDuration)
                 .SetEase(Ease.OutFlash).SetUpdate(true);
         }
 
@@ -83,8 +84,8 @@ namespace DevNote.Extra
             _clickTween?.Kill();
 
             _clickTween = DOTween.Sequence()
-                .Append(transform.DOScale(ClickScale, ClickDuration / 2f).SetEase(Ease.OutQuad))
-                .Append(transform.DOScale(1f, ClickDuration / 2f).SetEase(Ease.InQuad))
+                .Append(_targetRect.DOScale(ClickScale, ClickDuration / 2f).SetEase(Ease.OutQuad))
+                .Append(_targetRect.DOScale(1f, ClickDuration / 2f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
                 {
                     _button.interactable = true;
