@@ -1,0 +1,9 @@
+{
+  "name": "com.devnote.extra",
+  "displayName": "DevNote Extra",
+  "version": "1.0.0",
+  "author": {
+    "name": "DevNote Studio"
+  },
+  "unity": "2021.3"
+}

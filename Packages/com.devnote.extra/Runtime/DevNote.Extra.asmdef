@@ -1,0 +1,25 @@
+{
+    "name": "DevNote.Extra",
+    "rootNamespace": "DevNote.Extra",
+    "references": [
+        "NaughtyAttributes.Core",
+        "Unity.TextMeshPro",
+        "UniTask",
+        "Keys",
+        "Unity.Addressables",
+        "UniTask.Addressables",
+        "Unity.ResourceManager",
+        "Unity.Addressables.Editor",
+        "DevNote",
+        "UniTask.DOTween"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

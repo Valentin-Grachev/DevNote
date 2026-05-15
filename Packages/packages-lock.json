@@ -20,6 +20,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.devnote.extra": {
+      "version": "file:com.devnote.extra",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.devnote.sdk.game_push": {
       "version": "file:com.devnote.sdk.game_push",
       "depth": 0,
