@@ -9,7 +9,7 @@ namespace DevNote.Extra
     [RequireComponent(typeof(Button))]
     public class BubbleButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private BubbleButtonAnimationPreset _preset;
+        [SerializeField, Expandable] private BubbleButtonAnimationPreset _preset;
 
         [HideIf(nameof(UsePreset)), Space, SerializeField] private SoundUnit _clickSound;
         [HideIf(nameof(UsePreset)), SerializeField] private SoundUnit _pointerEnterSound;
@@ -84,7 +84,7 @@ namespace DevNote.Extra
 
             _clickTween = DOTween.Sequence()
                 .Append(transform.DOScale(ClickScale, ClickDuration / 2f).SetEase(Ease.OutQuad))
-                .Append(transform.DOScale(1f, ClickDuration / 2f).SetEase(Ease.OutElastic))
+                .Append(transform.DOScale(1f, ClickDuration / 2f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
                 {
                     _button.interactable = true;
