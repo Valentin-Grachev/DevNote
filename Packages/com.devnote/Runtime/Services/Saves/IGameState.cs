@@ -43,7 +43,7 @@ namespace DevNote
         {
             { NO_ADS_PURCHASED, NoAdsPurchased.ToString() },
             { SAVE_VERSION, SaveVersion.ToString() },
-            { PURCHASED_PRODUCTS, PurchasedPermanentProducts.ToSaveData() },
+            { PURCHASED_PRODUCTS, PurchasedPermanentProducts.ToSaveData(key => key.ToString()) },
             { IS_FIRST_LAUNCH, IsFirstLaunch.ToString() },
             { LAST_ONLINE_TIME, LastOnlineTime.ToDataString() },
         };

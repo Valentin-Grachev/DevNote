@@ -96,14 +96,14 @@ namespace DevNote
         }
 
 
-        public static string ToSaveData<T>(this List<T> list)
+        public static string ToSaveData<T>(this List<T> list, Func<T, string> converter)
         {
             var builder = new StringBuilder();
 
             for (int i = 0; i < list.Count; i++)
             {
                 if (i != 0) builder.Append(S.S4);
-                builder.Append(list[i].ToString());
+                builder.Append(converter(list[i]));
             }
 
             return builder.ToString();
