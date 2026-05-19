@@ -162,7 +162,10 @@ namespace DevNote
             => timeSpan.Ticks.ToString(CultureInfo.InvariantCulture);
 
 
-
+        public static void AddUnique<T>(this List<T> list, T item)
+        {
+            if (!list.Contains(item)) list.Add(item);
+        }
 
 
         public static async UniTask<T> LoadAssetWithKey<T>(this AssetReferenceT<T> assetReference) where T : UnityEngine.Object
