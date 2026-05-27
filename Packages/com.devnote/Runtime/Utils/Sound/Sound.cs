@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Audio;
 
 namespace DevNote
@@ -65,6 +64,7 @@ namespace DevNote
         [SerializeField] private AudioPool _sfxAudioPool;
 
         private AudioMixerGroup _sfxGroup;
+        private float _originMusicVolume;
         
 
         bool IInitializable.Initialized => Initialized;
@@ -82,6 +82,15 @@ namespace DevNote
         }
 
         
+        public static void SetMusicVolume(float volume, float softDuration = 0f)
+        {
+            var audioSource = _instance._musicAudioSource;
+
+            float targetVolume = volume * _instance._originMusicVolume;
+
+            DOTween.To(() => audioSource.volume, x => audioSource.volume = x,
+                targetVolume, softDuration).SetEase(Ease.OutQuad);
+        }
 
 
         public static async UniTask<AudioSource> Play(SoundUnit soundUnit)
@@ -96,6 +105,10 @@ namespace DevNote
                 audioSource.outputAudioMixerGroup = _instance._sfxGroup;
 
             audioSource.volume = soundUnit.Volume;
+
+            if (soundUnit.channel == Channel.Music)
+                _instance._originMusicVolume = soundUnit.Volume;
+
             audioSource.loop = soundUnit.playType == SoundUnit.PlayType.Loop;
             audioSource.pitch = soundUnit.Pitch;
 
