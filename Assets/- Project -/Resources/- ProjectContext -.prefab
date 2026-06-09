@@ -807,9 +807,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _autosaveSettings:
-    _autosave: {fileID: 0}
-    _localSaveCooldown: 0
-    _cloudSaveCooldown: 0
+    _autosave: {fileID: 7249514994722003677}
+    _localSaveCooldown: 1
+    _cloudSaveCooldown: 5
   _actualSaveDataKey: data
   _legacySaveDataKey: 
 --- !u!1 &8104478146421446695

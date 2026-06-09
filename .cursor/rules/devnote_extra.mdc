@@ -1,0 +1,82 @@
+---
+description: DevNote — справка (пути, API, примеры). Подключай @devnote_extra при работе с Unity/DevNote.
+alwaysApply: false
+---
+# DevNote — справочные материалы
+
+Использование: упомяни в чате `@devnote_extra` или открой файл, когда нужны детали; в повседневной генерации достаточно `devnote_main.mdc`.
+
+## Пути и ассеты
+- Глобальный контекст: `Assets/-Project-/Resources/-ProjectContext-` (секция `= Services`).
+- Старт сцены: иерархия `Context → Startup`: объекты с `ContextStartup` + `MainSceneContext`.
+- Конфиги: `Assets/-Project-/Resources`; статический доступ: `Configs.*` → внутри `Resources.Load` (кэш Unity).
+- Звуки: `SoundUnit` → `Assets/-Project-/Resources/Sounds`; WAV/OGG и т.д. → `Assets/-Project-/Sounds`.
+
+## Иерархия сцены (HierarchyDecorator)
+- Заголовки с префиксом `=` (плагин [HierarchyDecorator](https://github.com/WooshiiDev/HierarchyDecorator)).
+- Спец-префиксы в имени объекта: `[кнопка]`, `<текст TMP>`, `*particle*`, `=контейнер=`, `>точка<` — без суффиксов `Button`, `Text` в имени.
+
+## Holder и MainSceneContext (шаблон)
+```csharp
+// View
+private readonly Holder<IAds> ads = new();
+private readonly Holder<MyController> myController = new();
+// ads.Item.ShowRewarded(...);
+
+// MainSceneContext.RegisterContext()
+private readonly Holder<IAds> ads = new();
+var a = Register(new MyController(ads));
+```
+
+## Viewer (шаблон)
+```csharp
+private readonly Viewer<MyScreenView> myScreenViewer;
+public MyController() => myScreenViewer = new(Configs.My.MyScreenPrefab);
+public void Open() {
+  var v = myScreenViewer.ShowExpand(UI.SomeContainer);
+  v.Display(...);
+  v.AnimateShow();
+}
+// Скрытие с анимацией: myScreenViewer.View.AnimateHide(myScreenViewer.Hide);
+```
+
+## GameState + парсер
+1. `public static partial class GameState` — новое свойство (часто `ReactiveValue<T>`).
+2. `GameStateParser`: константа ключа, в `Parse` — `GetValueOrDefault` с дефолтом, в `ToDataString` — сериализация.
+3. Сложный тип: класс `SomethingState` с `SomethingState(string)` и `override string ToString()`.
+
+## Сохранения
+- Автосейв настраивается на `ProjectContext` / `Services/Saves` (интервалы локально/облако).
+- WebGL: надёжного save-on-close часто нет — опирайся на периодические `SaveLocal`.
+- Облако дороже и с задержкой — по важным вехам (`FullSave` / `SaveCloud`).
+
+## IAds — AdShowStatus (смысл)
+- `Success` — ок для награды (Rewarded).
+- `NoAdsPurchased` — interstitial не показывать.
+- `AdBlockEnabled`, `CooldownNotFinished`, `Error` — без награды / без показа по смыслу метода.
+
+## IPurchases — PurchaseHandler (шаблон)
+```csharp
+public static void HandlePurchase(ProductType productType) {
+  switch (productType) {
+    case ProductType.NoAds:
+      GameState.NoAdsPurchased.Value = true;
+      break;
+    default:
+      Debug.LogWarning($"Handle for product {productType} does not exist!");
+      break;
+  }
+}
+```
+Не дублируй выдачу наград в `View` или произвольных контроллерах.
+
+## IRemote
+- Каждый параметр — значение в `RemoteKey` (часто в `Keys.cs` / общем enum ключей проекта).
+- Булевы в конфиге строками `"True"` / `"False"`.
+
+## Интеграция таблиц
+- Данные в конфиги с Google Sheets — по внутренней документации проекта (раздел Google-таблицы в DevNote).
+
+## Разделение файлов правил
+- Всегда в контексте: `devnote_main.mdc`.
+- Детали и копипаста: этот файл (`devnote_extra.mdc`) или отдельные `codestyle` / `architecture` / `context` / `services` / `tools` (теперь без `alwaysApply`, при необходимости подключай вручную).

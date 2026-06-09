@@ -20,9 +20,9 @@ namespace DevNote.Extra
 
         private void OnEnable()
         {
-            transform.localScale = Vector3.one * _fromToScale.x;
+            transform.localScale = Vector3.one * FromToScale.x;
 
-            _currentTween = transform.DOScale(_fromToScale.y, LoopDuration)
+            _currentTween = transform.DOScale(FromToScale.y, LoopDuration)
                 .SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
         }
 

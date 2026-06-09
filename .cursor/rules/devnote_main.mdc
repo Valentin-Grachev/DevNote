@@ -1,0 +1,44 @@
+---
+alwaysApply: true
+---
+# DevNote — главные правила (ultra-compact)
+
+## Стиль
+- Имена полные, без сокращений. `private` поля: `_camelCase`. Свойства/типы/методы: `PascalCase`. Enum: `*Type`, элементы `PascalCase`.
+- Unity-поля: суффиксы `Image`, `Text`, `Button`, `Object`. У `View` и примитивов суффикса нет.
+- Зависимости: `private readonly` (контроллеры, `Viewer`, `Holder`, сервисы в DI); имена с маленькой буквы.
+- Константы: `UPPER_SNAKE_CASE`. Вложенные типы: `private`.
+- События: только `event`; имя `On...` + completed (`OnCompleted`). С параметрами — именованный `delegate`, не `Action<T>`. Подписка: метод с именем события. Контроллеры — в конструкторе; `MonoBehaviour` — `OnEnable`/`OnDisable`.
+- Интерфейсы — явная реализация. Порядок методов: ctor → explicit interface → Unity cycle (`Awake`…`FixedUpdate`) → public → protected → private.
+- Порядок членов класса: nested private → static → events → serialized private → public/protected props → private fields → `private readonly` блок → const → ctors → methods.
+- Комментарии редко, только English; без закомментированного кода.
+
+## Сцена
+- Корни: `= World`, `= UI`, `= Context`. Кнопка `[N]`, текст `<N>`, particle `*N*`, контейнер `=N=`, точка `>N<`.
+
+## Context
+- Одна рабочая сцена. Регистрация: `ProjectContext` (сервисы) + `MainSceneContext` (контроллеры).
+- В `View`: только `Holder<T>` → `.Item`. В контроллерах: зависимости через ctor. `Register(...)` в `MainSceneContext` всегда в `var`.
+- Запуск: `ContextStartup` → `ProjectContext` из Resources → сервисы, отключение корней → `MainSceneContext.RegisterContext` → включение корней → `Awake`/`OnEnable`.
+- Контроллеры могут: `IStartHandler`, `IUpdateHandler`, `IFixedUpdateHandler`, `IDisposeHandler`.
+
+## Слои
+- **Config**: `ScriptableObject` в `Assets/-Project-/Resources`, класс `*Config`, доступ через `Configs`, наружу только API; префабы в полях — суффикс `Prefab`.
+- **Controller**: не `MonoBehaviour`, логика + `Viewer`; вызывает `Display`/`Animate`.
+- **View**: `*View`, ввод/визуал/звук; минимум маршрутизации в контроллер; без self show/hide; UI — `DOTween`, звук — `Sound`.
+- **GameState**: прогресс; новое поле = запись в `GameState` + ключ в `GameStateParser`; сложные типы — `*State(string)` + `ToString()`.
+- **Сервисы**: только интерфейсы в геймплее; первая реализация с `Available`; иначе ошибка старта.
+
+## Viewer / Sound
+- `Viewer<T>` в контроллере, префаб из `Configs`: `Show` / `ShowExpand` / `Hide`; `View`, `ViewExists`, `OnShown`/`OnHidden`. Сцена по возможности пустая, UI по demand.
+- `SoundUnit` в `Resources/Sounds`, клипы в `Sounds`. В `View`: `Sound.Play("Name")` → `AudioSource`.
+
+## Сервисы (кратко)
+- **IEnvironment**: `IsTest`, `EnvironmentType`, `PlatformType`, `IsEditor`; `ServerTime`, `CurrentLanguage`, `DeviceType`; `GameReady`, `StartGameplay`, `StopGameplay`, `OpenURL`; mute каналов.
+- **ISave**: `SaveLocal`, `SaveCloud`, `FullSave`, `DeleteSaves`; `OnSavesDeleted`.
+- **IAds**: проверки доступности; `AdKey` + `AdShowStatus`; `OnInterstitialShown` / `OnRewardedShown`.
+- **IPurchases**: `Purchase`, `GetPriceString`; награды только в `PurchaseHandler.HandlePurchase` → `GameState`.
+- **IAnalytics** `SendEvent`; **IReview** `Rate`; **IRemote** getters + `RemoteKey`.
+
+## Запреты
+- Нет multiscene на Context. Нет SDK площадок в View/Controller напрямую. Нет обработки покупок вне `PurchaseHandler`.

@@ -8,8 +8,8 @@ namespace DevNote
         [SerializeField] private Autosave _autosave;
 
         [Space]
-        [SerializeField] private int _localSaveCooldown;
-        [SerializeField] private int _cloudSaveCooldown;
+        [SerializeField] private int _localSaveCooldown = 1;
+        [SerializeField] private int _cloudSaveCooldown = 60;
 
         public void Initialize()
         {
@@ -22,7 +22,7 @@ namespace DevNote
 
 
 
-        public class Autosave : MonoBehaviour
+    public class Autosave : MonoBehaviour
     {
         private float _localSaveCooldown = 1f;
         private float _cloudSaveCooldown = 60f;

@@ -20,7 +20,7 @@ namespace DevNote.Extra
         {
             transform.localRotation = Quaternion.Euler(Vector3.zero);
 
-            _currentTween = transform.DORotate(new Vector3(0, 0, -360f), LoopDuration, RotateMode.FastBeyond360)
+            _currentTween = transform.DOLocalRotate(new Vector3(0, 0, -360f), LoopDuration, RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).SetUpdate(true);
         }
 
