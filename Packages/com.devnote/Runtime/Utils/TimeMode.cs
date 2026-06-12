@@ -7,7 +7,7 @@ namespace DevNote
 
     public static class TimeMode
     {
-        public enum Mode { Pause, Stop }
+        public enum Mode { Normal, Pause, Stop }
 
 
 
@@ -19,6 +19,15 @@ namespace DevNote
 
         private static List<Mode> _activeModes = new();
 
+        public static Mode CurrentMode
+        {
+            get
+            {
+                if (_activeModes.Contains(Mode.Stop)) return Mode.Stop;
+                else if (_activeModes.Contains(Mode.Pause)) return Mode.Pause;
+                return Mode.Normal;
+            }
+        }
 
 
         public static void SetActive(Mode mode, bool active)
