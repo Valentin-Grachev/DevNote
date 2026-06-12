@@ -83,7 +83,7 @@ namespace DevNote.Extra
             _pointerTween?.Kill();
             _clickTween?.Kill();
 
-            _clickTween = DOTween.Sequence()
+            _clickTween = DOTween.Sequence().SetUpdate(true)
                 .Append(_targetRect.DOScale(ClickScale, ClickDuration / 2f).SetEase(Ease.OutQuad))
                 .Append(_targetRect.DOScale(1f, ClickDuration / 2f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
