@@ -48,6 +48,8 @@ namespace DevNote.SDK.YandexGames
 
         bool IEnvironment.IsFullscreen => false;
 
+        bool IEnvironment.InviteAvailable => false;
+
         void IEnvironment.GameReady() => YG_GameReady.GameReady();
 
         void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
@@ -72,6 +74,7 @@ namespace DevNote.SDK.YandexGames
 
         void IEnvironment.ToggleFullscreen() { }
 
+        void IEnvironment.Invite() { }
     }
     
 

@@ -10,6 +10,7 @@ namespace DevNote.SDK.Test
         [SerializeField] private Language _deviceLanguage = Language.EN;
         [SerializeField] private DeviceType _deviceType = DeviceType.Desktop;
         [SerializeField] private string _gameStoreName;
+        [SerializeField] private bool _inviteAvailable;
 
         private bool _isFullscreen = false;
         private bool _initialized = false;
@@ -34,6 +35,8 @@ namespace DevNote.SDK.Test
         bool IEnvironment.FullscreenIsSupported => _fullscreenIsSupported;
 
         bool IEnvironment.IsFullscreen => _isFullscreen;
+
+        bool IEnvironment.InviteAvailable => _inviteAvailable;
 
         void IEnvironment.GameReady() => Debug.Log($"{Info.Prefix} Game ready");
 
@@ -75,6 +78,11 @@ namespace DevNote.SDK.Test
             Debug.Log($"{Info.Prefix} Set fullscreen: {_isFullscreen}");
 
             IEnvironment.InvokeChangeFullscreen();
+        }
+
+        void IEnvironment.Invite()
+        {
+            Debug.Log($"{Info.Prefix} Success invite");
         }
     }
 }

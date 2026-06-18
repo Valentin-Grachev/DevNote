@@ -71,6 +71,12 @@ namespace DevNote
         public void ToggleFullscreen();
 
 
+
+        public bool InviteAvailable { get; }
+
+        public void Invite();
+
+
     }
 
 }

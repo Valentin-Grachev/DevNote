@@ -44,6 +44,8 @@ namespace DevNote.SDK.GamePush
 
         bool IEnvironment.IsFullscreen => GP_Fullscreen.IsEnabled();
 
+        bool IEnvironment.InviteAvailable => GP_Socials.IsSupportsNativeInvite();
+
         void IEnvironment.GameReady() => GP_Game.GameReady();
 
 
@@ -134,6 +136,9 @@ namespace DevNote.SDK.GamePush
 
             IEnvironment.InvokeChangeFullscreen();
         }
+
+        void IEnvironment.Invite() => GP_Socials.Invite();
+
     }
 }
 
