@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
@@ -10,6 +9,7 @@ namespace DevNote.SDK.Test
         [SerializeField] private bool _fullscreenIsSupported;
         [SerializeField] private Language _deviceLanguage = Language.EN;
         [SerializeField] private DeviceType _deviceType = DeviceType.Desktop;
+        [SerializeField] private string _gameStoreName;
 
         private bool _isFullscreen = false;
         private bool _initialized = false;
@@ -20,6 +20,7 @@ namespace DevNote.SDK.Test
         void IInitializable.Initialize() 
         { 
             IEnvironment.StartGameUtcTime = DateTime.Now;
+            IEnvironment.GameStoreName = _gameStoreName;
 
             _initialized = true;
         }
