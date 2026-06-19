@@ -32,6 +32,13 @@ namespace DevNote.SDK.GamePush
             GP_Player.OnSyncComplete += () => _onSuccess?.Invoke();
             GP_Player.OnSyncError += () => _onError?.Invoke();
 
+            if (ISave.TryLoadGameStateAfterSaveDelete())
+            {
+                _initialized = true;
+                Debug.Log($"[{nameof(GamePushSaveService)}] Reload after saves delete");
+                return;
+            }
+
             var cloudData = GP_Player.GetString(DataKey);
             var localData = PlayerPrefs.GetString(ISave.DATA_KEY, defaultValue: string.Empty);
 

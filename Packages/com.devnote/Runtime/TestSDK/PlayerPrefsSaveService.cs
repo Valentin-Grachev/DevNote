@@ -19,6 +19,13 @@ namespace DevNote.SDK.Test
         {
             _autosaveSettings.Initialize();
 
+            if (ISave.TryLoadGameStateAfterSaveDelete())
+            {
+                _initialized = true;
+                Debug.Log($"[{nameof(PlayerPrefsSaveService)}] Reload after saves delete");
+                return;
+            }
+
             var encodedData = PlayerPrefs.GetString(ISave.DATA_KEY, string.Empty);
             ISave.UsedSaveTime = GameStateEncoder.GetSaveTime(encodedData);
 

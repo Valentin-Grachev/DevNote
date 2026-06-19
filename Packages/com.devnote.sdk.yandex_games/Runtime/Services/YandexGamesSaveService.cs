@@ -32,6 +32,14 @@ namespace DevNote.SDK.YandexGames
             await UniTask.WaitUntil(() => YG_Saves.available);
             YG_Saves.InitializePlayer();
 
+            if (ISave.TryLoadGameStateAfterSaveDelete())
+            {
+                _initialized = true;
+                Debug.Log($"[{nameof(YandexGamesSaveService)}] Reload after saves delete");
+                return;
+            }
+
+
             YG_Saves.RequestSaves((cloudData) =>
             {
                 var localData = PlayerPrefs.GetString(ISave.DATA_KEY, defaultValue: string.Empty);

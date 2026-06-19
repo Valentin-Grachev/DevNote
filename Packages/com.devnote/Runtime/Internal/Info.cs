@@ -3,7 +3,7 @@ namespace DevNote
 {
     public static class Info
     {
-        public const string VERSION = "2.19.6";
+        public const string VERSION = "2.19.7";
 
         public static string Prefix
         {

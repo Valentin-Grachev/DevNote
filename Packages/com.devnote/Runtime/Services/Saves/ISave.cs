@@ -6,9 +6,10 @@ namespace DevNote
     public interface ISave : IInitializable, ISelectableService
     {
         public const string DATA_KEY = "data";
+        public const string SAVES_DELETED_KEY = "saves_deleted";
 
         public static event Action OnSavesDeleted;
-        protected static bool SavesDeleted { get; private set; }
+        protected static bool SavesDeleted => PlayerPrefs.HasKey(SAVES_DELETED_KEY); 
         public static DateTime UsedSaveTime { get; protected set; }
 
 
@@ -17,7 +18,7 @@ namespace DevNote
             PlayerPrefs.SetString(DATA_KEY, string.Empty);
             PlayerPrefs.Save();
 
-            SavesDeleted = true;
+            PlayerPrefs.SetInt(SAVES_DELETED_KEY, 1);
             OnSavesDeleted?.Invoke();
         }
 
@@ -40,6 +41,20 @@ namespace DevNote
 
         public void SaveCloud(Action onSuccess = null, Action onError = null);
         public void DeleteSaves(Action onSuccess = null, Action onError = null);
+
+
+        public static bool TryLoadGameStateAfterSaveDelete()
+        {
+            if (!SavesDeleted) return false;
+
+            PlayerPrefs.DeleteKey(SAVES_DELETED_KEY);
+            IGameState.RestoreFromEncodedData(string.Empty);
+            UsedSaveTime = DateTime.MinValue;
+
+            return true;
+        }
+
+
 
     }
 
