@@ -12,8 +12,6 @@ namespace DevNote.SDK.GamePush
     {
         private bool _initialized = false;
         private bool _gameplayStarted = false;
-        private bool _musicEnabledByUser = true;
-        private bool _sfxEnabledByUser = true;
 
 
         private readonly List<Platform> DISTRIBUTIONS_SUPPORTS_FULLSCREEN = new()
@@ -60,17 +58,15 @@ namespace DevNote.SDK.GamePush
             IEnvironment.StartGameUtcTime = GP_Server.Time();
             IEnvironment.GameStoreName = GP_Platform.Type().ToString().ToLower();
 
-            _musicEnabledByUser = Sound.Settings.MusicEnabled;
-            _sfxEnabledByUser = Sound.Settings.SfxEnabled;
-
-            UpdateMusicState(GP_Sounds.IsMuted(SoundType.Music) ? false : _musicEnabledByUser);
-            UpdateSfxState(GP_Sounds.IsMuted(SoundType.SFX) ? false : _sfxEnabledByUser);
-
-            GP_Sounds.OnMuteMusic += OnMuteMusic;
-            GP_Sounds.OnMuteSFX += OnMuteSfx;
-            GP_Sounds.OnUnmuteMusic += OnUnmuteMusic;
-            GP_Sounds.OnUnmuteSFX += OnUnmuteSfx;
-
+            GP_Sounds.OnMuteSFX += () =>
+            {
+                AudioListener.pause = true;
+            };
+            GP_Sounds.OnUnmuteSFX += () =>
+            {
+                AudioListener.pause = false;
+            };
+            
             GP_Fullscreen.OnFullscreenChange += () => IEnvironment.InvokeChangeFullscreen();
 
             _initialized = true;
@@ -103,22 +99,21 @@ namespace DevNote.SDK.GamePush
         {
             if (channel == Sound.Channel.Music)
             {
-                _musicEnabledByUser = !isMute;
-                UpdateMusicState(_musicEnabledByUser);
-
                 if (isMute) GP_Sounds.Mute(SoundType.Music);
                 else GP_Sounds.Unmute(SoundType.Music);
+
+                Sound.Settings.MusicEnabled = !isMute;
             }
 
             if (channel == Sound.Channel.SFX)
             {
-                _sfxEnabledByUser = !isMute;
-                UpdateSfxState(_sfxEnabledByUser);
-
                 if (isMute) GP_Sounds.Mute(SoundType.SFX);
                 else GP_Sounds.Unmute(SoundType.SFX);
+
+                Sound.Settings.SfxEnabled = !isMute;
             }
-                
+
+            IEnvironment.InvokeChangeSoundChannel();
         }
 
         async void IEnvironment.ToggleFullscreen()
@@ -133,31 +128,6 @@ namespace DevNote.SDK.GamePush
 
         void IEnvironment.Invite() => GP_Socials.Invite();
 
-        private void OnMuteMusic() => UpdateMusicState(false);
-
-        private void OnMuteSfx() => UpdateSfxState(false);
-
-        private void OnUnmuteMusic() => UpdateMusicState(_musicEnabledByUser);
-
-        private void OnUnmuteSfx() => UpdateSfxState(_sfxEnabledByUser);
-
-        private void UpdateMusicState(bool enabled)
-        {
-            if (Sound.Settings.MusicEnabled == enabled)
-                return;
-
-            Sound.Settings.MusicEnabled = enabled;
-            IEnvironment.InvokeChangeSoundChannel();
-        }
-
-        private void UpdateSfxState(bool enabled)
-        {
-            if (Sound.Settings.SfxEnabled == enabled)
-                return;
-
-            Sound.Settings.SfxEnabled = enabled;
-            IEnvironment.InvokeChangeSoundChannel();
-        }
 
     }
 }
