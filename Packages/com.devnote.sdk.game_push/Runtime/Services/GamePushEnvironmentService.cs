@@ -61,6 +61,7 @@ namespace DevNote.SDK.GamePush
             Sound.Settings.MusicEnabled = !GP_Sounds.IsMuted(SoundType.Music);
             Sound.Settings.SfxEnabled = !GP_Sounds.IsMuted(SoundType.SFX);
 
+            /*
             GP_Sounds.OnMuteMusic += () =>
             {
                 Sound.Settings.MusicEnabled = false;
@@ -81,6 +82,7 @@ namespace DevNote.SDK.GamePush
                 Sound.Settings.SfxEnabled = true;
                 IEnvironment.InvokeChangeSoundChannel();
             };
+            */
 
             GP_Fullscreen.OnFullscreenChange += () => IEnvironment.InvokeChangeFullscreen();
 
@@ -88,8 +90,7 @@ namespace DevNote.SDK.GamePush
         }
 
 
-        void IEnvironment.OpenURL(string url) 
-            => Debug.LogError($"[{nameof(GamePushEnvironmentService)}] Open URL is not supported");
+        void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
 
 
         void IEnvironment.StartGameplay()
