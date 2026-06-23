@@ -77,8 +77,7 @@ namespace DevNote.SDK.GamePush
         }
 
 
-        void IEnvironment.OpenURL(string url) 
-            => Debug.LogError($"[{nameof(GamePushEnvironmentService)}] Open URL is not supported");
+        void IEnvironment.OpenURL(string url) => Application.OpenURL(url);
 
 
         void IEnvironment.StartGameplay()
