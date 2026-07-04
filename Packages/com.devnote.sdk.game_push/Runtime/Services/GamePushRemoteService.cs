@@ -1,35 +1,40 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using DevNote;
-using DevNote.SDK.GamePush;
 using GamePush;
 
-public class GamePushRemoteService : IRemote
+
+namespace DevNote.SDK.GamePush
 {
-    private Dictionary<RemoteKey, string> _values = new();
-    private bool _initialized = false;
-
-    Dictionary<RemoteKey, string> IRemote.Values => _values;
-
-    bool ISelectableService.IsAvailableForSelection => 
-        GamePushEnvironmentService.IsAvailableForSelection;
-
-    bool IInitializable.Initialized => _initialized;
-
-    async void IInitializable.Initialize()
+    public class GamePushRemoteService : IRemote
     {
-        await UniTask.WaitUntil(() => GP_Init.isReady);
+        private Dictionary<RemoteKey, string> _values = new();
+        private bool _initialized = false;
 
-        foreach (var remoteKey in Utils.GetEnumTypes<RemoteKey>())
+        Dictionary<RemoteKey, string> IRemote.Values => _values;
+
+        bool ISelectableService.IsAvailableForSelection =>
+            GamePushEnvironmentService.IsAvailableForSelection;
+
+        bool IInitializable.Initialized => _initialized;
+
+        async void IInitializable.Initialize()
         {
-            var remoteKeyName = remoteKey.ToString();
-            if (GP_Variables.Has(remoteKeyName))
-            {
-                var value = GP_Variables.GetString(remoteKeyName);
-                _values.Add(remoteKey, value);
-            }
-        }
+            await UniTask.WaitUntil(() => GP_Init.isReady);
 
-        _initialized = true;
+            foreach (var remoteKey in Utils.GetEnumTypes<RemoteKey>())
+            {
+                var remoteKeyName = remoteKey.ToString();
+                if (GP_Variables.Has(remoteKeyName))
+                {
+                    var value = GP_Variables.GetString(remoteKeyName);
+                    _values.Add(remoteKey, value);
+                }
+            }
+
+            _initialized = true;
+        }
     }
 }
+
+
+
