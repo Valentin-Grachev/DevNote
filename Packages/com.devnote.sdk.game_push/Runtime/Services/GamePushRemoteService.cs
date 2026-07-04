@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePush;
+using UnityEngine;
 
 
 namespace DevNote.SDK.GamePush
 {
-    public class GamePushRemoteService : IRemote
+    public class GamePushRemoteService : MonoBehaviour, IRemote
     {
         private Dictionary<RemoteKey, string> _values = new();
         private bool _initialized = false;
