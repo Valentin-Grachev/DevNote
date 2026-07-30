@@ -44,13 +44,6 @@ namespace DevNote.Extra
             _button.onClick.AddListener(OnButtonClick);
         }
 
-        private void OnDisable()
-        {
-            _pointerTween?.Kill();
-            _clickTween?.Kill();
-        }
-
-
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
             if (!_button.interactable) return;
