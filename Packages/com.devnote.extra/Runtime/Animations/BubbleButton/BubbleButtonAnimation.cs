@@ -23,6 +23,7 @@ namespace DevNote.Extra
         [HideIf(nameof(UsePreset)), SerializeField] private float _clickDuration;
 
         private Button _button;
+        private CanvasGroup _buttonCanvasGroup;
         private Tween _pointerTween;
         private Tween _clickTween;
 
@@ -40,6 +41,7 @@ namespace DevNote.Extra
 
         private void Start()
         {
+            _buttonCanvasGroup = gameObject.AddComponent<CanvasGroup>();
             _button = GetComponent<Button>();
             _button.onClick.AddListener(OnButtonClick);
         }
@@ -71,7 +73,7 @@ namespace DevNote.Extra
         {
             ClickSound?.Play();
 
-            _button.interactable = false;
+            _buttonCanvasGroup.interactable = false;
 
             _pointerTween?.Kill();
             _clickTween?.Kill();
@@ -81,7 +83,7 @@ namespace DevNote.Extra
                 .Append(_targetRect.DOScale(1f, ClickDuration / 2f).SetEase(Ease.InQuad))
                 .OnComplete(() =>
                 {
-                    _button.interactable = true;
+                    _buttonCanvasGroup.interactable = true;
                 });
         }
 
