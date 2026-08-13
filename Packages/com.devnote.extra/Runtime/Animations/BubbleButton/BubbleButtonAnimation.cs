@@ -48,7 +48,7 @@ namespace DevNote.Extra
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            if (!_button.interactable) return;
+            if (!_button.interactable || !_buttonCanvasGroup.interactable) return;
 
             PointerEnterSound?.Play();
 
@@ -59,7 +59,7 @@ namespace DevNote.Extra
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
-            if (!_button.interactable) return;
+            if (!_button.interactable || !_buttonCanvasGroup.interactable) return;
 
             PointerExitSound?.Play();
 
