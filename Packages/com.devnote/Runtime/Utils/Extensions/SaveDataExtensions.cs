@@ -46,6 +46,14 @@ namespace DevNote
             return result;
         }
 
+        public static string ToSaveData(this TimeSpan time) => time.Ticks.ToString();
+
+        public static TimeSpan SaveDataToTimeSpan(this string data) 
+            => TimeSpan.FromTicks(long.Parse(data));
+
+
+
+
 
     }
 }
