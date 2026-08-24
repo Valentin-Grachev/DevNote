@@ -6,6 +6,7 @@ namespace DevNote
 {
     public class GameTime : IUpdateHandler
     {
+        public static event Action OnInitialized;
 
         public delegate void OnTimePassed(int seconds);
         public static event OnTimePassed OnUnscaledSecondsPassed;
@@ -27,6 +28,8 @@ namespace DevNote
 
             IGameState.IsFirstLaunch = false;
             IGameState.LastOnlineTime = IEnvironment.UtcTime;
+
+            OnInitialized?.Invoke();
         }
 
 
