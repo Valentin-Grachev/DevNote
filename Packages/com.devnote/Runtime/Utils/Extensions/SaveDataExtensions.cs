@@ -11,20 +11,21 @@ namespace DevNote
 
         #region Dictionary
 
-        public static string ToSaveData<TKey, TValue>(this Dictionary<TKey, TValue> dictionary,
-        Func<TKey, string> keyHandler, Func<TValue, string> valueHandler)
+        public static string ToSaveData<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, 
+            string pairSeparator, string keyValueSeparator, 
+            Func<TKey, string> keyHandler, Func<TValue, string> valueHandler)
         {
             var builder = new StringBuilder();
 
             int i = 0;
             foreach (var keyValue in dictionary)
             {
-                if (i != 0) builder.Append(S.S4);
+                if (i != 0) builder.Append(pairSeparator);
 
                 var keyString = keyHandler(keyValue.Key);
                 var valueString = valueHandler(keyValue.Value);
 
-                builder.Append($"{keyString}{S.S3}{valueString}");
+                builder.Append($"{keyString}{keyValueSeparator}{valueString}");
                 i++;
             }
 
@@ -32,15 +33,16 @@ namespace DevNote
         }
 
         public static Dictionary<TKey, TValue> SaveDataToDictionary<TKey, TValue>(this string data,
+            string pairSeparator, string keyValueSeparator,
             Func<string, TKey> keyParser, Func<string, TValue> valueParser)
         {
             var result = new Dictionary<TKey, TValue>();
             if (string.IsNullOrEmpty(data)) return result;
 
-            var keyValueStrings = data.Split(S.S4);
+            var keyValueStrings = data.Split(pairSeparator);
             foreach (var keyValueString in keyValueStrings)
             {
-                var splitData = keyValueString.Split(S.S3);
+                var splitData = keyValueString.Split(keyValueSeparator);
 
                 var keyString = splitData[0];
                 var valueString = splitData[1];
@@ -86,26 +88,26 @@ namespace DevNote
 
         #region List
 
-        public static string ToSaveData<T>(this List<T> list, Func<T, string> handler)
+        public static string ToSaveData<T>(this List<T> list, char separator, Func<T, string> handler)
         {
             var builder = new StringBuilder();
 
             for (int i = 0; i < list.Count; i++)
             {
-                if (i != 0) builder.Append(S.S4);
+                if (i != 0) builder.Append(separator);
                 builder.Append(handler(list[i]));
             }
 
             return builder.ToString();
         }
 
-        public static List<T> SaveDataToList<T>(this string data, Func<string, T> parser)
+        public static List<T> SaveDataToList<T>(this string data, char separator, Func<string, T> parser)
         {
             var result = new List<T>();
 
             if (string.IsNullOrEmpty(data)) return result;
 
-            var splitData = data.Split(S.S4);
+            var splitData = data.Split(separator);
 
             foreach (var stringValue in splitData)
                 result.Add(parser(stringValue));

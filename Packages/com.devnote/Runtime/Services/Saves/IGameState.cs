@@ -29,7 +29,7 @@ namespace DevNote
             LastOnlineTime = data.GetValueOrDefault(LAST_ONLINE_TIME, DateTime.MinValue.ToDataString()).SaveDataToDateTime();
 
             List<string> purchasedProductStrings = data.GetValueOrDefault(PURCHASED_PRODUCTS, string.Empty)
-                .SaveDataToList(data => data);
+                .SaveDataToList(S.S4, data => data);
 
             PurchasedPermanentProducts = new();
             foreach (var purchasedProductString in purchasedProductStrings)
@@ -43,7 +43,7 @@ namespace DevNote
         {
             { NO_ADS_PURCHASED, NoAdsPurchased.ToString() },
             { SAVE_VERSION, SaveVersion.ToString() },
-            { PURCHASED_PRODUCTS, PurchasedPermanentProducts.ToSaveData(key => key.ToString()) },
+            { PURCHASED_PRODUCTS, PurchasedPermanentProducts.ToSaveData(S.S4, key => key.ToString()) },
             { IS_FIRST_LAUNCH, IsFirstLaunch.ToString() },
             { LAST_ONLINE_TIME, LastOnlineTime.ToDataString() },
         };
