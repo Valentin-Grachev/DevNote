@@ -95,34 +95,6 @@ namespace DevNote
         }
 
 
-        public static string ToSaveData<T>(this List<T> list, Func<T, string> converter)
-        {
-            var builder = new StringBuilder();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (i != 0) builder.Append(S.S4);
-                builder.Append(converter(list[i]));
-            }
-
-            return builder.ToString();
-        }
-
-        public static List<T> SaveDataToList<T>(this string data, Func<string, T> converter)
-        {
-            var result = new List<T>();
-
-            if (string.IsNullOrEmpty(data)) return result;
-
-            var splitData = data.Split(S.S4);
-
-            foreach (var stringValue in splitData)
-                result.Add(converter(stringValue));
-
-            return result;
-        }
-
-
         public static float ToFloat(this string data)
         {
             if (float.TryParse(data, NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
@@ -137,29 +109,7 @@ namespace DevNote
 
         public static string ToDataString(this float value) => value.ToString(CultureInfo.InvariantCulture);
 
-        public static string ToDataString(this DateTime dateTime)
-            => dateTime.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.GetCultureInfo("ru-RU"));
-
-        public static DateTime ToDateTime(this string data)
-        {
-            bool success = DateTime.TryParseExact(data, "dd.MM.yyyy HH:mm:ss",
-                CultureInfo.GetCultureInfo("ru-RU"), DateTimeStyles.None, out DateTime dateTime);
-
-            if (success) return dateTime;
-            else
-            {
-                Debug.LogError($"[DATA ERROR] String \"{data}\" has incorrect DateTime format! Now using default value = DateTime.MinValue.");
-                return DateTime.MinValue;
-            }
-        }
-
-        public static TimeSpan ToTimeSpan(this string data) 
-            => TimeSpan.FromTicks(long.Parse(data, CultureInfo.InvariantCulture));
-
-
-        public static string ToDataString(this TimeSpan timeSpan)
-            => timeSpan.Ticks.ToString(CultureInfo.InvariantCulture);
-
+        
 
         public static void AddUnique<T>(this List<T> list, T item)
         {

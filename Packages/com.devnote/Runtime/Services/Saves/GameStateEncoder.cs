@@ -32,7 +32,7 @@ namespace DevNote
         public static DateTime GetSaveTime(string encodedData)
         {
             string[] splitData = encodedData.Split(S.ENCODER);
-            return splitData.Length == 3 ? splitData[1].ToDateTime() : DateTime.MinValue;
+            return splitData.Length == 3 ? splitData[1].SaveDataToDateTime() : DateTime.MinValue;
         }
 
 
