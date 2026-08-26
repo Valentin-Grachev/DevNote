@@ -12,7 +12,7 @@ namespace DevNote
         #region Dictionary
 
         public static string ToSaveData<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, 
-            string pairSeparator, string keyValueSeparator, 
+            char pairSeparator, char keyValueSeparator, 
             Func<TKey, string> keyHandler, Func<TValue, string> valueHandler)
         {
             var builder = new StringBuilder();
@@ -33,7 +33,7 @@ namespace DevNote
         }
 
         public static Dictionary<TKey, TValue> SaveDataToDictionary<TKey, TValue>(this string data,
-            string pairSeparator, string keyValueSeparator,
+            char pairSeparator, char keyValueSeparator,
             Func<string, TKey> keyParser, Func<string, TValue> valueParser)
         {
             var result = new Dictionary<TKey, TValue>();
