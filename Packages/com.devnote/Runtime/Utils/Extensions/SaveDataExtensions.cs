@@ -117,6 +117,24 @@ namespace DevNote
 
         #endregion
 
+        #region Vector2Int
+
+        public static string ToSaveData(this Vector2Int vector, char separator)
+            => $"{vector.x}{separator}{vector.y}";
+
+        public static Vector2Int SaveDataToVector2Int<T>(this string data, char separator)
+        {
+            var splitData = data.Split(separator);
+            return new Vector2Int()
+            {
+                x = int.Parse(splitData[0]),
+                y = int.Parse(splitData[1]),
+            };
+        }
+
+
+        #endregion
+
     }
 }
 
