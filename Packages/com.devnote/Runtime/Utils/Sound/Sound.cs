@@ -95,10 +95,11 @@ namespace DevNote
 
         public static async UniTask<AudioSource> Play(SoundUnit soundUnit)
         {
-            AudioSource audioSource = soundUnit.channel == Channel.Music ? 
+            var clip = await soundUnit.GetAudioClip();
+
+            AudioSource audioSource = soundUnit.channel == Channel.Music ?
                 _instance._musicAudioSource : _instance._sfxAudioPool.GetAudioSource();
 
-            var clip = await soundUnit.GetAudioClip();
             audioSource.clip = clip;
 
             if (soundUnit.channel == Channel.SFX)
@@ -109,13 +110,9 @@ namespace DevNote
             if (soundUnit.channel == Channel.Music)
                 _instance._originMusicVolume = soundUnit.Volume;
 
-            audioSource.loop = soundUnit.playType == SoundUnit.PlayType.Loop;
+            audioSource.loop = soundUnit.Loop;
             audioSource.pitch = soundUnit.Pitch;
-
-            if (soundUnit.playType == SoundUnit.PlayType.OneShot)
-                audioSource.PlayOneShot(clip);
-
-            else audioSource.Play();
+            audioSource.Play();
 
             return audioSource;
         }

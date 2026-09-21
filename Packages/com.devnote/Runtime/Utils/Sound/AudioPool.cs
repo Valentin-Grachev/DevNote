@@ -14,6 +14,8 @@ namespace DevNote
                 if (!_audioSources[i].isPlaying) return _audioSources[i];
 
             var newAudioSource = gameObject.AddComponent<AudioSource>();
+            newAudioSource.playOnAwake = false;
+            newAudioSource.volume = 1f;
             _audioSources.Add(newAudioSource);
             return newAudioSource;
         }

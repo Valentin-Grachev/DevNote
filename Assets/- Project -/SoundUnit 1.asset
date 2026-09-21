@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clickToPlay: 0
   _channel: 1
-  _playType: 2
+  _loop: 0
   _assemblyType: 1
   _audioClip: {fileID: 0}
   _audioClipReference:

@@ -12,14 +12,11 @@ namespace DevNote
     [CreateAssetMenu(menuName = "DevNote/" + nameof(SoundUnit), fileName = nameof(SoundUnit))]
     public class SoundUnit : ScriptableObject
     {
-        public enum PlayType { Simple, Loop, OneShot }
-
-
         [Space(10), SerializeField, Label("▶ PLAY")] private bool _clickToPlay;
 
         [Space(15)]
         [SerializeField] private Sound.Channel _channel; public Sound.Channel channel => _channel;
-        [SerializeField] private PlayType _playType; public PlayType playType => _playType;
+        [SerializeField] private bool _loop; public bool Loop => _loop;
         
         [Space(15)]
         [SerializeField] private AssetReferenceT<AudioClip> _audioClipReference;
