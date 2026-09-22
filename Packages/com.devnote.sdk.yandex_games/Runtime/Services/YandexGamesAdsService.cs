@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
@@ -6,6 +7,10 @@ namespace DevNote.SDK.YandexGames
 {
     public class YandexGamesAdsService : MonoBehaviour, IAds
     {
+        [SerializeField] private bool _noAdsDisableBanner = true;
+
+        private readonly Holder<ISave> save = new();
+
         bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
         bool IInitializable.Initialized => YG_Sdk.available;
 
@@ -14,13 +19,30 @@ namespace DevNote.SDK.YandexGames
         bool IAds.AdBlockEnabled => false;
 
 
-        void IInitializable.Initialize() 
+        async void IInitializable.Initialize() 
         {
             IAds.InterstitialCooldown = 60f;
+            IPurchase.OnPurchaseHandled += OnPurchaseHandled;
+
+            await UniTask.WaitUntil(() => YG_Sdk.available && save.Item.Initialized);
+            ApplyBanner(true);
         }
 
-        void IAds.SetBanner(bool active)
+        private void OnDestroy() => IPurchase.OnPurchaseHandled -= OnPurchaseHandled;
+
+        void IAds.SetBanner(bool active) => ApplyBanner(active);
+
+        private void OnPurchaseHandled(ProductKey productKey, bool success)
         {
+            if (success && productKey == ProductKey.NoAds && _noAdsDisableBanner)
+                YG_Ads.HideBanner();
+        }
+
+        private void ApplyBanner(bool active)
+        {
+            if (_noAdsDisableBanner && IGameState.NoAdsPurchased)
+                active = false;
+
             if (active) YG_Ads.ShowBanner();
             else YG_Ads.HideBanner();
         }
