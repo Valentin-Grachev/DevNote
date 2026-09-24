@@ -123,6 +123,11 @@ namespace DevNote
             return await Addressables.LoadAssetAsync<T>(key);
         }
 
+        public static TValue Get<TKey, TValue>(this List<KeyValue<TKey, TValue>> list, TKey key)
+            => list.FindOrException(data => EqualityComparer<TKey>.Default.Equals(data.Key, key)).Value;
+
+
+
     }
 }
 
