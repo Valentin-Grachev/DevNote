@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using GamePush;
 using GamePush.Initialization;
@@ -10,7 +11,7 @@ namespace DevNote.SDK.GamePush
 {
     public class GamePushEnvironmentService : MonoBehaviour, IEnvironment
     {
-        [SerializeField] private Language _defaultLanguage = Language.EN;
+        [SerializeField] private List<KeyValue<Platform, Language>> _platformLanguages;
 
         private bool _initialized = false;
         private bool _gameplayStarted = false;
@@ -27,13 +28,26 @@ namespace DevNote.SDK.GamePush
         public static bool IsAvailableForSelection 
             => IEnvironment.EnvironmentKey == EnvironmentKey.GamePush && !IEnvironment.IsEditor;
 
-        Language IEnvironment.DeviceLanguage => GP_Language.Current() switch
+        Language IEnvironment.DeviceLanguage
         {
-            global::GamePush.Language.English => Language.EN,
-            global::GamePush.Language.Russian => Language.RU,
+            get
+            {
+                var platformType = GP_Platform.Type();
 
-            _ => _defaultLanguage,
-        };
+                if (_platformLanguages.Exists(data => data.Key == platformType))
+                    return _platformLanguages.Get(platformType);
+
+                return GP_Language.Current() switch
+                {
+                    global::GamePush.Language.English => Language.EN,
+                    global::GamePush.Language.Russian => Language.RU,
+
+                    _ => Language.EN,
+                };
+            }
+
+        }
+        
 
         DeviceType IEnvironment.DeviceType => GP_Device.IsMobile() ? DeviceType.Mobile : DeviceType.Desktop;
 
