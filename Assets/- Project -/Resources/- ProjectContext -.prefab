@@ -1178,6 +1178,8 @@ MonoBehaviour:
   _fullscreenIsSupported: 0
   _deviceLanguage: 1
   _deviceType: 0
+  _gameStoreName: 
+  _inviteAvailable: 0
 --- !u!1001 &4528692624445434330
 PrefabInstance:
   m_ObjectHideFlags: 0

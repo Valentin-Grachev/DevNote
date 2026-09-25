@@ -10,6 +10,8 @@ namespace DevNote.SDK.GamePush
 {
     public class GamePushEnvironmentService : MonoBehaviour, IEnvironment
     {
+        [SerializeField] private Language _defaultLanguage = Language.EN;
+
         private bool _initialized = false;
         private bool _gameplayStarted = false;
 
@@ -30,7 +32,7 @@ namespace DevNote.SDK.GamePush
             global::GamePush.Language.English => Language.EN,
             global::GamePush.Language.Russian => Language.RU,
 
-            _ => Language.EN,
+            _ => _defaultLanguage,
         };
 
         DeviceType IEnvironment.DeviceType => GP_Device.IsMobile() ? DeviceType.Mobile : DeviceType.Desktop;
