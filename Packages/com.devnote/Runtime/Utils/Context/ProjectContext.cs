@@ -43,6 +43,7 @@ namespace DevNote
             var review = SelectAndRegisterService<IReview>();
             var leaderboards = SelectAndRegisterService<ILeaderboards>();
             var remote = SelectAndRegisterService<IRemote>();
+            var feature = SelectAndRegisterService<IFeature>();
 
             RunInitialization(environment);
             RunInitialization(remote);
