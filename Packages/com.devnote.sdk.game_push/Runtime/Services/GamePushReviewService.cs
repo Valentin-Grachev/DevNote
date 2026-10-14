@@ -1,11 +1,14 @@
 using System;
+#if UNITY_WEBGL
 using GamePush;
+#endif
 using UnityEngine;
 
 namespace DevNote.SDK.GamePush
 {
     public class GamePushReviewService : MonoBehaviour, IReview
     {
+#if UNITY_WEBGL
         bool IInitializable.Initialized => GP_Init.isReady;
 
         bool ISelectableService.IsAvailableForSelection => GamePushEnvironmentService.IsAvailableForSelection;
@@ -30,6 +33,16 @@ namespace DevNote.SDK.GamePush
             });
 
         }
+#else
+        bool IInitializable.Initialized => false;
+
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        bool IReview.ReviewIsAvailable => false;
+
+        void IInitializable.Initialize() { }
+
+        void IReview.Rate(Action onGameRated, Action onRejected) { }
+#endif
     }
 }
-

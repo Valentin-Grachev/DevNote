@@ -1,6 +1,8 @@
 using System;
+#if UNITY_WEBGL
 using Cysharp.Threading.Tasks;
 using GamePush;
+#endif
 using UnityEngine;
 
 
@@ -12,6 +14,7 @@ namespace DevNote.SDK.GamePush
         [SerializeField] private bool _useLocalSaves;
         [SerializeField] private AutosaveSettings _autosaveSettings;
 
+#if UNITY_WEBGL
         private bool _initialized = false;
         private Action _onSuccess;
         private Action _onError;
@@ -85,6 +88,16 @@ namespace DevNote.SDK.GamePush
 
             ISave.SetSavesAsDeleted();
         }
+#else
+        bool IInitializable.Initialized => false;
+
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        void IInitializable.Initialize() { }
+
+        void ISave.SaveCloud(Action onSuccess, Action onError) { }
+
+        void ISave.DeleteSaves(Action onSuccess, Action onError) { }
+#endif
     }
 }
-

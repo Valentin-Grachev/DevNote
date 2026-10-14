@@ -1,10 +1,13 @@
+#if UNITY_WEBGL
 using GamePush;
+#endif
 using UnityEngine;
 
 namespace DevNote.SDK.GamePush
 {
     public class GamePushLeaderboardsService : MonoBehaviour, ILeaderboards
     {
+#if UNITY_WEBGL
         bool ILeaderboards.PlatformIsSupportsLeaderboards => true;
 
         bool ISelectableService.IsAvailableForSelection => GamePushEnvironmentService.IsAvailableForSelection;
@@ -28,6 +31,19 @@ namespace DevNote.SDK.GamePush
 
             else Debug.LogError($"Leaderboard \"{leaderboardKey}\" doesn't have realization");
         }
+#else
+        bool ILeaderboards.PlatformIsSupportsLeaderboards => false;
+
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        bool IInitializable.Initialized => false;
+
+        void IInitializable.Initialize() { }
+
+        void ILeaderboards.OpenLeaderboard(LeaderboardKey leaderboardKey) { }
+
+        void ILeaderboards.SetScore(int value, LeaderboardKey leaderboardKey) { }
+#endif
     }
 
 }

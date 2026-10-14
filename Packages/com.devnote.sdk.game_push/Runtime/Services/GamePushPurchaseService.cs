@@ -1,7 +1,9 @@
 using System;
+#if UNITY_WEBGL
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePush;
+#endif
 using UnityEngine;
 
 namespace DevNote.SDK.GamePush
@@ -10,7 +12,7 @@ namespace DevNote.SDK.GamePush
     {
         [SerializeField] private ProductConverter _converter;
 
-
+#if UNITY_WEBGL
         private bool _initialized = false;
         private bool _successFetched = false;
         private Dictionary<ProductKey, string> _prices;
@@ -114,8 +116,18 @@ namespace DevNote.SDK.GamePush
             }
             else IPurchase.InvokeHandlePurchase(productKey, false, onSuccess, onError);
         }
+#else
+        bool IPurchase.PlatformIsSupportsPurchases => false;
 
+        bool IInitializable.Initialized => false;
 
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        string IPurchase.GetPriceString(ProductKey productKey) => null;
+
+        void IInitializable.Initialize() { }
+
+        void IPurchase.Purchase(ProductKey productKey, Action onSuccess, Action onError) { }
+#endif
     }
 }
-

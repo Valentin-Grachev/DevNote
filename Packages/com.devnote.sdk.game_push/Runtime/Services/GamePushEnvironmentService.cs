@@ -1,7 +1,9 @@
+#if UNITY_WEBGL
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePush;
 using GamePush.Initialization;
+#endif
 using UnityEngine;
 
 
@@ -10,7 +12,6 @@ namespace DevNote.SDK.GamePush
     public class GamePushEnvironmentService : MonoBehaviour, IEnvironment
     {
 #if UNITY_WEBGL
-
         private readonly List<Platform> DISTRIBUTIONS_SUPPORTS_FULLSCREEN = new()
         {
             Platform.OK,
@@ -19,10 +20,6 @@ namespace DevNote.SDK.GamePush
 
         bool IEnvironment.FullscreenIsSupported =>
             DISTRIBUTIONS_SUPPORTS_FULLSCREEN.Contains(GP_Platform.Type());
-
-#else
-        bool IEnvironment.FullscreenIsSupported => false;
-#endif
 
 
 
@@ -146,9 +143,40 @@ namespace DevNote.SDK.GamePush
         }
 
         void IEnvironment.Invite() => GP_Socials.Invite();
+#else
+        public static bool IsAvailableForSelection => false;
 
+        Language IEnvironment.DeviceLanguage => default;
 
+        DeviceType IEnvironment.DeviceType => default;
+
+        bool IInitializable.Initialized => false;
+
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        bool IEnvironment.FullscreenIsSupported => false;
+
+        bool IEnvironment.IsFullscreen => false;
+
+        bool IEnvironment.InviteAvailable => false;
+
+        void IEnvironment.GameReady() { }
+
+        void IInitializable.Initialize() { }
+
+        void IEnvironment.OpenURL(string url) { }
+
+        void IEnvironment.StartGameplay() { }
+
+        void IEnvironment.StopGameplay() { }
+
+        bool IEnvironment.ChannelIsMuted(Sound.Channel channel) => false;
+
+        void IEnvironment.SetChannelMute(Sound.Channel channel, bool isMute) { }
+
+        void IEnvironment.ToggleFullscreen() { }
+
+        void IEnvironment.Invite() { }
+#endif
     }
 }
-
-

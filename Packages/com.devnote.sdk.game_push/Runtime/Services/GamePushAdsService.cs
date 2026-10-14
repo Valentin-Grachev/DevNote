@@ -1,6 +1,8 @@
 using System;
+#if UNITY_WEBGL
 using Cysharp.Threading.Tasks;
 using GamePush;
+#endif
 using UnityEngine;
 
 namespace DevNote.SDK.GamePush
@@ -10,6 +12,7 @@ namespace DevNote.SDK.GamePush
         [SerializeField] private float _interstitialCooldown = 60f;
         [SerializeField] private bool _noAdsDisableBanner = true;
 
+#if UNITY_WEBGL
         private readonly Holder<ISave> save = new();
 
         bool ISelectableService.IsAvailableForSelection => GamePushEnvironmentService.IsAvailableForSelection;
@@ -103,6 +106,24 @@ namespace DevNote.SDK.GamePush
             else IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Error);
 
         }
+#else
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        bool IAds.RewardedAvailable => false;
+
+        bool IAds.InterstitialAvailable => false;
+
+        bool IAds.AdBlockEnabled => false;
+
+        bool IInitializable.Initialized => false;
+
+        void IInitializable.Initialize() { }
+
+        void IAds.SetBanner(bool active) { }
+
+        void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback) { }
+
+        void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback) { }
+#endif
     }
 }
-

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+#if UNITY_WEBGL
 using Cysharp.Threading.Tasks;
 using GamePush;
+#endif
 using UnityEngine;
 
 
@@ -8,6 +10,7 @@ namespace DevNote.SDK.GamePush
 {
     public class GamePushRemoteService : MonoBehaviour, IRemote
     {
+#if UNITY_WEBGL
         private Dictionary<RemoteKey, string> _values = new();
         private bool _initialized = false;
 
@@ -34,8 +37,14 @@ namespace DevNote.SDK.GamePush
 
             _initialized = true;
         }
+#else
+        Dictionary<RemoteKey, string> IRemote.Values => null;
+
+        bool ISelectableService.IsAvailableForSelection => false;
+
+        bool IInitializable.Initialized => false;
+
+        void IInitializable.Initialize() { }
+#endif
     }
 }
-
-
-
