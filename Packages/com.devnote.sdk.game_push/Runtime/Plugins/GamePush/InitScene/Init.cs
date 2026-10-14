@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+#if UNITY_WEBGL
 using GamePush;
+#endif
 
 namespace GamePush.Initialization
 {
@@ -8,8 +11,10 @@ namespace GamePush.Initialization
     {
         private async void Start()
         {
+#if UNITY_WEBGL
             await GP_Init.Ready;
             SceneManager.LoadScene(1);
+#endif
         }
     }
 }
