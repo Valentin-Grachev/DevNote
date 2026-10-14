@@ -10,7 +10,6 @@ namespace DevNote.SDK.GamePush
     public class GamePushEnvironmentService : MonoBehaviour, IEnvironment
     {
 #if UNITY_WEBGL
-        [SerializeField] private List<KeyValue<Platform, Language>> _platformLanguages;
 
         private readonly List<Platform> DISTRIBUTIONS_SUPPORTS_FULLSCREEN = new()
         {
@@ -41,9 +40,6 @@ namespace DevNote.SDK.GamePush
             get
             {
                 var platformType = GP_Platform.Type();
-
-                if (_platformLanguages.Exists(data => data.Key == platformType))
-                    return _platformLanguages.Get(platformType);
 
                 return GP_Language.Current() switch
                 {
