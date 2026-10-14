@@ -9,17 +9,27 @@ namespace DevNote.SDK.GamePush
 {
     public class GamePushEnvironmentService : MonoBehaviour, IEnvironment
     {
+#if UNITY_WEBGL
         [SerializeField] private List<KeyValue<Platform, Language>> _platformLanguages;
-
-        private bool _initialized = false;
-        private bool _gameplayStarted = false;
-
 
         private readonly List<Platform> DISTRIBUTIONS_SUPPORTS_FULLSCREEN = new()
         {
             Platform.OK,
-            Platform.VK, 
+            Platform.VK,
         };
+
+        bool IEnvironment.FullscreenIsSupported =>
+            DISTRIBUTIONS_SUPPORTS_FULLSCREEN.Contains(GP_Platform.Type());
+
+#else
+        bool IEnvironment.FullscreenIsSupported => false;
+#endif
+
+
+
+
+        private bool _initialized = false;
+        private bool _gameplayStarted = false;
 
 
 
@@ -53,8 +63,7 @@ namespace DevNote.SDK.GamePush
 
         bool ISelectableService.IsAvailableForSelection => IsAvailableForSelection;
 
-        bool IEnvironment.FullscreenIsSupported => 
-            DISTRIBUTIONS_SUPPORTS_FULLSCREEN.Contains(GP_Platform.Type());
+        
 
         bool IEnvironment.IsFullscreen => GP_Fullscreen.IsEnabled();
 

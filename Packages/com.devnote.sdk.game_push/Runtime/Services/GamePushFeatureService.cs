@@ -9,7 +9,7 @@ namespace DevNote.SDK.GamePush
     {
         private bool _initialized = false; bool IInitializable.Initialized => _initialized;
 
-
+#if UNITY_WEBGL
         private readonly List<Platform> START_MENU_PLATFORMS = new()
         {
             Platform.OK,
@@ -17,6 +17,9 @@ namespace DevNote.SDK.GamePush
         };
 
         bool IFeature.IsStartMenu => START_MENU_PLATFORMS.Contains(GP_Platform.Type());
+#else
+        bool IFeature.IsStartMenu => false;
+#endif
 
 
         bool ISelectableService.IsAvailableForSelection =>
