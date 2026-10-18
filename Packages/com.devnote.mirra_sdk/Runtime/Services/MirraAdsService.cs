@@ -68,12 +68,6 @@ namespace DevNote.SDK.MirraSDK
 
         void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
-            if (IEnvironment.IsEditor)
-            {
-                IAds.InvokeRewardedCallback(onRewarded, callback, key, AdShowStatus.Success);
-                return;
-            }
-
             if (IAds.TryInternalHandleRewarded(onRewarded, callback, key))
                 return;
 

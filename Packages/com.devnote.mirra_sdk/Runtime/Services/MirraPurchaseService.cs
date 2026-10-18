@@ -9,6 +9,7 @@ namespace DevNote.SDK.MirraSDK
 {
     public class MirraPurchaseService : MonoBehaviour, IPurchase
     {
+        [SerializeField] private bool _editorPaymentsIsSupported;
         [SerializeField] private ProductConverter _converter;
 
         private bool _initialized;
@@ -18,7 +19,10 @@ namespace DevNote.SDK.MirraSDK
 
         private readonly Holder<ISave> save = new();
 
-        bool IPurchase.PlatformIsSupportsPurchases => MirraSdk.Payments.IsPaymentsAvailable;
+        private bool PaymentIsSupported => IEnvironment.IsEditor ?
+            _editorPaymentsIsSupported : MirraSdk.Payments.IsPaymentsAvailable;
+
+        bool IPurchase.PlatformIsSupportsPurchases => PaymentIsSupported;
 
         bool IInitializable.Initialized => _initialized;
 
@@ -37,7 +41,7 @@ namespace DevNote.SDK.MirraSDK
         {
             await UniTask.WaitUntil(() => MirraSdk.IsInitialized && save.Item.Initialized);
 
-            if (!MirraSdk.Payments.IsPaymentsAvailable)
+            if (!PaymentIsSupported)
             {
                 _initialized = true;
                 return;
