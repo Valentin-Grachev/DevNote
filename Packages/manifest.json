@@ -2,7 +2,9 @@
   "dependencies": {
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
-    "com.unity.addressables": "1.19.19",
+    "com.romanlee17.mirrasdk5": "https://github.com/MirraSDK/SDK5.git",
+    "com.unity.addressables": "1.22.3",
+    "com.unity.ai.navigation": "1.1.6",
     "com.unity.feature.2d": "2.0.1",
     "com.unity.ide.visualstudio": "2.0.23",
     "com.unity.recorder": "4.0.3",

@@ -1,7 +1,13 @@
 
 
 
-public enum EnvironmentKey { Test = 0, YandexGames = 1, GamePush = 2 }
+public enum EnvironmentKey 
+{ 
+    Test = 0, 
+    YandexGames = 1, 
+    GamePush = 2,
+    MirraSDK = 3,
+}
 
 
 public enum AdKey

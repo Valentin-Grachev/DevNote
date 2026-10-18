@@ -1,0 +1,22 @@
+{
+    "name": "DevNote.SDK.MirraSDK",
+    "rootNamespace": "DevNote",
+    "references": [
+        "DevNote",
+        "Keys",
+        "UniTask",
+        "NaughtyAttributes.Core",
+        "MirraGames.SDK",
+        "MirraGames.SDK.Common",
+        "MirraGames.SDK.MirraWeb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

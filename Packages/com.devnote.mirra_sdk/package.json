@@ -1,0 +1,9 @@
+{
+  "name": "com.devnote.mirra_sdk",
+  "displayName": "Mirra SDK (DevNote SDK)",
+  "version": "1.0.0",
+  "author": {
+    "name": "DevNote Studio"
+  },
+  "unity": "2022.3"
+}
