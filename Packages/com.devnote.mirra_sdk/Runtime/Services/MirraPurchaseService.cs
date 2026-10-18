@@ -35,9 +35,15 @@ namespace DevNote.SDK.MirraSDK
 
         async void IInitializable.Initialize()
         {
-            ISave.OnSavesDeleted += OnSavesDeleted;
-
             await UniTask.WaitUntil(() => MirraSdk.IsInitialized && save.Item.Initialized);
+
+            if (!MirraSdk.Payments.IsPaymentsAvailable)
+            {
+                _initialized = true;
+                return;
+            }
+
+            ISave.OnSavesDeleted += OnSavesDeleted;
 
             bool restoreCompleted = false;
             IRestoreData restoreData = null;
