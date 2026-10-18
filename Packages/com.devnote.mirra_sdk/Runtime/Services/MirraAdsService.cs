@@ -12,7 +12,7 @@ namespace DevNote.SDK.MirraSDK
         bool ISelectableService.IsAvailableForSelection => 
             MirraEnvironmentService.IsAvailableForSelection;
 
-        bool IAds.RewardedAvailable => MirraSdk.Ads.IsRewardedAvailable || IEnvironment.IsEditor;
+        bool IAds.RewardedAvailable => MirraSdk.Ads.IsRewardedAvailable;
 
         bool IAds.InterstitialAvailable => IAds.InterstitialCooldownPassed
             && MirraSdk.Ads.IsInterstitialAvailable && !IAds.SkipAds;

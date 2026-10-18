@@ -7,7 +7,8 @@ namespace DevNote.SDK.MirraSDK
     {
         bool ILeaderboards.PlatformIsSupportsLeaderboards => true;
 
-        bool ISelectableService.IsAvailableForSelection => MirraEnvironmentService.IsAvailableForSelection;
+        bool ISelectableService.IsAvailableForSelection =>
+            MirraEnvironmentService.IsAvailableForSelection;
 
         bool IInitializable.Initialized => MirraSdk.IsInitialized;
 

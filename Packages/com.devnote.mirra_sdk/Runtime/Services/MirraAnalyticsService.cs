@@ -8,7 +8,8 @@ namespace DevNote.SDK.MirraSDK
     {
         bool IInitializable.Initialized => MirraSdk.IsInitialized;
 
-        bool ISelectableService.IsAvailableForSelection => MirraEnvironmentService.IsAvailableForSelection;
+        bool ISelectableService.IsAvailableForSelection =>
+            MirraEnvironmentService.IsAvailableForSelection;
 
         void IInitializable.Initialize() { }
 

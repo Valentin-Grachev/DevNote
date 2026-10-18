@@ -18,7 +18,8 @@ namespace DevNote.SDK.MirraSDK
 
         bool IFeature.IsStartMenu => _startMenuPlatforms.Contains(MirraSdk.Platform.Current);
 
-        bool ISelectableService.IsAvailableForSelection => MirraEnvironmentService.IsAvailableForSelection;
+        bool ISelectableService.IsAvailableForSelection => 
+            MirraEnvironmentService.IsAvailableForSelection;
 
         void IInitializable.Initialize() { }
     }

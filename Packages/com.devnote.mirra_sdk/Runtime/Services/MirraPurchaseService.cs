@@ -23,7 +23,7 @@ namespace DevNote.SDK.MirraSDK
         bool IInitializable.Initialized => _initialized;
 
         bool ISelectableService.IsAvailableForSelection
-            => MirraEnvironmentService.IsAvailableForSelection && !IEnvironment.IsEditor;
+            => MirraEnvironmentService.IsAvailableForSelection;
 
         string IPurchase.GetPriceString(ProductKey productKey)
         {
