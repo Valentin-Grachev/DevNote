@@ -9,6 +9,7 @@ namespace DevNote.SDK.MirraSDK
 {
     public class MirraPurchaseService : MonoBehaviour, IPurchase
     {
+        [SerializeField] private bool _editorSupportPayments;
         [SerializeField] private List<KeyValue<MirraGames.SDK.Common.PlatformType, bool>> _supportPaymentsPlatforms;
         [SerializeField] private ProductConverter _converter;
 
@@ -23,10 +24,11 @@ namespace DevNote.SDK.MirraSDK
         {
             get
             {
-                var currentPlatform = MirraSdk.Platform.Current;
+                if (IEnvironment.IsEditor)
+                    return _editorSupportPayments;
 
-                if (_supportPaymentsPlatforms.Exists(currentPlatform))
-                    return _supportPaymentsPlatforms.Get(currentPlatform);
+                if (_supportPaymentsPlatforms.Exists(MirraSdk.Platform.Current))
+                    return _supportPaymentsPlatforms.Get(MirraSdk.Platform.Current);
 
                 return MirraSdk.Payments.IsPaymentsAvailable;
             }

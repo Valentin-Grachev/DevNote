@@ -7,6 +7,7 @@ namespace DevNote.SDK.MirraSDK
 {
     public class MirraReviewService : MonoBehaviour, IReview
     {
+        [SerializeField] private bool _editorSupportReview;
         [SerializeField] private List<KeyValue<MirraGames.SDK.Common.PlatformType, bool>> _supportReviewPlatforms;
 
 
@@ -14,8 +15,19 @@ namespace DevNote.SDK.MirraSDK
 
         bool ISelectableService.IsAvailableForSelection => MirraEnvironmentService.IsAvailableForSelection;
 
-        bool IReview.ReviewIsAvailable => _supportReviewPlatforms.Exists(MirraSdk.Platform.Current) ?
-           _supportReviewPlatforms.Get(MirraSdk.Platform.Current) : false;
+        bool IReview.ReviewIsAvailable
+        {
+            get
+            {
+                if (IEnvironment.IsEditor)
+                    return _editorSupportReview;
+
+                else if (_supportReviewPlatforms.Exists(MirraSdk.Platform.Current))
+                    return _supportReviewPlatforms.Get(MirraSdk.Platform.Current);
+
+                return false;
+            }
+        }
 
         void IInitializable.Initialize() { }
 
