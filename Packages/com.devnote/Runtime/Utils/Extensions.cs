@@ -126,6 +126,9 @@ namespace DevNote
         public static TValue Get<TKey, TValue>(this List<KeyValue<TKey, TValue>> list, TKey key)
             => list.FindOrException(data => EqualityComparer<TKey>.Default.Equals(data.Key, key)).Value;
 
+        public static bool Exists<TKey, TValue>(this List<KeyValue<TKey, TValue>> list, TKey key)
+            => list.Exists(data => EqualityComparer<TKey>.Default.Equals(data.Key, key));
+
 
 
     }

@@ -9,7 +9,7 @@ namespace DevNote.SDK.MirraSDK
 {
     public class MirraPurchaseService : MonoBehaviour, IPurchase
     {
-        [SerializeField] private bool _editorPaymentsIsSupported;
+        [SerializeField] private List<KeyValue<MirraGames.SDK.Common.PlatformType, bool>> _supportPaymentsPlatforms;
         [SerializeField] private ProductConverter _converter;
 
         private bool _initialized;
@@ -19,8 +19,18 @@ namespace DevNote.SDK.MirraSDK
 
         private readonly Holder<ISave> save = new();
 
-        private bool PaymentIsSupported => IEnvironment.IsEditor ?
-            _editorPaymentsIsSupported : MirraSdk.Payments.IsPaymentsAvailable;
+        private bool PaymentIsSupported
+        {
+            get
+            {
+                var currentPlatform = MirraSdk.Platform.Current;
+
+                if (_supportPaymentsPlatforms.Exists(currentPlatform))
+                    return _supportPaymentsPlatforms.Get(currentPlatform);
+
+                return MirraSdk.Payments.IsPaymentsAvailable;
+            }
+        }
 
         bool IPurchase.PlatformIsSupportsPurchases => PaymentIsSupported;
 
@@ -39,13 +49,9 @@ namespace DevNote.SDK.MirraSDK
 
         async void IInitializable.Initialize()
         {
-            await UniTask.WaitUntil(() => MirraSdk.IsInitialized && save.Item.Initialized);
+            if (!PaymentIsSupported) { _initialized = true; return; }
 
-            if (!PaymentIsSupported)
-            {
-                _initialized = true;
-                return;
-            }
+            await UniTask.WaitUntil(() => MirraSdk.IsInitialized && save.Item.Initialized);
 
             ISave.OnSavesDeleted += OnSavesDeleted;
 
