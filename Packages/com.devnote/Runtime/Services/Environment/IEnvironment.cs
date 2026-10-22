@@ -51,6 +51,9 @@ namespace DevNote
 
         public Language DeviceLanguage { get; }
         public DeviceType DeviceType { get; }
+
+        public float TimeScale { get; set; }
+
         public void GameReady();
         public void OpenURL(string url);
 

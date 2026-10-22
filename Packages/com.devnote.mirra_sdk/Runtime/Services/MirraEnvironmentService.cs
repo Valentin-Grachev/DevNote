@@ -34,7 +34,14 @@ namespace DevNote.SDK.MirraSDK
         DeviceType IEnvironment.DeviceType => MirraSdk.Device.IsMobile ? 
             DeviceType.Mobile : DeviceType.Desktop;
 
-        
+
+        float IEnvironment.TimeScale
+        {
+            get => MirraSdk.Time.Scale;
+            set => MirraSdk.Time.Scale = value;
+        }
+
+
         bool ISelectableService.IsAvailableForSelection => IsAvailableForSelection;
 
         bool IEnvironment.FullscreenIsSupported => false;

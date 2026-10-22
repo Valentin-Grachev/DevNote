@@ -10,6 +10,12 @@ namespace DevNote.SDK.YandexGames
 
         bool ISelectableService.IsAvailableForSelection => YG_Sdk.IsAvailableForSelection;
 
+        float IEnvironment.TimeScale
+        {
+            get => Time.timeScale;
+            set => Time.timeScale = value;
+        }
+
         bool IInitializable.Initialized => _initialized;
         async void IInitializable.Initialize()
         {

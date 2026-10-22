@@ -38,6 +38,12 @@ namespace DevNote.SDK.Test
 
         bool IEnvironment.InviteAvailable => _inviteAvailable;
 
+        float IEnvironment.TimeScale 
+        { 
+            get => Time.timeScale; 
+            set => Time.timeScale = value; 
+        }
+
         void IEnvironment.GameReady() => Debug.Log($"{Info.Prefix} Game ready");
 
         void IEnvironment.OpenURL(string url) => Application.OpenURL(url);

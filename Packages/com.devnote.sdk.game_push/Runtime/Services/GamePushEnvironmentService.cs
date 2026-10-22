@@ -48,7 +48,12 @@ namespace DevNote.SDK.GamePush
             }
 
         }
-        
+
+        float IEnvironment.TimeScale
+        {
+            get => Time.timeScale;
+            set => Time.timeScale = value;
+        }
 
         DeviceType IEnvironment.DeviceType => GP_Device.IsMobile() ? DeviceType.Mobile : DeviceType.Desktop;
 
