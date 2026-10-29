@@ -29,8 +29,8 @@ namespace DevNote.SDK.MirraSDK
 
             await UniTask.WaitUntil(() => MirraSdk.IsInitialized);
 
-            if (_showInterstitialOnStart)
-                ShowInterstitial(AdKey.Inter_Start, callback: null);
+            if (_showInterstitialOnStart && MirraSdk.Ads.IsInterstitialAvailable)
+                MirraSdk.Ads.InvokeInterstitial();
 
             if (MirraSdk.Ads.IsBannerAvailable)
             {
@@ -53,9 +53,6 @@ namespace DevNote.SDK.MirraSDK
         }
 
         void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
-            => ShowInterstitial(key, callback);
-
-        private void ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             if (IAds.TryInternalHandleInterstitial(callback, key))
                 return;
@@ -73,7 +70,6 @@ namespace DevNote.SDK.MirraSDK
                 IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.Error);
             }
         }
-
 
         void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {
