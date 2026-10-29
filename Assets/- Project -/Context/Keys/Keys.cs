@@ -1,5 +1,12 @@
 
 
+public enum EnvKey
+{
+    Test = 0,
+}
+
+
+
 public enum EnvironmentKey 
 { 
     Test = 0, 
@@ -12,6 +19,7 @@ public enum EnvironmentKey
 public enum AdKey
 {
     Default = 0,
+    Inter_Start = 1,
 
 }
 

@@ -10,9 +10,11 @@ namespace Nodes.Providers
         {
             public bool IsSupportInvite { get; }
             public bool IsSupportRateGame { get; }
+            public bool IsSupportOpenUrl { get; }
 
             public void Invite();
             public void RateGame();
+            public void OpenUrl(string url);
         }
 
         private static IProvider _provider;
@@ -30,7 +32,7 @@ namespace Nodes.Providers
 
         public static void Invite() => _provider.Invite();
         public static void RateGame() => _provider.RateGame();
-
+        public static void OpenUrl(string url) => _provider.OpenUrl(url);
 
 
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Nodes.Providers
 {
@@ -25,8 +26,13 @@ namespace Nodes.Providers
             {
                 _provider = provider;
 
-                foreach (var productKey in _provider.GetNonHandledProducts())
-                    OnPaymentHandled?.Invoke(productKey, success: true);
+                var nonHandledProducts = _provider.GetNonHandledProducts();
+
+                if (nonHandledProducts != null)
+                {
+                    foreach (var productKey in _provider.GetNonHandledProducts())
+                        OnPaymentHandled?.Invoke(productKey, success: true);
+                }
 
                 onInitialized?.Invoke();
             });
@@ -39,11 +45,22 @@ namespace Nodes.Providers
 
         public static void Purchase(ProductKey productKey, Action<bool> onHandled = null)
         {
-            _provider.Purchase(productKey, onHandled: (success) =>
+            if (_provider.IsSupportPayments)
             {
-                onHandled?.Invoke(success);
-                OnPaymentHandled?.Invoke(productKey, success);
-            });
+                _provider.Purchase(productKey, onHandled: (success) =>
+                {
+                    onHandled?.Invoke(success);
+                    OnPaymentHandled?.Invoke(productKey, success);
+                });
+            }
+            else
+            {
+                Debug.LogError("[Payments] Payments is not supported!");
+                onHandled?.Invoke(false);
+                OnPaymentHandled?.Invoke(productKey, false);
+            }
+
+            
         }
 
     }

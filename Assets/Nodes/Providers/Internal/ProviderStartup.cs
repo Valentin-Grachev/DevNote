@@ -1,26 +1,34 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Nodes.Providers
 {
     public class ProviderStartup : MonoBehaviour
     {
-        [SerializeField] private ProviderConfiguration _editorConfiguration;
-        [SerializeField] private ProviderConfiguration _buildConfiguration;
+        [SerializeField] private EnvKey _editorConfigurationKey;
+        [SerializeField] private EnvKey _buildConfigurationKey;
+        [SerializeField] private List<ProviderConfiguration> _configurations;
 
         public void InitializeProviders(Action onInitialized)
         {
 #if UNITY_EDITOR
-            var configuration = _editorConfiguration;
+            var configurationKey = _editorConfigurationKey;
 #else
-            var configuration = _buildConfiguration;
+            var configurationKey = _buildConfigurationKey;
 #endif
 
-            int initProcessCount = 2;
+            var configuration = _configurations.Find
+                (configuration => configuration.EnvKey == configurationKey);
 
+            int initProcessCount = 6;
+
+            Env.InitializeProvider(configuration.EnvProvider, OnProviderInitialized);
             Ads.InitializeProvider(configuration.AdsProvider, OnProviderInitialized);
             Payments.InitializeProvider(configuration.PaymentsProvider, OnProviderInitialized);
             Socials.InitializeProvider(configuration.SocialsProvider, OnProviderInitialized);
+            GameReady.InitializeProvider(configuration.GameReadyProvider, OnProviderInitialized);
+            CloudSaves.InitializeProvider(configuration.CloudSavesProvider, OnProviderInitialized);
 
 
             void OnProviderInitialized()

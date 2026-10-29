@@ -7,7 +7,9 @@ namespace DevNote.SDK.MirraSDK
 {
     public class MirraAdsService : MonoBehaviour, IAds
     {
+        [SerializeField] private bool _showInterstitialOnStart = true;
         [SerializeField] private float _interstitialCooldown = 60f;
+
 
         bool ISelectableService.IsAvailableForSelection => 
             MirraEnvironmentService.IsAvailableForSelection;
@@ -26,6 +28,9 @@ namespace DevNote.SDK.MirraSDK
             IAds.InterstitialCooldown = _interstitialCooldown;
 
             await UniTask.WaitUntil(() => MirraSdk.IsInitialized);
+
+            if (_showInterstitialOnStart)
+                ShowInterstitial(AdKey.Inter_Start, callback: null);
 
             if (MirraSdk.Ads.IsBannerAvailable)
             {
@@ -48,6 +53,9 @@ namespace DevNote.SDK.MirraSDK
         }
 
         void IAds.ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
+            => ShowInterstitial(key, callback);
+
+        private void ShowInterstitial(AdKey key, Action<AdShowStatus> callback)
         {
             if (IAds.TryInternalHandleInterstitial(callback, key))
                 return;
@@ -65,6 +73,7 @@ namespace DevNote.SDK.MirraSDK
                 IAds.InvokeInterstitialCallback(callback, key, AdShowStatus.Error);
             }
         }
+
 
         void IAds.ShowRewarded(AdKey key, Action onRewarded, Action<AdShowStatus> callback)
         {

@@ -1,5 +1,4 @@
 using System;
-using DevNote;
 using UnityEngine;
 
 namespace Nodes.Providers
@@ -29,13 +28,17 @@ namespace Nodes.Providers
         private static float _adShowUnscaledTime = 0f;
         private static float _interstitialCooldown = 0f;
         private static bool _skipAds = false;
-
+        private static Func<bool> _noAdsIsPurchased;
 
         public static bool IsInitialized => _provider != null;
         public static bool IsSupportRewarded => _provider.IsSupportRewarded;
         public static bool IsSupportInterstitial => _provider.IsSupportInterstitial;
         public static bool IsAdBlock => _provider.IsAdBlock;
 
+
+
+        public static void SetNoAdsIsPurchased(Func<bool> noAdsIsPurchased)
+            => _noAdsIsPurchased = noAdsIsPurchased;
 
 
         public static void InitializeProvider(IProvider provider, Action onInitialized)
@@ -88,7 +91,7 @@ namespace Nodes.Providers
             if (!_provider.IsSupportInterstitial)
                 InvokeStatus(Status.NotSupported);
 
-            else if (IGameState.NoAdsPurchased)
+            else if (_noAdsIsPurchased != null && _noAdsIsPurchased.Invoke())
                 InvokeStatus(Status.NoAdsPurchased);
 
             else if (!cooldownIsPassed)

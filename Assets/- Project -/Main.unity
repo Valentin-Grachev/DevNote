@@ -322,8 +322,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8246ae7a1d77c8d41b22f5446b35b9ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _editorConfiguration: {fileID: 1019607313}
-  _buildConfiguration: {fileID: 1019607313}
+  _editorConfigurationKey: 0
+  _buildConfigurationKey: 0
+  _configurations:
+  - {fileID: 1019607313}
 --- !u!1 &969228883
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,8 +368,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1019607310}
   - component: {fileID: 1019607313}
+  - component: {fileID: 1019607315}
+  - component: {fileID: 1019607317}
   - component: {fileID: 1019607312}
+  - component: {fileID: 1019607314}
   - component: {fileID: 1019607311}
+  - component: {fileID: 1019607316}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -404,6 +410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isSupportInvite: 1
   _isSupportRateGame: 1
+  _isSupportOpenUrl: 1
 --- !u!114 &1019607312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,6 +426,8 @@ MonoBehaviour:
   _isSupportRewarded: 1
   _isSupportInterstitial: 1
   _isAdBlock: 0
+  _showLogs: 1
+  _simulateAdError: 0
 --- !u!114 &1019607313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,8 +440,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0bfeddd7c61a24e95994cf236b90e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _envProvider: {fileID: 1019607315}
   _adsProvider: {fileID: 1019607312}
+  _paymentsProvider: {fileID: 1019607314}
   _socialsProvider: {fileID: 1019607311}
+  _gameReadyProvider: {fileID: 1019607316}
+  _cloudSaveProvider: {fileID: 0}
+--- !u!114 &1019607314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019607309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0734b8d04131e6044a0f8bd631d4ac63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSupportPayments: 1
+  _simulatePaymentsError: 0
+  _nonHandledProducts: 
+--- !u!114 &1019607315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019607309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0660c6353105d314483e14353f3b8274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _platformName: Test
+  _deviceType: 0
+  _language: 10
+--- !u!114 &1019607316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019607309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634367d20a4c1c74c92a2a659308e4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showLogs: 1
+--- !u!114 &1019607317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019607309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b0a687f6e9a314d9522c4b4d46d651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showLogs: 1
+  _simulateCommitError: 0
 --- !u!1 &1696557685
 GameObject:
   m_ObjectHideFlags: 0
