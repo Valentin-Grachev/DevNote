@@ -5,11 +5,14 @@ namespace DevNote.SDK.Test
 {
     public class TestPurchaseService : MonoBehaviour, IPurchase
     {
+        [SerializeField] private bool _isSupportPurchases = true;
+
+
         bool IInitializable.Initialized => true;
 
         bool ISelectableService.IsAvailableForSelection => true;
 
-        bool IPurchase.PlatformIsSupportsPurchases => true;
+        bool IPurchase.PlatformIsSupportsPurchases => _isSupportPurchases;
 
         string IPurchase.GetPriceString(ProductKey productKey) => $"${productKey}";
 
